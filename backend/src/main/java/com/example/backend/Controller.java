@@ -7,10 +7,4 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class Controller {
 
-    @GetMapping("/SignUp")
-    public String SignUp(){
-        System.out.println("my name is goda");
-        return "name";
-    }
-
 }
