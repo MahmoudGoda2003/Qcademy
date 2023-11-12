@@ -1,14 +1,12 @@
 import { Button, Grid, Paper, TextField, Typography, Checkbox, FormControlLabel } from "@mui/material"
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import Cookies from 'universal-cookie'
 
 export default function Login({theme}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [remember, setRemember] = useState(false);
-    const cookies = new Cookies(null, {path: '/'});
 
     const fields = {
         email: "email",
@@ -26,19 +24,9 @@ export default function Login({theme}) {
         const checkUser = {
             email: email,
             password: password,
+            remember: remember,
         }
 
-        // TODO: send user to be checked in backend
-        
-        if (remember) {
-            cookies.set('user', 'hello from user cookie'); // TODO: here we'll put user ID we got from backend
-            console.log(cookies.get('myUser')); // we access the cookies we set using cookies.get({cookie-name});
-
-            // we will use the cookie later to check if the user is logged in or not
-
-            // we can either add an expiration date for the cookie
-            // or add a log out button which will just delete the cookie
-        }
     }
 
     const gridStyle = {
