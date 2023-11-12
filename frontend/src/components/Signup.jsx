@@ -4,6 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from "react";
+import * as Yup from 'yup';
 
 export default function Signup({theme}) {
 
@@ -13,11 +14,19 @@ export default function Signup({theme}) {
     const [password, setPassword] = useState('');
     const [DOB, setDOB] = useState(null);
 
+    const fields = {
+        firstName: "firstname",
+        lastName: "lastname",
+        email: "email",
+        password: "password",
+        DOB: "DOB"
+    }
+
     const handleChange = event => {
-        if (event.target.name === "firstname") setFirstName(event.target.value);
-        if (event.target.name === "lastname") setLastName(event.target.value);
-        if (event.target.name === "email") setEmail(event.target.value);
-        if (event.target.name === "password") setPassword(event.target.value);
+        if (event.target.name === fields.firstName) setFirstName(event.target.value);
+        if (event.target.name === fields.lastName) setLastName(event.target.value);
+        if (event.target.name === fields.email) setEmail(event.target.value);
+        if (event.target.name === fields.password) setPassword(event.target.value);
     }
 
     const handleSignUp = e => {
@@ -29,6 +38,8 @@ export default function Signup({theme}) {
             password: password,
             DOB: DOB.$D + "-" + DOB.$M + "-" + DOB.$y,
         }
+        
+        // TODO: send info to backend
         console.log(user);
     }
 
@@ -82,17 +93,38 @@ export default function Signup({theme}) {
             alt="Logo"
             ></img>
             <Paper 
-                elevation={2}
+                elevation={5}
                 sx={paperStyle}
             >
                 <Grid sx={innerGridStyle} component="form" onSubmit={handleSignUp}>
                     <Typography sx={gridElement} component={'h1'} variant={'h4'} align="center">Create New Account</Typography>
                     <Grid sx={gridElement2}>
-                        <TextField sx={{marginRight: '1vh'}} required label="First Name" name="firstname" onChange={handleChange} />
-                        <TextField sx={{marginLeft: '1vh'}} required label="Last Name" name="lastname" onChange={handleChange} />
+                        <TextField
+                            sx={{marginRight: '1vh'}}
+                            required
+                            label="First Name"
+                            name={fields.firstName}
+                            inputProps={{ pattern: '[A-z]*'}}
+                            onChange={handleChange}
+                        />
+                        <TextField sx={{marginLeft: '1vh'}}
+                        required
+                        label="Last Name"
+                        name={fields.lastName}
+                        inputProps={{ pattern: '[A-z]*'}}
+                        onChange={handleChange}
+                        />
                     </Grid>
-                    <TextField sx={gridElement} required label="E-mail" type="email" name="email" onChange={handleChange}/>
-                    <TextField sx={gridElement} required label="Password" type="password" name="password" onChange={handleChange}/>
+                    <TextField sx={gridElement} required label="E-mail" type={fields.email} name={fields.email} onChange={handleChange}/>
+                    <TextField
+                        sx={gridElement}
+                        required
+                        label="Password"
+                        type="text"
+                        name={fields.password}
+                        inputProps={{ minLength: 8, pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$" }}
+                        onChange={handleChange}
+                    />
                     {password.length > 0 &&
                     <>
                         <LinearProgress 
@@ -102,7 +134,7 @@ export default function Signup({theme}) {
                             margin: '1vh',
                             width: '88%',
                             color: 'secondry',
-                          }}
+                        }}
                         />
                         <Typography
                             variant="body2"
@@ -125,18 +157,15 @@ export default function Signup({theme}) {
                             value={DOB}
                             slotProps={{
                                 textField: {
-                                  required: true,
+                                required: true,
                                 },
-                              }}
+                            }}
                             onChange={(newValue) => setDOB(newValue)} />
                     </LocalizationProvider>
                     <Typography sx={gridElementText}>
                         Already have an account? <Link to='/login'>Sign in</Link>
                     </Typography>
-                    { password.length < minLength ?
-                        <Button variant="contained" size="large" sx={gridElement} type="submit" disabled>Create Account</Button>
-                        : <Button variant="contained" size="large" sx={gridElement} type="submit">Create Account</Button>
-                    }
+                    <Button variant="contained" size="large" sx={gridElement} type="submit">Create Account</Button>
                 </Grid>
             </Paper>
             <Typography variant="body2" color="textSecondary" align="center">
