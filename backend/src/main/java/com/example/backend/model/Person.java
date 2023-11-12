@@ -8,26 +8,28 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "first_name")
-    private String fristName;
-    @Column(name = "last_name")
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+    @Column(name = "last_name", nullable = false)
     private String lastName;
-    @Column(name = "E_mail")
-    private String Email;
-    @Column(name = "Password")
-    private String Password;
-    @Column(name = "Date_of_birth")
+    @Column(name = "e_mail", nullable = false, unique = true)
+    private String email;
+    @Column(name = "password", nullable = false)
+    private String password;
+    @Column(name = "date_of_birth", nullable = false)
     private String DOB;
+    @Column(name = "photo_link")
+    private String photoLink;
 
     public Person() {
     }
-
-    public Person(String fristName, String lastName, String email, String password, String DOB) {
-        this.fristName = fristName;
+    public Person(String firstName, String lastName, String email, String password, String DOB, String photoLink) {
+        this.firstName = firstName;
         this.lastName = lastName;
-        Email = email;
-        Password = password;
+        this.email = email;
+        this.password = password;
         this.DOB = DOB;
+        this.photoLink = photoLink;
     }
 
     public Long getId() {
@@ -38,12 +40,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getFristName() {
-        return fristName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFristName(String fristName) {
-        this.fristName = fristName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -55,19 +57,19 @@ public class Person {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public String getDOB() {
@@ -76,5 +78,26 @@ public class Person {
 
     public void setDOB(String DOB) {
         this.DOB = DOB;
+    }
+
+    public String getPhotoLink() {
+        return photoLink;
+    }
+
+    public void setPhotoLink(String photoLink) {
+        this.photoLink = photoLink;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", DOB='" + DOB + '\'' +
+                ", photoLink='" + photoLink + '\'' +
+                '}';
     }
 }
