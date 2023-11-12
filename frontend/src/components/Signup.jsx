@@ -121,7 +121,7 @@ export default function Signup({theme}) {
                         label="Password"
                         type="text"
                         name={fields.password}
-                        inputProps={{ minLength: 8, pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$" }}
+                        inputProps={{ pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$" }}
                         onChange={handleChange}
                     />
                     {password.length > 0 &&
