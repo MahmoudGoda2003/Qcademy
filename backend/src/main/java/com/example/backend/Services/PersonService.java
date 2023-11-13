@@ -40,13 +40,18 @@ public class PersonService {
         }
     }
 
-    public Boolean validatePasswordByEmail(String email, String password){
-        if(personRepository.existsByEmail(email)){
+   public Boolean validatePasswordByEmail(String email, String password){
+        try{
             Person person = personRepository.findByEmail(email);
-            if (passwordEncoder.matches(password, person.getEncryptedPassword())) {
-                return true;
+            if(person != null){
+                if (passwordEncoder.matches(password, person.getEncryptedPassword())) {
+                    return true;
+                }
             }
+            return false;
+        }catch (Exception e){
+            System.out.println(e.toString());
+            return false;
         }
-        return false;
     }
 }
