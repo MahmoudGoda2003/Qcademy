@@ -54,7 +54,7 @@ export default function ConfirmEmail({theme}) {
             >
                 <Grid sx={innerGridStyle} component="form" onSubmit={handleCode}>
                     <Typography sx={gridElement} component={'h1'} variant={'h4'} align="center">Confirm Your Email</Typography>
-                    <Typography sx={gridElement} component={'body2'} align="center">We sent you an email with a 6 digit code</Typography>
+                    <Typography sx={gridElement} variant={'body1'} align="center">We sent you an email with a 6 digit code</Typography>
                     <MuiOtpInput
                         sx ={gridElement}
                         value={code}
