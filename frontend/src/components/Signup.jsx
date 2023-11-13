@@ -4,6 +4,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from "react";
+import { useGoogleLogin } from '@react-oauth/google';
+import GoogleIcon from '@mui/icons-material/Google';
 
 export default function Signup({theme}) {
 
@@ -37,10 +39,18 @@ export default function Signup({theme}) {
             password: password,
             DOB: DOB.$D + "-" + DOB.$M + "-" + DOB.$y,
         }
-        
+
         // TODO: send info to backend
         console.log(user);
     }
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: response => {
+            // TODO: send to backend response.access_token
+            console.log(response);
+        },
+        onError: error => console.log(error),
+    });
 
     const minLength = 8;
 
@@ -165,6 +175,7 @@ export default function Signup({theme}) {
                         Already have an account? <Link to='/login'>Sign in</Link>
                     </Typography>
                     <Button variant="contained" size="large" sx={gridElement} type="submit">Create Account</Button>
+                    <Button variant="outlined" size="large" sx={gridElement} onClick={googleLogin} startIcon={<GoogleIcon />}>Sign in with Google</Button>
                 </Grid>
             </Paper>
             <Typography variant="body2" color="textSecondary" align="center">

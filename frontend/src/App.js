@@ -59,12 +59,3 @@ export default function App() {
     </>
   );
 }
-
-const Navigation = () => (
-  <nav>
-    <Link to="/"> Landing </Link>
-    <Link to="/home"> Home </Link>
-    <Link to="/login"> Login </Link>
-    <Link to="/signup"> Signup </Link>
-  </nav>
-);
