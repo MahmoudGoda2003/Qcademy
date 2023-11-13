@@ -46,7 +46,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        <Route path="home" element={
+        <Route path="/" element={
           <ProtectedRoute user={user} redirectPath={"/login"}>
             <Home />
           </ProtectedRoute>
