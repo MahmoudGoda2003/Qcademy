@@ -20,19 +20,18 @@ public class Person {
     private String lastName;
     @Column(name = "e_mail", nullable = false, unique = true)
     private String email;
-    @Column(name = "password", nullable = false)
-    @Getter(AccessLevel.NONE)
-    private String password;
+    @Column(name = "encrypted_password", nullable = false)
+    private String EncryptedPassword;
     @Column(name = "date_of_birth", nullable = false)
     private String DOB;
     @Column(name = "photo_link")
     private String photoLink;
 
-    public Person(String firstName, String lastName, String email, String password, String DOB, String photoLink) {
+    public Person(String firstName, String lastName, String email, String encryptedPassword, String DOB, String photoLink) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.EncryptedPassword = encryptedPassword;
         this.DOB = DOB;
         this.photoLink = photoLink;
     }
