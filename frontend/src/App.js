@@ -1,6 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Signup from "./components/Signup";
+import ConfirmEmail from "./components/ConfirmEmail";
 import { useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -46,12 +47,13 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Routes>
-        <Route path="home" element={
+        <Route path="/" element={
           <ProtectedRoute user={user} redirectPath={"/login"}>
             <Home />
           </ProtectedRoute>
         }/>
         <Route path="signup" element={<Signup theme = {theme} />} />
+        <Route path="confirmEmail" element={<ConfirmEmail theme = {theme} />} />
       </Routes>
       </ThemeProvider>
     </>
