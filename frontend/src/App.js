@@ -1,25 +1,61 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import IconButton from '@mui/material/IconButton';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import Header from "./components/Header";
 
-function App() {
+const lightMode = createTheme({
+  palette: {
+    primary: {
+      main: '#3d5afe',
+    },
+    secondary: {
+      main: '#2979ff',
+    },
+  },
+});
+
+const darkMode = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#3d5afe',
+    },
+    secondary: {
+      main: '#2979ff',
+    },
+  },
+});
+
+export default function App() {
+  const [user, setUser] = useState(null);
+
+  const [theme, setTheme] = useState(lightMode);
+  const toggleColorMode = () => setTheme(((theme === lightMode)? darkMode : lightMode));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <IconButton onClick={toggleColorMode} color="inherit">
+        {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+    </IconButton>
+    <ThemeProvider theme={theme} >
+      <CssBaseline />
+      <Routes>
+        <Route path="/" element={<Header userInfo={{img:"as"}} searchOptions={['1', '2', '3', '4']} />} />
+      </Routes>
+      </ThemeProvider>
+    </>
   );
 }
 
-export default App;
+const Navigation = () => (
+  <nav>
+    <Link to="/"> Landing </Link>
+    <Link to="/home"> Home </Link>
+    <Link to="/login"> Login </Link>
+    <Link to="/signup"> Signup </Link>
+  </nav>
+);
