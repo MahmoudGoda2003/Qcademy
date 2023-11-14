@@ -87,19 +87,19 @@ public class PersonService {
         }
     }
 
-    public Person validatePerson(SignUpDTO signUpDTO, int OTP) {
+    public int validatePerson(SignUpDTO signUpDTO, int OTP) {
         try {
             NotValidatedPerson notValidatedPerson = notValidatedPersonRepository.findByEmail(signUpDTO.getEmail());
             if (notValidatedPerson != null) {
-                if (notValidatedPerson.getOTP() != OTP) return null;
+                if (notValidatedPerson.getOTP() != OTP) return 1;
                 notValidatedPersonRepository.deleteById(signUpDTO.getEmail());
                 savePerson(new Person(signUpDTO));
-                return personRepository.findByEmail(signUpDTO.getEmail());
+                return 0;
             }
-            return personRepository.findByEmail(signUpDTO.getEmail());
+            return 3;
         } catch (Exception e){
             System.out.println(e.toString());
-            return null;
+            return 2;
         }
     }
 }

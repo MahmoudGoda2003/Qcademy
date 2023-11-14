@@ -46,9 +46,7 @@ public class PersonController {
     }
 
     @PostMapping("/signup/validate")
-    public ResponseEntity<PersonMainInfoDTO> validatePerson(@RequestBody SignUpDTO signUpDTO, @RequestBody int code) {
-        Person person = personService.validatePerson(signUpDTO, code);
-        if (person==null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(new PersonMainInfoDTO(person), HttpStatus.CREATED);
+    public ResponseEntity<Integer> validatePerson(@RequestBody SignUpDTO signUpDTO, @RequestBody int code) {
+        return new ResponseEntity<>(personService.validatePerson(signUpDTO, code), HttpStatus.CREATED);
     }
 }
