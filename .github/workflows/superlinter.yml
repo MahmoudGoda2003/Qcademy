@@ -23,12 +23,15 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
+        working-directory: backend
         run: mvn clean install
 
       - name: Run Tests and Generate Coverage Report
+        working-directory: backend
         run: mvn clean test jacoco:report
 
       - name: Upload coverage reports to Codecov
+        working-directory: backend
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
