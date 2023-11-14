@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.example.backend.DTO.SignUpDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,5 +35,13 @@ public class Person {
         this.EncryptedPassword = encryptedPassword;
         this.DOB = DOB;
         this.photoLink = photoLink;
+    }
+
+    public Person(SignUpDTO signUpDTO) {
+        this.firstName = signUpDTO.getFirstName();
+        this.lastName = signUpDTO.getLastName();
+        this.email = signUpDTO.getEmail();
+        this.EncryptedPassword = signUpDTO.getHashedPassword();
+        this.DOB = signUpDTO.getDOB();
     }
 }

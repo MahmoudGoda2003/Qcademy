@@ -1,6 +1,9 @@
 package com.example.backend.Services;
 
+import com.example.backend.DTO.SignUpDTO;
+import com.example.backend.model.NotValidatedPerson;
 import com.example.backend.model.Person;
+import com.example.backend.repository.NotValidatedPersonRepository;
 import com.example.backend.repository.PersonRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,12 +11,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PersonService {
-    private PersonRepository personRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PersonRepository personRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final NotValidatedPersonRepository notValidatedPersonRepository;
 
-    public PersonService(PersonRepository personRepository){
+    public PersonService(PersonRepository personRepository, NotValidatedPersonRepository notValidatedPersonRepository){
         this.personRepository = personRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.notValidatedPersonRepository = notValidatedPersonRepository;
     }
 
     public boolean savePerson(Person person){
@@ -44,14 +49,57 @@ public class PersonService {
         try{
             Person person = personRepository.findByEmail(email);
             if(person != null){
-                if (passwordEncoder.matches(password, person.getEncryptedPassword())) {
-                    return true;
-                }
+                return passwordEncoder.matches(password, person.getEncryptedPassword());
             }
             return false;
         }catch (Exception e){
             System.out.println(e.toString());
             return false;
+        }
+    }
+
+    public Person getByEmail(String email) {
+        try {
+            return personRepository.findByEmail(email);
+        } catch (Exception e){
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+
+    public boolean hasPerson(String email) {
+        return personRepository.findByEmail(email) != null;
+    }
+
+    public int signUp(String email) {
+        try {
+            Person person = personRepository.findByEmail(email);
+            if (person != null) return 1;
+            NotValidatedPerson notValidatedPerson = new NotValidatedPerson(email);
+            if (notValidatedPersonRepository.findByEmail(email) != null) {
+                notValidatedPersonRepository.deleteById(email);
+            }
+            notValidatedPersonRepository.save(notValidatedPerson);
+            return notValidatedPerson.getOTP();
+        } catch (Exception e){
+            System.out.println(e.toString());
+            return 2;
+        }
+    }
+
+    public int validatePerson(SignUpDTO signUpDTO, int OTP) {
+        try {
+            NotValidatedPerson notValidatedPerson = notValidatedPersonRepository.findByEmail(signUpDTO.getEmail());
+            if (notValidatedPerson != null) {
+                if (notValidatedPerson.getOTP() != OTP) return 1;
+                notValidatedPersonRepository.deleteById(signUpDTO.getEmail());
+                savePerson(new Person(signUpDTO));
+                return 0;
+            }
+            return 3;
+        } catch (Exception e){
+            System.out.println(e.toString());
+            return 2;
         }
     }
 }
