@@ -9,14 +9,14 @@ import java.util.List;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
     /**
-     * find the person record by Email and it returns null if the email is not found
+     * find the person record by Email, and it returns null if the email is not found
      * parameters: Email
      * @return Person
      */
     Person findByEmail(String email);
 
     /**
-     * find the person record by name and it returns null if the email is not found
+     * find the person record by name, and it returns null if the email is not found
      * parameters: firstName and lastName
      * @return list of persons
      */
@@ -28,4 +28,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * @return Boolean [true, False]
      */
     Boolean existsByEmail(String email);
+
+    Long saveAndGetId(Person person);
 }
