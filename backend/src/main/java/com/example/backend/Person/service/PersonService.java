@@ -89,37 +89,34 @@ public class PersonService {
         return personRepository.findByEmail(email) != null;
     }
 
-    public int signUp(String email) {
+    public String signUp(String email) {
         try {
-            if (personRepository.existsByEmail(email)) return 1;
+            if (personRepository.existsByEmail(email)) return "1";
             Random random = new Random();
             int OTP = random.nextInt(100000, 999999);
             NotValidatedPerson notValidatedPerson = new NotValidatedPerson(email, encoder.encode(String.valueOf(OTP)));
-            if (notValidatedPersonRepository.findByEmail(email) != null) {
-                notValidatedPersonRepository.deleteById(email);
-            }
+            notValidatedPersonRepository.deleteById(email);
             notValidatedPersonRepository.save(notValidatedPerson);
             mailSenderService.sendNewMail(email, String.valueOf(OTP));
-            return 0;
-        } catch (Exception e){
-            System.out.println(e.toString());
-            return 2;
+            return "0";
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
-    public int validatePerson(SignUpDTO signUpDTO, String OTP) {
+    public String validatePerson(SignUpDTO signUpDTO, String OTP) {
         try {
             NotValidatedPerson notValidatedPerson = notValidatedPersonRepository.findByEmail(signUpDTO.getEmail());
             if (notValidatedPerson != null) {
-                if (!encoder.matches(OTP, notValidatedPerson.getOTP())) return 1;
+                if (!encoder.matches(OTP, notValidatedPerson.getOTP()))
+                    return "1";
                 notValidatedPersonRepository.deleteById(signUpDTO.getEmail());
                 savePerson(new Person(signUpDTO));
-                return 0;
+                return "0";
             }
-            return 3;
+            return "2";
         } catch (Exception e){
-            System.out.println(e.toString());
-            return 2;
+            return e.toString();
         }
     }
 }
