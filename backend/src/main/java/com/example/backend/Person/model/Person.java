@@ -1,6 +1,6 @@
-package com.example.backend.model;
+package com.example.backend.Person.model;
 
-import com.example.backend.DTO.SignUpDTO;
+import com.example.backend.Person.DTO.SignUpDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,14 +1,11 @@
 package com.example.backend.Services;
 
-import com.example.backend.model.Person;
+import com.example.backend.Person.model.Person;
+import com.example.backend.Person.service.PersonService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @SpringBootTest
 class PersonServiceTest {

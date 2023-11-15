@@ -1,30 +1,48 @@
-package com.example.backend.Services;
+package com.example.backend.Person.service;
 
-import com.example.backend.DTO.SignUpDTO;
-import com.example.backend.model.NotValidatedPerson;
-import com.example.backend.model.Person;
-import com.example.backend.repository.NotValidatedPersonRepository;
-import com.example.backend.repository.PersonRepository;
+import com.example.backend.Person.DTO.SignUpDTO;
+import com.example.backend.Person.model.NotValidatedPerson;
+import com.example.backend.Person.model.Person;
+import com.example.backend.Person.repository.NotValidatedPersonRepository;
+import com.example.backend.Person.repository.PersonRepository;
+import com.example.backend.Services.MailSenderService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 @Service
 public class PersonService {
     private final PersonRepository personRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder encoder;
     private final NotValidatedPersonRepository notValidatedPersonRepository;
 
-    public PersonService(PersonRepository personRepository, NotValidatedPersonRepository notValidatedPersonRepository){
+    private final MailSenderService mailSenderService;
+
+    Runnable deleteNotValidatedPerson = new Runnable() {
+        @Override
+        public void run() {
+            notValidatedPersonRepository.deleteByTimeCreatedLessThan(System.currentTimeMillis() - 3600000);
+        }
+    };
+    ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
+    public PersonService(PersonRepository personRepository, NotValidatedPersonRepository notValidatedPersonRepository, MailSenderService mailSenderService){
         this.personRepository = personRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.mailSenderService = mailSenderService;
+        this.encoder = new BCryptPasswordEncoder();
         this.notValidatedPersonRepository = notValidatedPersonRepository;
+        executorService.scheduleAtFixedRate(deleteNotValidatedPerson, 0, 5, TimeUnit.MINUTES);
     }
 
     public boolean savePerson(Person person){
         try{
             String nonEncodedPass = person.getEncryptedPassword();
-            String encodedPass = passwordEncoder.encode(nonEncodedPass);
+            String encodedPass = encoder.encode(nonEncodedPass);
             person.setEncryptedPassword(encodedPass);
             personRepository.save(person);
             return true;
@@ -35,7 +53,7 @@ public class PersonService {
     }
     public boolean savePerson(String firstName, String lastName, String email, String non_encoded_pass, String DOB, String photoLink){
         try{
-            String encodedPass = passwordEncoder.encode(non_encoded_pass);
+            String encodedPass = encoder.encode(non_encoded_pass);
             Person person = new Person(firstName, lastName, email, encodedPass, DOB, photoLink);
             personRepository.save(person);
             return true;
@@ -49,7 +67,7 @@ public class PersonService {
         try{
             Person person = personRepository.findByEmail(email);
             if(person != null){
-                return passwordEncoder.matches(password, person.getEncryptedPassword());
+                return encoder.matches(password, person.getEncryptedPassword());
             }
             return false;
         }catch (Exception e){
@@ -73,25 +91,27 @@ public class PersonService {
 
     public int signUp(String email) {
         try {
-
             if (personRepository.existsByEmail(email)) return 1;
-            NotValidatedPerson notValidatedPerson = new NotValidatedPerson(email);
+            Random random = new Random();
+            int OTP = random.nextInt(100000, 999999);
+            NotValidatedPerson notValidatedPerson = new NotValidatedPerson(email, encoder.encode(String.valueOf(OTP)));
             if (notValidatedPersonRepository.findByEmail(email) != null) {
                 notValidatedPersonRepository.deleteById(email);
             }
             notValidatedPersonRepository.save(notValidatedPerson);
-            return notValidatedPerson.getOTP();
+            mailSenderService.sendNewMail(email, String.valueOf(OTP));
+            return 0;
         } catch (Exception e){
             System.out.println(e.toString());
             return 2;
         }
     }
 
-    public int validatePerson(SignUpDTO signUpDTO, int OTP) {
+    public int validatePerson(SignUpDTO signUpDTO, String OTP) {
         try {
             NotValidatedPerson notValidatedPerson = notValidatedPersonRepository.findByEmail(signUpDTO.getEmail());
             if (notValidatedPerson != null) {
-                if (notValidatedPerson.getOTP() != OTP) return 1;
+                if (!encoder.matches(OTP, notValidatedPerson.getOTP())) return 1;
                 notValidatedPersonRepository.deleteById(signUpDTO.getEmail());
                 savePerson(new Person(signUpDTO));
                 return 0;
