@@ -41,7 +41,7 @@ public class Person {
         this.firstName = signUpDTO.getFirstName();
         this.lastName = signUpDTO.getLastName();
         this.email = signUpDTO.getEmail();
-        this.EncryptedPassword = signUpDTO.getHashedPassword();
+        this.EncryptedPassword = signUpDTO.getPassword();
         this.DOB = signUpDTO.getDOB();
     }
 }

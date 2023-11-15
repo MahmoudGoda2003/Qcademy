@@ -46,7 +46,8 @@ public class PersonController {
     }
 
     @PostMapping("/signup/validate")
-    public ResponseEntity<Integer> validatePerson(@RequestBody SignUpDTO signUpDTO, @RequestBody int code) {
-        return new ResponseEntity<>(personService.validatePerson(signUpDTO, code), HttpStatus.CREATED);
+    public ResponseEntity<Integer> validatePerson(@RequestBody SignUpDTO signUpD) {
+
+        return new ResponseEntity<>(personService.validatePerson(signUpD, Integer.parseInt(signUpD.getCode())), HttpStatus.CREATED);
     }
 }

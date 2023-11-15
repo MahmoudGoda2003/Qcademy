@@ -28,6 +28,4 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * @return Boolean [true, False]
      */
     Boolean existsByEmail(String email);
-
-    Long saveAndGetId(Person person);
 }

@@ -11,11 +11,11 @@ import java.util.Random;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "Persons_Data")
+@Table(name = "PersonOTP")
 public class NotValidatedPerson {
     @Id
     private String email;
-    @Column(name = "OTB", nullable = false)
+    @Column(name = "OTP", nullable = false)
     private int OTP;
 
     public NotValidatedPerson(String email) {

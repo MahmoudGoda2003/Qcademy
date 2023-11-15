@@ -73,8 +73,8 @@ public class PersonService {
 
     public int signUp(String email) {
         try {
-            Person person = personRepository.findByEmail(email);
-            if (person != null) return 1;
+
+            if (personRepository.existsByEmail(email)) return 1;
             NotValidatedPerson notValidatedPerson = new NotValidatedPerson(email);
             if (notValidatedPersonRepository.findByEmail(email) != null) {
                 notValidatedPersonRepository.deleteById(email);
