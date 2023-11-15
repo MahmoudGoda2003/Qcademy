@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Header from "./components/Header";
+import Home from "./components/Home";
 
 const lightMode = createTheme({
   palette: {
@@ -44,7 +45,7 @@ export default function App() {
     <ThemeProvider theme={theme} >
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<Header userInfo={{img:"as"}} searchOptions={['1', '2', '3', '4']} />} />
+        <Route path="/" element={<Home/>} />
       </Routes>
       </ThemeProvider>
     </>

@@ -35,7 +35,7 @@ export default function Header({ userInfo, searchOptions }) {
   
   return (
     <AppBar position="relative">
-      <Container maxWidth="xl">
+      <Container maxWidth="x1" sx={{margin:'auto 1vh'}}>
         <Toolbar disableGutters>
           <Link to="/Home">
             <img src={require("./LogoFullLight.png")}
@@ -43,7 +43,6 @@ export default function Header({ userInfo, searchOptions }) {
               alt="Logo"
             ></img>
           </Link>
-
           <Autocomplete
             freeSolo
             size='small'
@@ -57,7 +56,7 @@ export default function Header({ userInfo, searchOptions }) {
             )}
           />
 
-          <Box sx={{ flexGrow: 0, position: "fixed", right: "2%" }}>
+          <Box sx={{ flexGrow: 0, position: "relative", right: "1%" }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="userPhoto" src={userInfo.img} />
