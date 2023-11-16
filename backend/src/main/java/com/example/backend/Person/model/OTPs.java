@@ -4,17 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Time;
-import java.time.Instant;
-import java.util.Date;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @Table(name = "PersonOTP")
-public class NotValidatedPerson {
+public class OTPs {
     @Id
     private String email;
     @Column(name = "OTP", nullable = false)
@@ -24,7 +20,7 @@ public class NotValidatedPerson {
     private long timeCreated;
 
 
-    public NotValidatedPerson(String email, String OTP) {
+    public OTPs(String email, String OTP) {
         this.email = email;
         this.OTP = OTP;
         this.timeCreated = System.currentTimeMillis();
