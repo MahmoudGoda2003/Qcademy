@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, CardMedia, Chip, Rating } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
-const DEFAULT_IMAGE = "https://i.imgur.com/XyzF1ww.jpg"
+const DEFAULT_IMAGE = ""
 const RATING_PRECISION = 0.5
 const DEFAULT_RATING = 0
 
