@@ -104,11 +104,11 @@ public class PersonService {
         }
     }
 
-    public String validatePerson(SignUpDTO signUpDTO, String OTP) {
+    public String validatePerson(SignUpDTO signUpDTO) {
         try {
             NotValidatedPerson notValidatedPerson = notValidatedPersonRepository.findByEmail(signUpDTO.getEmail());
             if (notValidatedPerson != null) {
-                if (!encoder.matches(OTP, notValidatedPerson.getOTP()))
+                if (!encoder.matches(signUpDTO.getCode(), notValidatedPerson.getOTP()))
                     return "1";
                 notValidatedPersonRepository.deleteById(signUpDTO.getEmail());
                 savePerson(new Person(signUpDTO));

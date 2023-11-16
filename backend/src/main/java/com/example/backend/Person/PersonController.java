@@ -23,18 +23,18 @@ public class PersonController {
     public ResponseEntity<String> signUp(@RequestBody String email) throws Exception {
         String status = personService.signUp(email);
         return switch (status) {
-            case "0" -> new ResponseEntity<>(HttpStatus.OK);
+            case "0" -> new ResponseEntity<>("Email accepted", HttpStatus.OK);
             case "1" -> throw new WrongDataEnteredException("Email is already in use");
             default -> throw new Exception(status);
         };
     }
 
     @PostMapping("/signup/validate")
-    public ResponseEntity<String> validatePerson(@RequestBody SignUpDTO signUpD) throws Exception {
-        String status = personService.validatePerson(signUpD, signUpD.getCode());
+    public ResponseEntity<String> validatePerson(@RequestBody SignUpDTO signUpDTO) throws Exception {
+        String status = personService.validatePerson(signUpDTO);
         return switch (status) {
-            case "0" -> new ResponseEntity<>(HttpStatus.CREATED);
-            case "1" -> throw new DataNotFoundException("Wrong code, try again");
+            case "0" -> new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
+            case "1" -> throw new WrongDataEnteredException("Wrong code, try again");
             case "2" -> throw new DataNotFoundException("Try to sign up again");
             default -> throw new Exception(status);
         };

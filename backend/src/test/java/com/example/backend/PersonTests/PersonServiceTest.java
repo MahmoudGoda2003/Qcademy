@@ -1,4 +1,4 @@
-package com.example.backend.Services;
+package com.example.backend.PersonTests;
 
 import com.example.backend.Person.model.Person;
 import com.example.backend.Person.service.PersonService;

@@ -1,4 +1,4 @@
-package com.example.backend.repository;
+package com.example.backend.PersonTests;
 import com.example.backend.Person.model.Person;
 import com.example.backend.Person.repository.PersonRepository;
 import org.junit.jupiter.api.*;
