@@ -14,12 +14,13 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import SearchIcon from '@mui/icons-material/Search';
 import Stack from '@mui/material/Stack';
-
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 
-export default function Header({ userInfo, searchOptions }) {
+export default function Header({ userInfo, searchOptions, onThemeChange, theme }) {
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -35,11 +36,10 @@ export default function Header({ userInfo, searchOptions }) {
   
   return (
     <AppBar position="relative">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
           <Link to="/Home">
             <img src={require("./LogoFullLight.png")}
-              style={{ display: 'block', maxHeight: '10vh', maxWidth: '20vh', marginRight: '5vh' }}
+              style={{  maxHeight: '10vh', maxWidth: '20vh' }}
               alt="Logo"
             ></img>
           </Link>
@@ -47,7 +47,7 @@ export default function Header({ userInfo, searchOptions }) {
           <Autocomplete
             freeSolo
             size='small'
-            sx={{ width: '20%', marginRight: '10vh', marginLeft: 'auto' }}
+            sx={{ width: '20%', marginRight: '2vh', marginLeft: 'auto' }}
             options={searchOptions}
             renderInput={(params) => (
               <Stack direction="row" alignItems={"center"} spacing={1}>
@@ -57,7 +57,11 @@ export default function Header({ userInfo, searchOptions }) {
             )}
           />
 
-          <Box sx={{ flexGrow: 0, position: "fixed", right: "2%" }}>
+          <IconButton onClick={onThemeChange} sx={{ margin: '0 1vw' }} color="inherit">
+            {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+          </IconButton>
+
+          <Box justifyContent={'flex-end'}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="userPhoto" src={userInfo.img} />
@@ -86,8 +90,7 @@ export default function Header({ userInfo, searchOptions }) {
               ))}
             </Menu>
           </Box>
-        </Toolbar>
-      </Container>
+      </Stack>
     </AppBar>
   )
 }
