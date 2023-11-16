@@ -3,18 +3,17 @@ import { useState } from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import Header from "./components/Header";
 import Home from "./components/Home";
+
+import Header from "./components/Header";
 
 const lightMode = createTheme({
   palette: {
     primary: {
-      main: '#3d5afe',
+      main: '#3f51b5',
     },
     secondary: {
-      main: '#2979ff',
+      main: '#3d5afe',
     },
   },
 });
@@ -23,10 +22,10 @@ const darkMode = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#3d5afe',
+      main: '#3f51b5',
     },
     secondary: {
-      main: '#2979ff',
+      main: '#3d5afe',
     },
   },
 });
@@ -39,24 +38,12 @@ export default function App() {
 
   return (
     <>
-    <IconButton onClick={toggleColorMode} color="inherit">
-        {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
-    </IconButton>
-    <ThemeProvider theme={theme} >
-      <CssBaseline />
-      <Routes>
-        <Route path="/" element={<Home/>} />
-      </Routes>
+      <ThemeProvider theme={theme} >
+          <CssBaseline />
+          <Routes>
+            <Route path="/" element={<Home onThemeChange={toggleColorMode} theme={theme}/>} />
+          </Routes>
       </ThemeProvider>
     </>
   );
 }
-
-const Navigation = () => (
-  <nav>
-    <Link to="/"> Landing </Link>
-    <Link to="/home"> Home </Link>
-    <Link to="/login"> Login </Link>
-    <Link to="/signup"> Signup </Link>
-  </nav>
-);

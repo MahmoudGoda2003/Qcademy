@@ -5,12 +5,12 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea, CardMedia, Chip, Rating } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 
-const DEFAULT_IMAGE = ""
+const DEFAULT_IMAGE = "https://i.imgur.com/XyzF1ww.jpg"
 const RATING_PRECISION = 0.5
 const DEFAULT_RATING = 0
 
 
-export default function BasicCard({name, description, image, tags, rating, courseid, teacherName}) {
+export default function CourseCard({name, description, image, tags, rating, courseid, teacherName}) {
     const navigate = useNavigate();
 
     const navTo = (courseid) => {
@@ -26,6 +26,7 @@ export default function BasicCard({name, description, image, tags, rating, cours
                     component="img"
                     image={(image===undefined)? DEFAULT_IMAGE: image}
                     alt="personal image"
+                    sx={{maxWidth:'45vh', maxHeight:'35vh'}}
                 />
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
