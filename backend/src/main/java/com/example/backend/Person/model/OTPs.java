@@ -2,7 +2,9 @@ package com.example.backend.Person.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -15,14 +17,13 @@ public class OTPs {
     private String email;
     @Column(name = "OTP", nullable = false)
     private String OTP;
-    @Column(name = "TimeCreated", nullable = false, updatable = false)
-    @CreationTimestamp
-    private long timeCreated;
+    @Column(name = "TimeCreated", nullable = false)
+    @UpdateTimestamp
+    private Instant timeCreated;
 
 
     public OTPs(String email, String OTP) {
         this.email = email;
         this.OTP = OTP;
-        this.timeCreated = System.currentTimeMillis();
     }
 }
