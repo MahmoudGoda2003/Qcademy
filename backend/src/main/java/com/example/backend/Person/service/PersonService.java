@@ -46,7 +46,7 @@ public class PersonService {
         personRepository.save(person);
     }
 
-   public ResponseEntity<PersonInfoDTO> validatePasswordByEmail(String email, String password){
+   public ResponseEntity<PersonInfoDTO> login(String email, String password){
         Person person = personRepository.findByEmail(email);
         if(person == null|| !encoder.matches(password, person.getEncryptedPassword()))
             throw new LoginDataNotValidException("password or email isn't valid");

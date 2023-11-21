@@ -52,24 +52,24 @@ class PersonServiceTest {
     }
 
     @Test
-    void validatePasswordByEmail() {
+    void login_1() {
         Person person = new Person("ali","amr","aliamr@gmail.com","12345679","2020-11-12","photo0.jpg");
         ps.savePerson(person);
-        assertNotNull(ps.validatePasswordByEmail("aliamr@gmail.com","12345679"));
+        assertNotNull(ps.login("aliamr@gmail.com","12345679"));
     }
     @Test
-    void validatePasswordByEmail_1() {
+    void login_2() {
         // password not true
         Person person = new Person("ali","amr","aliamr@gmail.com","12345679","2020-11-12","photo0.jpg");
         ps.savePerson(person);
-        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.validatePasswordByEmail("aliamr@gmail.com","aaaaaaaa"));
+        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.login("aliamr@gmail.com","aaaaaaaa"));
     }
     @Test
-    void validatePasswordByEmail_2() {
+    void login_3() {
         // email not true, not found
         Person person = new Person("ali","amr","aliamr@gmail.com","12345679","2020-11-12","photo0.jpg");
         ps.savePerson(person);
-        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.validatePasswordByEmail("M@gmail.com","12345679"));
+        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.login("M@gmail.com","12345679"));
     }
 
     @Test
