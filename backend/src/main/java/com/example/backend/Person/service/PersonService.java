@@ -46,10 +46,15 @@ public class PersonService {
         personRepository.save(person);
     }
 
+    private boolean notValidatedPassword(String email, String password) {
+        String savedPassword = personRepository.findByPasswordEmail(email);
+        return savedPassword == null|| !encoder.matches(password, savedPassword);
+    }
+
    public ResponseEntity<PersonInfoDTO> login(String email, String password){
-        Person person = personRepository.findByEmail(email);
-        if(person == null|| !encoder.matches(password, person.getEncryptedPassword()))
+        if(notValidatedPassword(email, password))
             throw new LoginDataNotValidException("password or email isn't valid");
+        Person person = personRepository.findByEmail(email);
         return new ResponseEntity<>(PersonInfoDTO.convert(person), HttpStatus.ACCEPTED);
     }
 
