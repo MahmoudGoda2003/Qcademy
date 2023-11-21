@@ -2,6 +2,8 @@ package com.example.backend.Person.repository;
 
 import com.example.backend.Person.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,5 +36,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * parameters: email
      * @return password
      */
-    Person findEncryptedPasswordByEmail(String email);
+    @Query("SELECT person.EncryptedPassword FROM Person person WHERE person.email = :e")
+    String findEncryptedPasswordByEmail(@Param("e") String email);
 }

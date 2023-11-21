@@ -9,5 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OTPRepository extends JpaRepository<OTP, String> {
 
-    OTP findOTPByEmail(String email);
+    @Query("SELECT otp.OTP FROM OTP otp WHERE otp.email = :e_mail")
+    String findOTPByEmail(@Param("e_mail") String email);
 }
