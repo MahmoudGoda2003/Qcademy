@@ -36,6 +36,5 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * parameters: email
      * @return password
      */
-    @Query("SELECT person.EncryptedPassword FROM Person person WHERE person.email = :e")
-    String findByPasswordEmail(@Param("e") String email);
+    String findPasswordByEmail(String email);
 }

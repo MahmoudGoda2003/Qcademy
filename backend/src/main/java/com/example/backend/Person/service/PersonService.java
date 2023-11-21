@@ -47,7 +47,7 @@ public class PersonService {
     }
 
     private boolean notValidatedPassword(String email, String password) {
-        String savedPassword = personRepository.findByPasswordEmail(email);
+        String savedPassword = personRepository.findPasswordByEmail(email);
         return savedPassword == null|| !encoder.matches(password, savedPassword);
     }
 
