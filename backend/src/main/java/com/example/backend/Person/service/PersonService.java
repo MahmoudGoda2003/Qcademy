@@ -47,7 +47,7 @@ public class PersonService {
     }
 
     private boolean notValidatedPassword(String email, String password) {
-        String savedPassword = personRepository.findPasswordByEmail(email);
+        String savedPassword = personRepository.findEncryptedPasswordByEmail(email).getEncryptedPassword();
         return savedPassword == null|| !encoder.matches(password, savedPassword);
     }
 
@@ -73,7 +73,7 @@ public class PersonService {
     }
 
     public ResponseEntity<String> validateOTP(SignUpDTO signUpDTO) {
-        String OTP = OTPRepository.findOTPByEmail(signUpDTO.getEmail());
+        String OTP = OTPRepository.findOTPByEmail(signUpDTO.getEmail()).getOTP();
         if (OTP == null) throw new DataNotFoundException("Try to sign up again");
         if (!encoder.matches(signUpDTO.getCode(), OTP))
             throw new WrongDataEnteredException("Wrong code, try again");
