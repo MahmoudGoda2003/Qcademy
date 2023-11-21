@@ -9,7 +9,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @ToString
-@Table(name = "Persons_Data")
+@Table(name = "Persons_Data", indexes = {@Index(name = "index_email", columnList = "email", unique = true)})
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

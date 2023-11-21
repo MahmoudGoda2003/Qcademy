@@ -15,11 +15,11 @@ public class SignUpDTO {
 
     private String code;
 
-    public SignUpDTO(String firstName, String lastName, String email, String hashedPassword, String DOB) {
+    public SignUpDTO(String firstName, String lastName, String email, String password, String DOB) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.password = hashedPassword;
+        this.password = password;
         this.DOB = DOB;
     }
 }

@@ -2,8 +2,6 @@ package com.example.backend.PersonTests;
 
 import com.example.backend.AbstractTest;
 import com.example.backend.Person.DTO.SignUpDTO;
-import com.example.backend.Person.model.OTPs;
-import com.example.backend.Person.repository.PersonRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;

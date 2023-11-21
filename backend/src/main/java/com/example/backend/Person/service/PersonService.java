@@ -1,12 +1,14 @@
 package com.example.backend.Person.service;
 
+import com.example.backend.Person.DTO.PersonInfoDTO;
 import com.example.backend.Person.DTO.SignUpDTO;
-import com.example.backend.Person.model.OTPs;
+import com.example.backend.Person.model.OTP;
 import com.example.backend.Person.model.Person;
 import com.example.backend.Person.repository.OTPRepository;
 import com.example.backend.Person.repository.PersonRepository;
 import com.example.backend.Services.MailSenderService;
 import com.example.backend.exceptions.exceptions.DataNotFoundException;
+import com.example.backend.exceptions.exceptions.LoginDataNotValidException;
 import com.example.backend.exceptions.exceptions.WrongDataEnteredException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,13 +28,16 @@ public class PersonService {
     private final OTPRepository OTPRepository;
     @Autowired
     private final MailSenderService mailSenderService;
+
     private final Random random = new Random();
 
-    public PersonService(PersonRepository personRepository, OTPRepository OTPRepository, MailSenderService mailSenderService){
+    public PersonService(PersonRepository personRepository, OTPRepository OTPRepository,
+                         MailSenderService mailSenderService){
         this.personRepository = personRepository;
         this.mailSenderService = mailSenderService;
         this.OTPRepository = OTPRepository;
     }
+
 
     public void savePerson(Person person){
         String nonEncodedPass = person.getEncryptedPassword();
@@ -41,33 +46,31 @@ public class PersonService {
         personRepository.save(person);
     }
 
-   public boolean validatePasswordByEmail(String email, String password){
-        try{
-            Person person = personRepository.findByEmail(email);
-            if(person != null){
-                return encoder.matches(password, person.getEncryptedPassword());
-            }
-            return false;
-        }catch (Exception e){
-            System.out.println(e.toString());
-            return false;
-        }
+   public ResponseEntity<PersonInfoDTO> validatePasswordByEmail(String email, String password){
+        Person person = personRepository.findByEmail(email);
+        if(person == null|| !encoder.matches(password, person.getEncryptedPassword()))
+            throw new LoginDataNotValidException("password or email isn't valid");
+        return new ResponseEntity<>(PersonInfoDTO.convert(person), HttpStatus.ACCEPTED);
     }
 
     public ResponseEntity<String> sendOTP(String email) {
-        if (personRepository.existsByEmail(email)) throw new WrongDataEnteredException("Email is already in use");
         String OTP = String.valueOf(random.nextInt(100000, 999999));
-        OTPs OTPs = new OTPs(email, encoder.encode(OTP));
-        OTPRepository.save(OTPs);
-        mailSenderService.sendNewMail(email, OTP);
-        System.out.println(OTP);
+        return sendOTP(email, OTP);
+    }
+
+    public ResponseEntity<String> sendOTP(String email, String otp) {
+        if (personRepository.existsByEmail(email))
+            throw new WrongDataEnteredException("Email is already in use");
+        OTP OTP = new OTP(email, encoder.encode(otp));
+        OTPRepository.save(OTP);
+        mailSenderService.sendNewMail(email, otp);
         return new ResponseEntity<>("Email accepted", HttpStatus.OK);
     }
 
-    public ResponseEntity<String> validatePerson(SignUpDTO signUpDTO) {
-        OTPs OTPs = OTPRepository.findByEmail(signUpDTO.getEmail());
-        if (OTPs == null) throw new DataNotFoundException("Try to sign up again");
-        if (!encoder.matches(signUpDTO.getCode(), OTPs.getOTP()))
+    public ResponseEntity<String> validateOTP(SignUpDTO signUpDTO) {
+        String OTP = OTPRepository.findOTPByEmail(signUpDTO.getEmail());
+        if (OTP == null) throw new DataNotFoundException("Try to sign up again");
+        if (!encoder.matches(signUpDTO.getCode(), OTP))
             throw new WrongDataEnteredException("Wrong code, try again");
         OTPRepository.deleteById(signUpDTO.getEmail());
         savePerson(new Person(signUpDTO));

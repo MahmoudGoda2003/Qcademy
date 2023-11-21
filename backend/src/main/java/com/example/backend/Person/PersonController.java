@@ -12,6 +12,8 @@ public class PersonController {
 
     private final PersonService personService;
 
+
+
     public PersonController(PersonService personService) {
         this.personService = personService;
     }
@@ -22,7 +24,7 @@ public class PersonController {
     }
 
     @PostMapping("/signup/validate")
-    public ResponseEntity<String> validatePerson(@RequestBody SignUpDTO signUpDTO) throws Exception {
-        return personService.validatePerson(signUpDTO);
+    public ResponseEntity<String> validateOTP(@RequestBody SignUpDTO signUpDTO) throws Exception {
+        return personService.validateOTP(signUpDTO);
     }
 }
