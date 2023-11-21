@@ -19,7 +19,7 @@ public class Person {
     private String firstName;
     @Column(name = "last_name", nullable = false)
     private String lastName;
-    @Column(name = "e_mail", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Column(name = "encrypted_password", nullable = false)
     private String EncryptedPassword;
