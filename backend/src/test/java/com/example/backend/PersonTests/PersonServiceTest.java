@@ -1,6 +1,7 @@
 package com.example.backend.PersonTests;
 
 import com.example.backend.Person.model.Person;
+import com.example.backend.Person.repository.PersonRepository;
 import com.example.backend.Person.service.PersonService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,23 +12,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 class PersonServiceTest {
     @Autowired
     PersonService ps;
+    @Autowired
+    PersonRepository pr;
 
-    @Test
-    void test_save(){
-        Boolean person = ps.savePerson("Mahmoud","amr","Mahmoudamr@gmail.com","12345679","2018-11-2","photo7.jpg");
-        Assertions.assertTrue(person);
-    }
     @Test
     void test_save_person() {
         Person person = new Person("ali","amr","aliamr@gmail.com","12345679","2020-11-12","photo0.jpg");
-        Assertions.assertTrue(ps.savePerson(person));
+        ps.savePerson(person);
+        Assertions.assertNotNull(pr.findByEmail("aliamr@gmail.com"));
     }
 
     @Test
     void test_save_person_2() {
-        // test to save an email is in the database
-        Boolean person = ps.savePerson("Mahmoud","amr","Mahmoudamr@gmail.com","12345679","2018-11-2","photo7.jpg");
-        Assertions.assertFalse(person);
+        Person person = new  Person("Mahmoud","amr","Mahmoudamr@gmail.com","12345679","2018-11-2","photo7.jpg");
+        ps.savePerson(person);
+        Assertions.assertNotNull(pr.findByEmail("Mahmoudamr@gmail.com"));
+        Assertions.assertNull(pr.findByEmail("aliamr@gmail.com"));
     }
 
     @Test

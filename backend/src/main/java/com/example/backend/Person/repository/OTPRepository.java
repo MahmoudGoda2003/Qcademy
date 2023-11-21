@@ -8,6 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface OTPRepository extends JpaRepository<OTPs, String> {
 
     OTPs findByEmail(String email);
-
-    Boolean deleteByTimeCreatedLessThan(long time);
 }

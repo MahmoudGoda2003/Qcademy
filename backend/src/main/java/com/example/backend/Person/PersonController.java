@@ -16,7 +16,7 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PostMapping("/signup/page")
+    @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody String email) throws Exception {
         return personService.sendOTP(email);
     }

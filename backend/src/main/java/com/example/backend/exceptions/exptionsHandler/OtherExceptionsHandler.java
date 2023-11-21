@@ -18,11 +18,11 @@ public class OtherExceptionsHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     Map<String, String> onOtherExceptions(Exception e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message", e.getMessage());
+        error.put("error message", "internal server error");
         return error;
     }
 }
