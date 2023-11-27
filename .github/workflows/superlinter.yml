@@ -34,10 +34,8 @@ jobs:
 
       - name: Print email username and password
         run: |
-          echo "Email Username:" %QCADEMY_MAIL_USERNAME%
-          echo "Email Password:" %QCADEMY_MAIL_PASSWORD%
-          echo "Email Username:" %secrets.QcademyMailPassword%
-          echo "Email Password:" %secrets.QcademyMailUsername%
+          echo "Email Username: $QCADEMY_MAIL_USERNAME"
+          echo "Email Password: $QCADEMY_MAIL_PASSWORD"
 
 
       - name: Build with Maven
