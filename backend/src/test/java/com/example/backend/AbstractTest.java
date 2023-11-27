@@ -15,7 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = BackendApplication.class)
 @WebAppConfiguration
-public class AbstractTest {
+public abstract class AbstractTest {
 
     public MockMvc mvc;
 

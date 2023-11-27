@@ -17,7 +17,7 @@ public class OTP {
     private String email;
     @Column(name = "OTP", nullable = false)
     private String OTP;
-    @Column(name = "Time_Created", nullable = false)
+    @Column(name = "Time_Created")
     @UpdateTimestamp
     private Instant timeCreated;
 

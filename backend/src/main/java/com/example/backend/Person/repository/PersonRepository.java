@@ -22,7 +22,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * parameters: firstName and lastName
      * @return list of persons
      */
-    List<Person> findAllByFirstNameAndLastName(String firstName, String LastName);
+    List<Person> findAllByFirstNameAndLastName(String firstName, String lastName);
 
     /**
      * find if this email exist or not
@@ -36,6 +36,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * parameters: email
      * @return password
      */
-    @Query("SELECT person.EncryptedPassword FROM Person person WHERE person.email = :e")
+    @Query("SELECT person.encryptedPassword FROM Person person WHERE person.email = :e")
     String findEncryptedPasswordByEmail(@Param("e") String email);
 }

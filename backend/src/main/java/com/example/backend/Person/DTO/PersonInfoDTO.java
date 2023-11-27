@@ -3,7 +3,6 @@ package com.example.backend.Person.DTO;
 import com.example.backend.Person.model.Person;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Getter
 @Setter
@@ -17,10 +16,9 @@ public class PersonInfoDTO {
     private String lastName;
     private String email;
     private String photoLink;
-    private String DOB;
+    private String dateOfBirth;
 
 
-    @Autowired
     private static final ModelMapper modelMapper = new ModelMapper();
 
     public static PersonInfoDTO convert(Person person){

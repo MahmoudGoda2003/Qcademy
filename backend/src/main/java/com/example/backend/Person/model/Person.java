@@ -22,18 +22,18 @@ public class Person {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Column(name = "encrypted_password", nullable = false)
-    private String EncryptedPassword;
+    private String encryptedPassword;
     @Column(name = "date_of_birth", nullable = false)
-    private String DOB;
+    private String dateOfBirth;
     @Column(name = "photo_link")
     private String photoLink;
 
-    public Person(String firstName, String lastName, String email, String encryptedPassword, String DOB, String photoLink) {
+    public Person(String firstName, String lastName, String email, String encryptedPassword, String dateOfBirth, String photoLink) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.EncryptedPassword = encryptedPassword;
-        this.DOB = DOB;
+        this.encryptedPassword = encryptedPassword;
+        this.dateOfBirth = dateOfBirth;
         this.photoLink = photoLink;
     }
 
@@ -41,7 +41,7 @@ public class Person {
         this.firstName = signUpDTO.getFirstName();
         this.lastName = signUpDTO.getLastName();
         this.email = signUpDTO.getEmail();
-        this.EncryptedPassword = signUpDTO.getPassword();
-        this.DOB = signUpDTO.getDOB();
+        this.encryptedPassword = signUpDTO.getPassword();
+        this.dateOfBirth = signUpDTO.getDateOfBirth();
     }
 }

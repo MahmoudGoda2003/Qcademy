@@ -85,7 +85,7 @@ class PersonRepositoryTest {
         Person p = pr.findByEmail("Mohammedahmed@gmail.com");
         Long id = p.getId();
         p.setEmail("MoSalah@gmail.com");
-        p.setDOB("2005-9-14");
+        p.setDateOfBirth("2005-9-14");
         pr.save(p);
         Assertions.assertEquals("MoSalah@gmail.com", pr.findById(id).get().getEmail());
         Assertions.assertEquals(6,pr.count());

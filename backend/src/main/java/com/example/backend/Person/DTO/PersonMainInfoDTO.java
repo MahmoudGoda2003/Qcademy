@@ -3,7 +3,7 @@ package com.example.backend.Person.DTO;
 import com.example.backend.Person.model.Person;
 import lombok.*;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+
 
 @Getter
 @Setter
@@ -16,7 +16,6 @@ public class PersonMainInfoDTO {
     private String firstName;
     private String lastName;
 
-    @Autowired
     private static final ModelMapper modelMapper = new ModelMapper();
 
 
