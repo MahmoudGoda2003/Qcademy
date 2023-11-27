@@ -32,10 +32,16 @@ jobs:
           echo "QCADEMY_MAIL_USERNAME=${QCADEMY_MAIL_USERNAME}" >> $GITHUB_ENV
           echo "QCADEMY_MAIL_PASSWORD=${QCADEMY_MAIL_PASSWORD}" >> $GITHUB_ENV
 
-      - name: Print email username and password
-        run: |
+     - name: Debugging Step
+       run: |
           echo "Email Username: $QCADEMY_MAIL_USERNAME"
           echo "Email Password: $QCADEMY_MAIL_PASSWORD"
+          exit 1  # This step intentionally fails to stop the workflow
+
+     - name: Continue Workflow
+       if: always()
+       run: echo "The workflow continues..."
+
 
 
       - name: Build with Maven
