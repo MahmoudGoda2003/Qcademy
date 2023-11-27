@@ -4,8 +4,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import Home from "./components/Home";
-
+import InfoField from "./components/InfoField";
 import Header from "./components/Header";
+import Profile from "./components/Profile";
 
 const lightMode = createTheme({
   palette: {
@@ -36,12 +37,17 @@ export default function App() {
   const [theme, setTheme] = useState(lightMode);
   const toggleColorMode = () => setTheme(((theme === lightMode)? darkMode : lightMode));
 
+  const [name, setName] = useState('CIARa');
+  const [ymca, setYmca] = useState('it is fun to stay at');
+
   return (
     <>
       <ThemeProvider theme={theme} >
           <CssBaseline />
+          <Header onThemeChange={toggleColorMode} theme={theme} userInfo={{img:"as"}} searchOptions={['1', '2', '3', '4']} />
           <Routes>
-            <Route path="/" element={<Home onThemeChange={toggleColorMode} theme={theme}/>} />
+            <Route path="/" element={<Home/>} />
+            <Route path="/home" element={<Profile></Profile>} />
           </Routes>
       </ThemeProvider>
     </>

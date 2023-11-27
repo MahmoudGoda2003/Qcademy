@@ -13,7 +13,6 @@ export default function Home(props) {
     const TextStyle2 = { color:'gray'};
     return (
         <>
-            <Header onThemeChange={props.onThemeChange} theme={props.theme} userInfo={{img:"as"}} searchOptions={['1', '2', '3', '4']} />
             {(enrolledCourses.length === 0)?
                 <>
                     <Typography variant='h3'  marginTop='5vh' marginLeft='10vh' sx={TextStyle}>Pick Up Where You Left Off</Typography>
