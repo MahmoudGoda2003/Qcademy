@@ -74,6 +74,7 @@ export default function Home(props) {
 
 
 
+
     const TextStyle = {fontFamily: 'Segoe Ui', fontWeight: 'lighter'};
     const TextStyle2 = { color:'gray'};
     return (

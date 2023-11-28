@@ -47,6 +47,7 @@ export default function App() {
           <Routes>
             <Route path="/home" element={<Home/>} />
             <Route path="/profile" element={<Profile></Profile>} />
+          <Routes>
           </Routes>
       </ThemeProvider>
     </>

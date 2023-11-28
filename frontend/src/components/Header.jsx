@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
 
+
 export default function Header({ userInfo, searchOptions, onThemeChange, theme }) {
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
