@@ -38,6 +38,13 @@ public class PersonService {
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
     private final Random random = new Random();
 
+    public PersonService(PersonRepository personRepository, OTPRepository OTPRepository,
+                         MailSenderService mailSenderService){
+        this.personRepository = personRepository;
+        this.mailSenderService = mailSenderService;
+        this.OTPRepository = OTPRepository;
+    }
+
     public void savePerson(Person person){
         String nonEncodedPass = person.getPassword();
         String encodedPass = encoder.encode(nonEncodedPass);
