@@ -34,6 +34,7 @@ public class PersonService {
     private OTPRepository OTPRepository;
     @Autowired
     private final MailSenderService mailSenderService;
+    @Autowired
     private final Authenticator authenticator = new Authenticator();
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
     private final Random random = new Random();

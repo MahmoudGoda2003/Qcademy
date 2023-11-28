@@ -3,6 +3,8 @@ package com.example.backend.Person.service;
 import com.example.backend.Person.model.Person;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Component;
 
 import javax.naming.AuthenticationException;
@@ -11,8 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class Authenticator {
-    private final String secret_key = "ufpdajqlsbcituopjhsaxdzvnjkl";
-    private long accessTokenValidity = 24*60*60*1000;
+    private final Environment env = new StandardEnvironment();
+    private final String secret_key = env.getProperty("QcademyAuthKey");
+    private final long accessTokenValidity = 24*60*60*1000;
 
     private final JwtParser jwtParser;
 
@@ -24,7 +27,6 @@ public class Authenticator {
 
     public String createToken(Person person, boolean isTeacher, boolean isAdmin) {
         Claims claims = Jwts.claims().setSubject(person.getId()==null ? person.getEmail(): person.getId().toString());
-        claims.put("email", person.getEmail());
         claims.put("isTeacher", isTeacher);
         claims.put("isAdmin", isAdmin);
         Date tokenCreateTime = new Date();
