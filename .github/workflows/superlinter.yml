@@ -46,11 +46,11 @@ jobs:
 
       - name: Check Code Coverage
         run: |
-          # Get the code coverage percentage from the Jacoco report
-          CODE_COVERAGE=$(grep -Po '<line.*?>(\d+)<\/line>' ./backend/target/site/jacoco/jacoco.xml | awk '{ covered += $1; total += 1 } END { if (total > 0) print int(covered / total); else print 0 }')
 
-          # Fail the workflow if code coverage is less than 60%
+          CODE_COVERAGE=$(grep -Eo '<counter type="LINE" missed="([0-9]+)" covered="([0-9]+)"' ./backend/target/site/jacoco/jacoco.xml | awk -F'"' '{ missed += $4; covered += $6 } END { total = missed + covered; if (total > 0) print int((covered / total) * 100); else print 0 }')
+
           if [ "$CODE_COVERAGE" -lt 60 ]; then
             echo "Code coverage is below 60% ($CODE_COVERAGE%). Failing the workflow."
             exit 1
           fi
+
