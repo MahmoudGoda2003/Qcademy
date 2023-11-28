@@ -9,6 +9,7 @@ import com.example.backend.Person.service.PersonService;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.backend.exceptions.exceptions.LoginDataNotValidException;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -82,5 +83,18 @@ class PersonServiceTest {
         assertNotNull(personInfoDTO);
         PersonMainInfoDTO personMainInfoDTO = PersonMainInfoDTO.convert(person);
         assertEquals(personMainInfoDTO.getFirstName(), person.getFirstName());
+    }
+
+    @Test
+    void test_cookie() {
+        Cookie cookie = ps.createSessionCookie("try");
+        assertEquals("try", cookie.getValue());
+    }
+
+    @Test
+    void test_delete_cookie() {
+        Cookie cookie = ps.deleteCookie();
+        assertEquals("qcademy", cookie.getName());
+        assertEquals(0, cookie.getMaxAge());
     }
 }

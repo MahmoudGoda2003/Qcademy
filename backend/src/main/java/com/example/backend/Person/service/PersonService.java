@@ -94,7 +94,7 @@ public class PersonService {
         return new Person(object);
     }
 
-    private Cookie createSessionCookie(String token) {
+    public Cookie createSessionCookie(String token) {
         Cookie cookie = new Cookie("qcademy", token);
         cookie.setMaxAge(24*60*60);
         cookie.setHttpOnly(true);
@@ -102,7 +102,7 @@ public class PersonService {
         return cookie;
     }
 
-    private Cookie deleteCookie() {
+    public Cookie deleteCookie() {
         Cookie cookie = new Cookie("qcademy", null);
         cookie.setMaxAge(0);
         return cookie;
