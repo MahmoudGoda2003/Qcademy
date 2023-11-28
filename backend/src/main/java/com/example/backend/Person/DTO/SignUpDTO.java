@@ -1,10 +1,12 @@
 package com.example.backend.Person.DTO;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class SignUpDTO {
 
     private String firstName;
