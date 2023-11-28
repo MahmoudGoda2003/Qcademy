@@ -16,8 +16,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import Stack from '@mui/material/Stack';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { useNavigate } from "react-router-dom";
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
 
 export default function Header({ userInfo, searchOptions, onThemeChange, theme }) {
@@ -27,17 +28,26 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
+  const navigate = useNavigate();
 
+ 
   const handleCloseUserMenu = (setting) => {
-    // TODO: Add functionality to each setting in the menu
-    
     setAnchorElUser(null);
+    switch(setting){
+      case "Home":
+        navigate(`/home`)
+        break
+      case "Profile":
+        navigate(`/profile`)
+        break
+      default:
+    }
   };
   
   return (
     <AppBar position="relative">
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
-          <Link to="/Home">
+          <Link to="/home">
             <img src={require("./LogoFullLight.png")}
               style={{  maxHeight: '10vh', maxWidth: '20vh' }}
               alt="Logo"

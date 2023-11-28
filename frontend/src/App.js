@@ -34,11 +34,10 @@ const darkMode = createTheme({
 export default function App() {
   const [user, setUser] = useState(null);
 
+  const [route, setRoute] = useState('/')
+
   const [theme, setTheme] = useState(lightMode);
   const toggleColorMode = () => setTheme(((theme === lightMode)? darkMode : lightMode));
-
-  const [name, setName] = useState('CIARa');
-  const [ymca, setYmca] = useState('it is fun to stay at');
 
   return (
     <>
@@ -46,8 +45,8 @@ export default function App() {
           <CssBaseline />
           <Header onThemeChange={toggleColorMode} theme={theme} userInfo={{img:"as"}} searchOptions={['1', '2', '3', '4']} />
           <Routes>
-            <Route path="/" element={<Home/>} />
-            <Route path="/home" element={<Profile></Profile>} />
+            <Route path="/home" element={<Home/>} />
+            <Route path="/profile" element={<Profile></Profile>} />
           </Routes>
       </ThemeProvider>
     </>
