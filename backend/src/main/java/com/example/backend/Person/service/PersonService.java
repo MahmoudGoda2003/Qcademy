@@ -69,7 +69,7 @@ public class PersonService {
             throw new WrongDataEnteredException("Email is already in use");
         OTP OTP = new OTP(email, encoder.encode(otp));
         OTPRepository.save(OTP);
-        //mailSenderService.sendNewMail(email, otp);
+        mailSenderService.sendNewMail(email, otp);
         return new ResponseEntity<>("Email accepted", HttpStatus.OK);
     }
 
