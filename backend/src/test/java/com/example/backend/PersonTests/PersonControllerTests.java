@@ -40,4 +40,6 @@ public class PersonControllerTests extends AbstractTest {
         assertEquals(404, mvcResult.getResponse().getStatus());
         assertEquals("{\"error message\":\"Try to sign up again\"}", mvcResult.getResponse().getContentAsString());
     }
+
+
 }

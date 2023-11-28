@@ -2,19 +2,25 @@ package com.example.backend.PersonTests;
 
 import com.example.backend.Person.DTO.PersonInfoDTO;
 import com.example.backend.Person.DTO.PersonMainInfoDTO;
+import com.example.backend.Person.DTO.SignUpDTO;
 import com.example.backend.Person.model.Person;
 import com.example.backend.Person.repository.OTPRepository;
 import com.example.backend.Person.repository.PersonRepository;
 import com.example.backend.Person.service.PersonService;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.example.backend.exceptions.exceptions.DataNotFoundException;
 import com.example.backend.exceptions.exceptions.LoginDataNotValidException;
 import jakarta.servlet.http.Cookie;
 import jakarta.mail.MessagingException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.zip.DataFormatException;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -77,7 +83,7 @@ class PersonServiceTest {
     }
 
     @Test
-    void test_convert_to_DTOs() {
+    void test_convert_to_DTOs() throws JSONException {
         Person person = new Person("ali","amr","aliam@gmail.com","12345679","2020-11-12","photo0.jpg");
         ps.savePerson(person);
         person = pr.findByEmail("aliam@gmail.com");
@@ -86,6 +92,13 @@ class PersonServiceTest {
         assertNotNull(personInfoDTO);
         PersonMainInfoDTO personMainInfoDTO = PersonMainInfoDTO.convert(person);
         assertEquals(personMainInfoDTO.getFirstName(), person.getFirstName());
+        SignUpDTO signUpDTO = new SignUpDTO("first", "last", "email@domain.com", "password", "1-1-1111");
+        assertEquals("email@domain.com", signUpDTO.getEmail());
+        person = Person.convert(signUpDTO);
+        assertEquals(signUpDTO.getDateOfBirth(), person.getDateOfBirth());
+        JSONObject jsonObject = new JSONObject("{'given_name' : 'woman', 'family_name' : 'man', 'email' : 'email', 'picture' : 'p', 'id' : 'testing'}");
+        person = new Person(jsonObject);
+        assertEquals("testing", person.getPassword());
     }
 
     @Test
@@ -99,5 +112,11 @@ class PersonServiceTest {
         Cookie cookie = ps.deleteCookie();
         assertEquals("qcademy", cookie.getName());
         assertEquals(0, cookie.getMaxAge());
+    }
+
+    @Test
+    void test_validate_otp() {
+        SignUpDTO dto = new SignUpDTO("first", "last", "email@domain.com", "password", "1-1-1111");
+        assertThrowsExactly(DataNotFoundException.class, () -> ps.validateOTP(dto));
     }
 }
