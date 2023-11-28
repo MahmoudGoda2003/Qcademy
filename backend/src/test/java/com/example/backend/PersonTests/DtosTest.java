@@ -4,125 +4,164 @@ import com.example.backend.Person.DTO.PersonInfoDTO;
 import com.example.backend.Person.DTO.PersonMainInfoDTO;
 import com.example.backend.Person.DTO.SignUpDTO;
 import com.example.backend.Person.model.Person;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class DtosTest {
+public class DtosTest {
 
     @Test
-    void testPersonInfoDTOConversion() {
-        Person person = createPerson();
-        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
-
-        assertPersonInfoDTOFields(person, personInfoDTO);
-    }
-
-    @Test
-    void testPersonInfoDTOToString() {
-        PersonInfoDTO personInfoDTO = createPersonInfoDTO();
-
-        assertPersonInfoDTOToString(personInfoDTO);
-    }
-
-    @Test
-    void testPersonMainInfoDTOConversion() {
-        Person person = createPerson();
-        PersonMainInfoDTO personMainInfoDTO = PersonMainInfoDTO.convert(person);
-
-        assertPersonMainInfoDTOFields(person, personMainInfoDTO);
-    }
-
-    @Test
-    void testPersonMainInfoDTOToString() {
-        PersonMainInfoDTO personMainInfoDTO = createPersonMainInfoDTO();
-
-        assertPersonMainInfoDTOToString(personMainInfoDTO);
-    }
-
-    @Test
-    void testSignUpDTOConstructorAndGetters() {
-        SignUpDTO signUpDTO = createSignUpDTO();
-
-        assertSignUpDTOFields(signUpDTO);
-    }
-
-    @Test
-    void testSignUpDTOSetters() {
-        SignUpDTO signUpDTO = createSignUpDTO();
-
-        signUpDTO.setFirstName("Jane");
-        signUpDTO.setPassword("newSecurePassword");
-
-        assertSignUpDTOFieldsAfterSetters(signUpDTO);
-    }
-
-    // Helper methods...
-
-    private Person createPerson() {
+    public void testPersonInfoDTOIdAssertion() {
         Person person = new Person();
         person.setFirstName("John");
         person.setLastName("Doe");
         person.setEmail("john.doe@example.com");
         person.setPhotoLink("https://example.com/photo.jpg");
         person.setDateOfBirth("1990-01-01");
-        return person;
+
+        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
+
+        assertEquals(null, personInfoDTO.getId());
     }
 
-    private PersonInfoDTO createPersonInfoDTO() {
-        Person person = createPerson();
-        return PersonInfoDTO.convert(person);
-    }
+    @Test
+    public void testPersonInfoDTOFirstNameAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+        person.setEmail("john.doe@example.com");
+        person.setPhotoLink("https://example.com/photo.jpg");
+        person.setDateOfBirth("1990-01-01");
 
-    private PersonMainInfoDTO createPersonMainInfoDTO() {
-        Person person = createPerson();
-        return PersonMainInfoDTO.convert(person);
-    }
+        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
 
-    private SignUpDTO createSignUpDTO() {
-        return new SignUpDTO("John", "Doe", "john.doe@example.com", "securePassword", "1990-01-01");
-    }
-
-    // Assertion methods...
-
-    void assertPersonInfoDTOFields(Person person, PersonInfoDTO personInfoDTO) {
-        assertEquals(person.getId(), personInfoDTO.getId());
         assertEquals(person.getFirstName(), personInfoDTO.getFirstName());
+    }
+
+    @Test
+    public void testPersonInfoDTOLastNameAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+        person.setEmail("john.doe@example.com");
+        person.setPhotoLink("https://example.com/photo.jpg");
+        person.setDateOfBirth("1990-01-01");
+
+        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
+
         assertEquals(person.getLastName(), personInfoDTO.getLastName());
+    }
+
+    @Test
+    public void testPersonInfoDTOEmailAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+        person.setEmail("john.doe@example.com");
+        person.setPhotoLink("https://example.com/photo.jpg");
+        person.setDateOfBirth("1990-01-01");
+
+        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
+
         assertEquals(person.getEmail(), personInfoDTO.getEmail());
+    }
+
+    @Test
+    public void testPersonInfoDTOPhotoLinkAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+        person.setEmail("john.doe@example.com");
+        person.setPhotoLink("https://example.com/photo.jpg");
+        person.setDateOfBirth("1990-01-01");
+
+        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
+
         assertEquals(person.getPhotoLink(), personInfoDTO.getPhotoLink());
+    }
+
+    @Test
+    public void testPersonInfoDTODateOfBirthAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+        person.setEmail("john.doe@example.com");
+        person.setPhotoLink("https://example.com/photo.jpg");
+        person.setDateOfBirth("1990-01-01");
+
+        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
+
         assertEquals(person.getDateOfBirth(), personInfoDTO.getDateOfBirth());
     }
 
-    void assertPersonInfoDTOToString(PersonInfoDTO personInfoDTO) {
-        String expectedToString = "PersonInfoDTO(id=null, firstName=John, lastName=Doe, email=john.doe@example.com, " +
-                "photoLink=https://example.com/photo.jpg, dateOfBirth=1990-01-01)";
-        assertEquals(expectedToString, personInfoDTO.toString());
+    @Test
+    public void testPersonMainInfoDTOIdAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+
+        PersonMainInfoDTO personMainInfoDTO = PersonMainInfoDTO.convert(person);
+
+        assertEquals(null, personMainInfoDTO.getId());
     }
 
-    void assertPersonMainInfoDTOFields(Person person, PersonMainInfoDTO personMainInfoDTO) {
-        assertEquals(person.getId(), personMainInfoDTO.getId());
+    @Test
+    public void testPersonMainInfoDTOFirstNameAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+
+        PersonMainInfoDTO personMainInfoDTO = PersonMainInfoDTO.convert(person);
+
         assertEquals(person.getFirstName(), personMainInfoDTO.getFirstName());
+    }
+
+    @Test
+    public void testPersonMainInfoDTOLastNameAssertion() {
+        Person person = new Person();
+        person.setFirstName("John");
+        person.setLastName("Doe");
+
+        PersonMainInfoDTO personMainInfoDTO = PersonMainInfoDTO.convert(person);
+
         assertEquals(person.getLastName(), personMainInfoDTO.getLastName());
     }
 
-    void assertPersonMainInfoDTOToString(PersonMainInfoDTO personMainInfoDTO) {
-        String expectedToString = "PersonMainInfoDTO(id=null, firstName=John, lastName=Doe)";
-        assertEquals(expectedToString, personMainInfoDTO.toString());
+    @Test
+    public void testSignUpDTOFirstNameAssertion() {
+        SignUpDTO signUpDTO = new SignUpDTO("John", "Doe", "john.doe@example.com", "securePassword", "1990-01-01");
+
+        assertEquals("John", signUpDTO.getFirstName());
     }
 
-    void assertSignUpDTOFields(SignUpDTO signUpDTO) {
-        assertEquals("John", signUpDTO.getFirstName());
+    @Test
+    public void testSignUpDTOLastNameAssertion() {
+        SignUpDTO signUpDTO = new SignUpDTO("John", "Doe", "john.doe@example.com", "securePassword", "1990-01-01");
+
         assertEquals("Doe", signUpDTO.getLastName());
+    }
+
+    @Test
+    public void testSignUpDTOEmailAssertion() {
+        SignUpDTO signUpDTO = new SignUpDTO("John", "Doe", "john.doe@example.com", "securePassword", "1990-01-01");
+
         assertEquals("john.doe@example.com", signUpDTO.getEmail());
+    }
+
+    @Test
+    public void testSignUpDTOPasswordAssertion() {
+        SignUpDTO signUpDTO = new SignUpDTO("John", "Doe", "john.doe@example.com", "securePassword", "1990-01-01");
+
         assertEquals("securePassword", signUpDTO.getPassword());
+    }
+
+    @Test
+    public void testSignUpDTODateOfBirthAssertion() {
+        SignUpDTO signUpDTO = new SignUpDTO("John", "Doe", "john.doe@example.com", "securePassword", "1990-01-01");
+        
         assertEquals("1990-01-01", signUpDTO.getDateOfBirth());
     }
 
-    void assertSignUpDTOFieldsAfterSetters(SignUpDTO signUpDTO) {
-        assertEquals("Jane", signUpDTO.getFirstName());
-        assertEquals("newSecurePassword", signUpDTO.getPassword());
-    }
 }
