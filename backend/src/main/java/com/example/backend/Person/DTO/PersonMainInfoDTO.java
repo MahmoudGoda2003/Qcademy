@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class PersonMainInfoDTO {
 
