@@ -10,14 +10,13 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "Person_OTP")
 public class OTP {
     @Id
     private String email;
     @Column(name = "OTP", nullable = false)
     private String OTP;
-    @Column(name = "Time_Created", nullable = false)
+    @Column(name = "Time_Created")
     @UpdateTimestamp
     private Instant timeCreated;
 
