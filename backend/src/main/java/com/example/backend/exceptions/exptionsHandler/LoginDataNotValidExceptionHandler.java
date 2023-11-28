@@ -14,8 +14,6 @@ import java.util.Map;
 
 @ControllerAdvice
 public class LoginDataNotValidExceptionHandler {
-    @Autowired
-    private MessageSource messageSource;
 
     @ExceptionHandler(LoginDataNotValidException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)

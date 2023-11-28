@@ -14,9 +14,6 @@ import java.util.Map;
 @ControllerAdvice
 public class OtherExceptionsHandler {
 
-    @Autowired
-    private MessageSource messageSource;
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody

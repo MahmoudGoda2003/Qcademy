@@ -10,7 +10,6 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "Person_OTP")
 public class OTP {
     @Id
