@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ToString
 public class PersonMainInfoDTO {
 
-    private Long id;
     private String firstName;
     private String lastName;
 

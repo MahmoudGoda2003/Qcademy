@@ -22,7 +22,7 @@ public class PersonControllerTests extends AbstractTest {
 
     @Test
     public void signUpNormal() throws Exception {
-        String uri = "/signup", email = "yahya912azzam@gmail.com";
+        String uri = "/person/signup", email = "yahya912azzam@gmail.com";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.TEXT_PLAIN).content(email)).andReturn();
         assertEquals(200, mvcResult.getResponse().getStatus());
         assertEquals("Email accepted", mvcResult.getResponse().getContentAsString());
@@ -30,7 +30,7 @@ public class PersonControllerTests extends AbstractTest {
 
     @Test
     public void validateWithoutSignUp() throws Exception {
-        String uri = "/signup/validate";
+        String uri = "/person/signup/validate";
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test@test.com", "test", "1-2-1999");
         signUpDTO.setCode("201356");
         String input = super.mapToJson(signUpDTO);
