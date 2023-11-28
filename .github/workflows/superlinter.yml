@@ -1,0 +1,56 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      QcademyMailUsername: ${{ secrets.QcademyMailUsername }}
+      QcademyMailPassword: ${{ secrets.QcademyMailPassword }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Set up environment variables
+        run: |
+          echo "QcademyMailUsername=${QcademyMailUsername}" >> $GITHUB_ENV
+          echo "QcademyMailPassword=${QcademyMailPassword}" >> $GITHUB_ENV
+          
+      - name: Build with Maven
+        run: mvn -f backend/pom.xml clean install
+
+      - name: Run Tests and Generate Coverage Report
+        run: mvn -f backend/pom.xml clean test jacoco:report
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./backend/target/site/jacoco/jacoco.xml
+
+      - name: Check Code Coverage
+        run: |
+
+          CODE_COVERAGE=$(grep -Eo '<counter type="LINE" missed="([0-9]+)" covered="([0-9]+)"' ./backend/target/site/jacoco/jacoco.xml | awk -F'"' '{ missed += $4; covered += $6 } END { total = missed + covered; if (total > 0) print int((covered / total) * 100); else print 0 }')
+
+          if [ "$CODE_COVERAGE" -lt 60 ]; then
+            echo "Code coverage is below 60% ($CODE_COVERAGE%). Failing the workflow."
+            exit 1
+          fi
+

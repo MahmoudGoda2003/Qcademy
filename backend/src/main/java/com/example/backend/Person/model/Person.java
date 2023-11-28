@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @Table(name = "Persons_Data", indexes = {@Index(name = "index_email", columnList = "email", unique = true)})
 public class Person {
     @Id
@@ -27,19 +26,19 @@ public class Person {
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "date_of_birth")
-    private String DOB;
+    private String dateOfBirth;
     @Column(name = "photo_link")
     private String photoLink;
 
     @Autowired
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    public Person(String firstName, String lastName, String email, String password, String DOB, String photoLink) {
+    public Person(String firstName, String lastName, String email, String password, String dateOfBirth, String photoLink) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.DOB = DOB;
+        this.dateOfBirth = dateOfBirth;
         this.photoLink = photoLink;
     }
 

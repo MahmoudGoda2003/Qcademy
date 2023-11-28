@@ -14,15 +14,12 @@ import java.util.Map;
 @ControllerAdvice
 public class OtherExceptionsHandler {
 
-    @Autowired
-    private MessageSource messageSource;
-
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     Map<String, String> onOtherExceptions(Exception e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message", "internal server error");
+        error.put("error message", e.toString());
         return error;
     }
 }

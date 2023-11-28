@@ -15,9 +15,6 @@ import java.util.Map;
 @ControllerAdvice
 public class WrongDataEnteredExceptionHandler {
 
-    @Autowired
-    private MessageSource messageSource;
-
     @ExceptionHandler(WrongDataEnteredException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
