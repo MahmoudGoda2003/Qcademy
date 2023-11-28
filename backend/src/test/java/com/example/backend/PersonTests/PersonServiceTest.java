@@ -6,11 +6,13 @@ import com.example.backend.Person.DTO.SignUpDTO;
 import com.example.backend.Person.model.Person;
 import com.example.backend.Person.repository.OTPRepository;
 import com.example.backend.Person.repository.PersonRepository;
+import com.example.backend.Person.service.Authenticator;
 import com.example.backend.Person.service.PersonService;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.backend.exceptions.exceptions.DataNotFoundException;
 import com.example.backend.exceptions.exceptions.LoginDataNotValidException;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.mail.MessagingException;
 import org.json.JSONException;
@@ -19,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.util.zip.DataFormatException;
 
@@ -118,5 +122,19 @@ class PersonServiceTest {
     void test_validate_otp() {
         SignUpDTO dto = new SignUpDTO("first", "last", "email@domain.com", "password", "1-1-1111");
         assertThrowsExactly(DataNotFoundException.class, () -> ps.validateOTP(dto));
+    }
+
+    @Test
+    void test_authenticator() {
+        Authenticator auth = new Authenticator();
+        Person person = new Person("ali","amr","aliam7@gmail.com","12345679","2020-11-12","photo0.jpg");
+        String token = auth.createToken(person, true, true);
+        assertNotEquals(auth.createToken(person, true, false), token);
+    }
+
+    @Test
+    void test_use_google() {
+        assertThrows(HttpClientErrorException.class, () -> ps.signInUsingGoogle(null, "ss"));
+        assertThrows(HttpClientErrorException.class, () -> ps.getGoogleObject("ss"));
     }
 }

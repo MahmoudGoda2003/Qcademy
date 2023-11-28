@@ -93,7 +93,7 @@ public class PersonService {
         return new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
     }
 
-    private Person getGoogleObject(String accessToken) {
+    public Person getGoogleObject(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer "+accessToken);
         headers.set("Accept", "application/json");

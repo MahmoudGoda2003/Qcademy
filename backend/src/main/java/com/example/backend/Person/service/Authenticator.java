@@ -23,7 +23,7 @@ public class Authenticator {
     }
 
     public String createToken(Person person, boolean isTeacher, boolean isAdmin) {
-        Claims claims = Jwts.claims().setSubject(person.getId().toString());
+        Claims claims = Jwts.claims().setSubject(person.getId()==null ? person.getEmail(): person.getId().toString());
         claims.put("email", person.getEmail());
         claims.put("isTeacher", isTeacher);
         claims.put("isAdmin", isAdmin);
