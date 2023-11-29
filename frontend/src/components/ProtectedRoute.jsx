@@ -6,9 +6,7 @@ export default function ProtectedRoute ({
     children
   })
   {
-
     if (!globals.user) {
-      console.log(globals.user);
       return <Navigate to={redirectPath} replace />;
     }
 
