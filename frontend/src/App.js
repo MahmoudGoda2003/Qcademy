@@ -1,11 +1,20 @@
 import { Routes, Route, Link } from "react-router-dom";
-import { useState } from "react";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import Home from "./components/Home";
 import Header from "./components/Header";
 import Profile from "./components/Profile";
 import TeacherHome from "./components/TeacherHome";
+import Signup from "./components/Signup";
+import ConfirmEmail from "./components/ConfirmEmail";
+import Login from "./components/Login";
+import { useState } from "react";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import IconButton from '@mui/material/IconButton';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import globals from "./globals";
+
 
 const lightMode = createTheme({
   palette: {
@@ -40,14 +49,25 @@ export default function App() {
 
   return (
     <>
-      <ThemeProvider theme={theme} >
-          <CssBaseline />
-          <Header onThemeChange={toggleColorMode} theme={theme} userInfo={{img:"as"}} searchOptions={['1', '2', '3', '4']} />
-          <Routes>
-            <Route path="/home" element={<Home/>} />
-            <Route path="/teacher" element={<TeacherHome/>} />
-            <Route path="/profile" element={<Profile></Profile>} />
-          </Routes>
+    <IconButton onClick={toggleColorMode} color="inherit">
+        {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+    </IconButton>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Routes>
+        <Route path="/" element={
+          <ProtectedRoute redirectPath={"/login"}>
+            <Home />
+          </ProtectedRoute>
+        }/>
+        <Route path="signup" element={<Signup theme = {theme} />} />
+        <Route path="/confirmEmail" element={
+          <ProtectedRoute redirectPath={"/login"}>
+            <ConfirmEmail theme = {theme} />
+          </ProtectedRoute>
+        }/>
+        <Route path="login" element={<Login theme = {theme} />} />
+      </Routes>
       </ThemeProvider>
     </>
   );

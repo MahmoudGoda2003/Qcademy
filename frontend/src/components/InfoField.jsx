@@ -11,22 +11,28 @@ export default function InfoField ({field, value, setValue}) {
     }
 
     return (
-        <Stack margin={'1vh'} padding={'1vh'} >
+        <Stack margin={'1vh'}>
             <Paper elevation={2}>
-                <Stack direction={'row'} margin={'0 1vh'} padding={'1vh'}>
-                    <Typography fontSize={20} textAlign="center">{field}</Typography>
-                    <IconButton size="small" aria-label="edit" onClick={() => setEdit(!edit)}>
+                <Stack direction={'row'} margin={'1vh'} width={'100%'}>
+                    <Typography fontSize={20} margin={'1vh 1vh 0'} padding={'1vh 1vh 0'}>{field}</Typography>
+                    <IconButton size="small" aria-label="edit" sx={{margin: '2vh 0'}} onClick={() => setEdit(!edit)}>
                         <EditIcon />
                     </IconButton>
                 </Stack>
-                <Stack width="15vw" height="8vh" margin='1vh'>
+                <Stack width="15vw" margin='1vh'>
                     {!edit ? 
-                        <Typography fontSize={16} color="gray" margin={'1vh'} padding={'1vh'}>{value}</Typography>
+                        <Typography fontSize={18} color="gray" margin={'1vh 0 1.4vh 2.5vh'} overflow={'hidden'}>{value}</Typography>
                         :
                         <TextField
                             onChange={changeValue}
                             defaultValue={value}
                             size='small'
+                            sx={{
+                                margin: '1vh',
+                                marginTop: 0
+                            }}
+                            onKeyUp={(e)=>{if (e.key == "Enter") {setEdit(false)}}}
+                            onBlur={()=>setEdit(false)}
                         >
                         </TextField>
                     }

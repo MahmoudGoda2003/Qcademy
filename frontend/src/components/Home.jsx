@@ -1,3 +1,4 @@
+import Header from './Header';
 import CoursesList from './CoursesList';
 import { Typography } from '@mui/material';
 

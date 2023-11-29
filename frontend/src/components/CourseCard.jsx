@@ -46,6 +46,7 @@ export default function CourseCard({name, description, image, tags, rating, cour
                         key={tag} label={tag}></Chip>
                     })
                 }
+
                 
                 
                 <Typography sx={{
