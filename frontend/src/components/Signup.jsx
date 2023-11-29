@@ -1,13 +1,18 @@
 import { Button, Grid, Paper, TextField, Typography, LinearProgress } from "@mui/material"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import GoogleIcon from '@mui/icons-material/Google';
+import axios from 'axios'
+import globals from "../globals";
+
 
 export default function Signup({theme}) {
+
+    const navigate = useNavigate();
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -30,24 +35,42 @@ export default function Signup({theme}) {
         if (event.target.name === fields.password) setPassword(event.target.value);
     }
 
-    const handleSignUp = e => {
-        e.preventDefault();
+    const handleSignUp =  async (event) => {
+        event.preventDefault();
         const user = {
             firstName: firstName,
             lastName: lastName,
             email: email,
             password: password,
-            DOB: DOB.$D + "-" + DOB.$M + "-" + DOB.$y,
+            dateOfBirth: DOB.$D + "-" + DOB.$M + "-" + DOB.$y
         }
-
         // TODO: send info to backend
-        console.log(user);
+        try {
+            await axios.post(`${globals.baseURL}/person/signup`, user.email, {headers: {"Content-Type": "text/plain"}})
+            globals.user = user;
+            navigate('/confirmEmail');
+        } catch (error) {
+            alert('An error occurred, please try again later :(')
+            console.error(error);
+        }
     }
 
     const googleLogin = useGoogleLogin({
-        onSuccess: response => {
+        onSuccess: async (response) => {
             // TODO: send to backend response.access_token
-            console.log(response);
+            try{
+                const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain", 'Access-Control-Allow-Credentials':'true'}})
+                globals.user = {
+                    firstName: result.data.firstName,
+                    lastName: result.data.lastName,
+                    photoLink: result.data.photoLink
+                }
+                navigate("/home")
+            }catch (error) {
+                alert('An error occurred, please try again later :(')
+                console.error(error);
+            }
+            // console.log(response);
         },
         onError: error => console.log(error),
     });

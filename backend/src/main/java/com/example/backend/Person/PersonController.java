@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/person")
 @RestController
 public class PersonController {

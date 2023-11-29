@@ -9,6 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import globals from "./globals";
 
 const lightMode = createTheme({
   palette: {
@@ -48,12 +49,16 @@ export default function App() {
       <CssBaseline />
       <Routes>
         <Route path="/" element={
-          <ProtectedRoute user={user} redirectPath={"/login"}>
+          <ProtectedRoute redirectPath={"/login"}>
             <Home />
           </ProtectedRoute>
         }/>
         <Route path="signup" element={<Signup theme = {theme} />} />
-        <Route path="confirmEmail" element={<ConfirmEmail theme = {theme} />} />
+        <Route path="/confirmEmail" element={
+          <ProtectedRoute redirectPath={"/login"}>
+            <ConfirmEmail theme = {theme} />
+          </ProtectedRoute>
+        }/>
       </Routes>
       </ThemeProvider>
     </>
