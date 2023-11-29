@@ -2,6 +2,7 @@ import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button
 import { useState } from "react";
 import InfoField from "./InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import globals from "../globals";
 
 const VisuallyHiddenStyle = {
   clip: 'rect(0 0 0 0)',
@@ -43,17 +44,17 @@ const modalStyle = {
 
 
 
-export default function Profile ({field, value, setValue}) {
+export default function Profile () {
 
-    const [firstName, setFirstName] = useState('first');
-    const [lastName, setLastName] = useState('last');
+    const [firstName, setFirstName] = useState(globals.user.firstName);
+    const [lastName, setLastName] = useState(globals.user.lastName);
     const [education, setEducation] = useState('school');
     const [phone, setPhone] = useState('0222021908');
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageUrl, setImageUrl] = useState((globals.user.photoLink)? globals.user.photoLink: '');
     const [enrolledCourses, setEnrolledCourses] = useState(11);
     const [completedCourses, setCompletedCourses] = useState(19);
 
-    const [dob, setDob] = useState('20-4-2000');
+    const [dob, setDob] = useState((globals.user.dateOfBirth)? globals.user.dateOfBirth: 'You didn\'t tell me <:^(');
     const [modal, setModal] = useState(false)
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null)

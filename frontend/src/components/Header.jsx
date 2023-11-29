@@ -17,6 +17,7 @@ import Stack from '@mui/material/Stack';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useNavigate } from "react-router-dom";
+import globals from '../globals';
 
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
@@ -44,7 +45,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
       default:
     }
   };
-  
+  console.log(globals.user.photoLink);
   return (
     <AppBar position="relative">
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
@@ -75,7 +76,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
           <Box justifyContent={'flex-end'}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="userPhoto" src={userInfo.img} />
+                <Avatar alt="userPhoto" src="https://lh3.googleusercontent.com/a/ACg8ocJQET3H5udgGeQ5xwqVWvf6n8wVQwnRt2yH1nFfjC1W5Rs=s96-c" referrerPolicy="no-referrer" />
               </IconButton>
             </Tooltip>
             <Menu
