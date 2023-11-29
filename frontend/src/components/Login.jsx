@@ -68,7 +68,7 @@ export default function Login({theme}) {
             }
             navigate("/home")
         } catch (error) {
-            alert('An error occurred, please try again later :(')
+            alert('Invalid email or password')
             console.error(error);
         }
 
@@ -78,7 +78,8 @@ export default function Login({theme}) {
         margin: '2vh',
         padding: '2vh',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        minWidth: '25vw'
     }
 
     const paperStyle = {
@@ -89,6 +90,7 @@ export default function Login({theme}) {
         flexDirection: 'column',
         margin: '2vh auto',
         padding: '2vh',
+        minWidth: '25vw'
     }
 
     const innerGridStyle = {
