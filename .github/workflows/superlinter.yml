@@ -15,7 +15,7 @@ jobs:
     env:
       QcademyMailUsername: ${{ secrets.QcademyMailUsername }}
       QcademyMailPassword: ${{ secrets.QcademyMailPassword }}
-      QcademyAuthKey: ${{ QcademyAuthKey }}
+      QcademyAuthKey: ${{ secrets.QcademyAuthKey }}
 
     steps:
       - name: Checkout code
