@@ -10,11 +10,11 @@ import org.modelmapper.ModelMapper;
 @ToString
 public class PersonInfoDTO {
 
-    private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String photoLink;
+    private String bio;
     private String dateOfBirth;
 
 

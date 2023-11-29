@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 @ToString
 public class PersonMainInfoDTO {
 
-    private Long id;
     private String firstName;
     private String lastName;
 
