@@ -22,11 +22,7 @@ const getRank = (coursesCompleted) => {
         case 0:
             return "👶  newbie 👶"
         case 1:
-            return "🔥  Seasoned 🔥"
-        // case 0:
-        //     return "👶  newbie 👶"
-        // case 0:
-        //     return "👶  newbie 👶"    
+            return "🔥  Seasoned 🔥" 
         default:
             return "Unranked"
     }
@@ -73,6 +69,7 @@ export default function Profile ({field, value, setValue}) {
         /// send imagefile to backend
         setImageUrl(tempImageUrl)
         setImageFile(null)
+        console.log(imageFile);
         closeHandler()
     }
     
@@ -118,12 +115,15 @@ export default function Profile ({field, value, setValue}) {
                         </Stack>
                     </Box>
             </Modal>
-            <Stack direction={'row'} sx={{marginLeft:'auto', justifyContent:'center'}}>
+            <Stack direction={'row'} sx={{marginLeft:'auto', justifyContent:'center', alignItems: 'center'}}>
 
-                <Paper elevation={2} align='center' sx={{
-                    padding:'5vh',
-                    margin: '4vh'
-                }}>
+                <Paper elevation={2} align='center'
+                    sx={{
+                        padding:'5vh',
+                        margin: '4vh',
+                        maxWidth:'50vh'
+                    }}
+                >
                     <IconButton onClick={openHandler} >
                         <Avatar
                             alt={firstName.toUpperCase()}
@@ -132,8 +132,8 @@ export default function Profile ({field, value, setValue}) {
                         />
                     </IconButton>
 
-                    <Typography fontSize={35} marginBottom={'1vh'}> {firstName + " " + lastName} </Typography>
-                    <Typography fontSize={20} color='gray' marginBottom={'5vh'}> {getRank(6)} </Typography>
+                    <Typography fontSize={35} marginBottom={'1vh'} overflow={'hidden'}> {firstName + " " + lastName} </Typography>
+                    <Typography fontSize={20} color='gray' marginBottom={'5vh'}> {getRank(4)} </Typography>
                     <Stack direction={'row'}>
                         <Stack width={'50%'}>
                             <Typography color={'gray'} fontSize={16}>Courses Enrolled</Typography>
