@@ -20,7 +20,7 @@ public class DataNotFoundExceptionHandler {
     @ResponseBody
     Map<String, String> onDataNotFoundException(DataNotFoundException e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message", e.getMessage());
+        error.put("error message", e.getLocalizedMessage());
         return error;
     }
 }

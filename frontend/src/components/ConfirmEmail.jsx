@@ -1,15 +1,26 @@
 import { Button, Grid, Paper, Typography } from "@mui/material"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
+import globals from "../globals";
+import axios from "axios";
 
 export default function ConfirmEmail({theme}) {
+    const navigate = useNavigate();
 
     const [code, setCode] = useState('');
 
-    const handleCode = e => {
-        e.preventDefault();
+    const handleCode = async (event) => {
+        event.preventDefault();
         console.log(code);
+        try {
+            globals.user.code = code;
+            const response = await axios.post(`${globals.baseURL}/person/signup/validate`, globals.user)
+            globals.user = null
+            navigate('/login')
+        } catch (error) {
+            console.log(error);    
+        }
         // TODO: send verification code to back
     }
 
@@ -59,6 +70,7 @@ export default function ConfirmEmail({theme}) {
                         sx ={gridElement}
                         value={code}
                         length={6}
+                        // TextFieldsProps={"[0-9]*"}
                         onChange={newValue => setCode(newValue)} />
                     <Button variant="contained" size="large" sx={gridElement} type="submit">Confirm code</Button>
                 </Grid>

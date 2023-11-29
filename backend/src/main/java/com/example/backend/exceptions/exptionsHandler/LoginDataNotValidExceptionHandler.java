@@ -20,7 +20,7 @@ public class LoginDataNotValidExceptionHandler {
     @ResponseBody
     Map<String, String> onLoginDataNotValidException(Exception e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message", e.getMessage());
+        error.put("error message", e.getLocalizedMessage());
         return error;
     }
 }

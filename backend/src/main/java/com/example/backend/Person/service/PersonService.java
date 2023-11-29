@@ -109,7 +109,7 @@ public class PersonService {
         Cookie cookie = new Cookie("qcademy", token);
         cookie.setMaxAge(24*60*60);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+//        cookie.setSecure(true);  //enable later when using https
         return cookie;
     }
 
