@@ -8,6 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter } from 'react-router-dom';
 import globals from './globals';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
