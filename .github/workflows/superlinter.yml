@@ -15,6 +15,7 @@ jobs:
     env:
       QcademyMailUsername: ${{ secrets.QcademyMailUsername }}
       QcademyMailPassword: ${{ secrets.QcademyMailPassword }}
+      QcademyAuthKey: ${{ QcademyAuthKey }}
 
     steps:
       - name: Checkout code
@@ -31,6 +32,7 @@ jobs:
         run: |
           echo "QcademyMailUsername=${QcademyMailUsername}" >> $GITHUB_ENV
           echo "QcademyMailPassword=${QcademyMailPassword}" >> $GITHUB_ENV
+          echo "QcademyAuthKey=${QcademyAuthKey}" >> $GITHUB_ENV
           
       - name: Build with Maven
         run: mvn -f backend/pom.xml clean install
