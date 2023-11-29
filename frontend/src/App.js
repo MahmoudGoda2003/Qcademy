@@ -2,11 +2,10 @@ import { Routes, Route, Link } from "react-router-dom";
 import { useState } from "react";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import IconButton from '@mui/material/IconButton';
 import Home from "./components/Home";
-import InfoField from "./components/InfoField";
 import Header from "./components/Header";
 import Profile from "./components/Profile";
+import TeacherHome from "./components/TeacherHome";
 
 const lightMode = createTheme({
   palette: {
@@ -46,8 +45,8 @@ export default function App() {
           <Header onThemeChange={toggleColorMode} theme={theme} userInfo={{img:"as"}} searchOptions={['1', '2', '3', '4']} />
           <Routes>
             <Route path="/home" element={<Home/>} />
+            <Route path="/teacher" element={<TeacherHome/>} />
             <Route path="/profile" element={<Profile></Profile>} />
-          <Routes>
           </Routes>
       </ThemeProvider>
     </>

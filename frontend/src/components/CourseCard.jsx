@@ -26,7 +26,7 @@ export default function CourseCard({name, description, image, tags, rating, cour
                     component="img"
                     image={(image===undefined)? DEFAULT_IMAGE: image}
                     alt="personal image"
-                    sx={{maxWidth:'45vh', maxHeight:'35vh'}}
+                    sx={{maxWidth:'45vh', maxHeight:'25vh', minHeight:'25Vh'}}
                 />
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -46,7 +46,6 @@ export default function CourseCard({name, description, image, tags, rating, cour
                         key={tag} label={tag}></Chip>
                     })
                 }
-                <br/>
                 
                 
                 <Typography sx={{
