@@ -1,12 +1,12 @@
 import { Navigate } from 'react-router-dom';
+import globals from '../globals';
 
 export default function ProtectedRoute ({
-    user,
     redirectPath,
     children
   })
   {
-    if (!user) {
+    if (!globals.user) {
       return <Navigate to={redirectPath} replace />;
     }
 
