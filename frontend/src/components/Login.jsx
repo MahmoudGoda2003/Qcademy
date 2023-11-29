@@ -1,8 +1,14 @@
 import { Button, Grid, Paper, TextField, Typography, Checkbox, FormControlLabel } from "@mui/material"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useGoogleLogin } from '@react-oauth/google';
+import GoogleIcon from '@mui/icons-material/Google';
+import axios from "axios";
+import globals from "../globals";
 
 export default function Login({theme}) {
+
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,12 +25,51 @@ export default function Login({theme}) {
         if (e.target.name === fields.password) setPassword(e.target.value);
     }
 
-    const handleSignIn = e => {
-        e.preventDefault();
+    const googleLogin = useGoogleLogin({
+        onSuccess: async (response) => {
+            try{
+                const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain"}, withCredentials: true})
+                globals.user = {
+                    firstName: result.data.firstName,
+                    lastName: result.data.lastName,
+                    photoLink: result.data.photoLink
+                }
+                navigate("/home")
+            }catch (error) {
+                alert('An error occurred, please try again later :(')
+                console.error(error);
+            }
+            // console.log(response);
+        },
+        onError: error => console.log(error),
+    });
+    
+    const handleSignIn = async (event) => {
+        event.preventDefault();
         const checkUser = {
             email: email,
             password: password,
             remember: remember,
+        }
+        try {
+            const response = await axios.post(`${globals.baseURL}/person/login`, {}, {
+                params: {
+                    email: email,
+                    password: password
+                },
+                withCredentials: true
+            })
+            globals.user = {
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                photoLink: response.data.photoLink,
+                email: response.data.email,
+                dateOfBirth: response.data.dateOfBirth
+            }
+            navigate("/home")
+        } catch (error) {
+            alert('Invalid email or password')
+            console.error(error);
         }
 
     }
@@ -33,7 +78,8 @@ export default function Login({theme}) {
         margin: '2vh',
         padding: '2vh',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        minWidth: '25vw'
     }
 
     const paperStyle = {
@@ -44,6 +90,7 @@ export default function Login({theme}) {
         flexDirection: 'column',
         margin: '2vh auto',
         padding: '2vh',
+        minWidth: '25vw'
     }
 
     const innerGridStyle = {
@@ -109,6 +156,7 @@ export default function Login({theme}) {
                         Don't have an account? <Link to='/signup'>Create New Account</Link>
                     </Typography>
                     <Button variant="contained" size="large" sx={gridElement} type="submit">Sign in</Button>
+                    <Button variant="outlined" size="large" sx={gridElement} onClick={googleLogin} startIcon={<GoogleIcon />}>Sign in with Google</Button>
                 </Grid>
             </Paper>
             <Typography variant="body2" color="textSecondary" align="center">

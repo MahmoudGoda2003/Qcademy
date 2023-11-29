@@ -5,6 +5,7 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import globals from "../globals";
 import axios from "axios";
 
+
 export default function ConfirmEmail({theme}) {
     const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ export default function ConfirmEmail({theme}) {
             globals.user = null
             navigate('/login')
         } catch (error) {
+            alert("A problem has occurred, please check the code and try again :^(")
             console.log(error);    
         }
         // TODO: send verification code to back
@@ -28,7 +30,8 @@ export default function ConfirmEmail({theme}) {
         margin: '2vh',
         padding: '2vh',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        minWidth: '25vw'
     }
 
     const paperStyle = {
@@ -39,6 +42,7 @@ export default function ConfirmEmail({theme}) {
         flexDirection: 'column',
         margin: '2vh auto',
         padding: '2vh',
+        minWidth: '25vw'
     }
 
     const innerGridStyle = {
@@ -52,6 +56,7 @@ export default function ConfirmEmail({theme}) {
         margin: '2vh auto',
         width: '90%'
     }
+    
 
     return (
         <Grid sx={gridStyle}>
@@ -70,7 +75,6 @@ export default function ConfirmEmail({theme}) {
                         sx ={gridElement}
                         value={code}
                         length={6}
-                        // TextFieldsProps={"[0-9]*"}
                         onChange={newValue => setCode(newValue)} />
                     <Button variant="contained" size="large" sx={gridElement} type="submit">Confirm code</Button>
                 </Grid>

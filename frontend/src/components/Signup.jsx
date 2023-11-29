@@ -50,7 +50,7 @@ export default function Signup({theme}) {
             globals.user = user;
             navigate('/confirmEmail');
         } catch (error) {
-            alert('An error occurred, please try again later :(')
+            alert('This email already exists :^O')
             console.error(error);
         }
     }
@@ -59,7 +59,7 @@ export default function Signup({theme}) {
         onSuccess: async (response) => {
             // TODO: send to backend response.access_token
             try{
-                const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain", 'Access-Control-Allow-Credentials':'true'}})
+                const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain"}, withCredentials: true})
                 globals.user = {
                     firstName: result.data.firstName,
                     lastName: result.data.lastName,
@@ -81,7 +81,8 @@ export default function Signup({theme}) {
         margin: '2vh',
         padding: '2vh',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        minWidth: '25vw'
     }
 
     const paperStyle = {
@@ -92,6 +93,7 @@ export default function Signup({theme}) {
         flexDirection: 'column',
         margin: '2vh auto',
         padding: '2vh',
+        minWidth: '25vw'
     }
 
     const innerGridStyle = {
@@ -152,7 +154,7 @@ export default function Signup({theme}) {
                         sx={gridElement}
                         required
                         label="Password"
-                        type="text"
+                        type="Password"
                         name={fields.password}
                         inputProps={{ pattern: "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$" }}
                         onChange={handleChange}

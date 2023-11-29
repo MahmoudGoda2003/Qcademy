@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
 @RequestMapping("/person")
 @RestController
 public class PersonController {
@@ -37,7 +37,8 @@ public class PersonController {
         return personService.signInUsingGoogle(response, accessToken);
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
+    //TODO: change to @requestBody later and use a DTO
     public ResponseEntity<PersonInfoDTO> logIn(HttpServletResponse response, @RequestParam String email, @RequestParam String password) {
         return personService.login(response, email, password);
     }
