@@ -38,7 +38,7 @@ public class Authenticator {
                 .compact();
     }
 
-    private Claims parseJwtClaims(String token) {
+    /*private Claims parseJwtClaims(String token) {
         return jwtParser.parseClaimsJws(token).getBody();
     }
 
@@ -76,5 +76,5 @@ public class Authenticator {
 
     private String getEmail(Claims claims) {
         return (String) claims.get("email");
-    }
+    }*/
 }
