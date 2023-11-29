@@ -55,6 +55,7 @@ public class PersonControllerTests extends AbstractTest {
     public void test_methods_directly() throws MessagingException {
         ResponseEntity<String> request = pc.signUp("yahya912ahmed@gmail.com");
         assertEquals(HttpStatus.OK, request.getStatusCode());
+        assertEquals("Email accepted", request.getBody());
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "yahya912ahmed@gmail.com", "test", "1-2-1999");
         signUpDTO.setCode("testing");
         assertThrowsExactly(WrongDataEnteredException.class, () -> pc.validateOTP(signUpDTO));
