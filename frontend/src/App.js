@@ -1,6 +1,8 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Login from "./components/Login";
 import Home from "./components/Home";
+import Signup from "./components/Signup";
+import ConfirmEmail from "./components/ConfirmEmail";
+import Login from "./components/Login";
 import { useState } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -8,6 +10,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import globals from "./globals";
+
 
 const lightMode = createTheme({
   palette: {
@@ -47,22 +51,18 @@ export default function App() {
       <CssBaseline />
       <Routes>
         <Route path="/" element={
-          <ProtectedRoute user={user} redirectPath={"/login"}>
+          <ProtectedRoute redirectPath={"/login"}>
             <Home />
+          </ProtectedRoute>
+        }/>
+        <Route path="signup" element={<Signup theme = {theme} />} />
+        <Route path="/confirmEmail" element={
+          <ProtectedRoute redirectPath={"/login"}>
+            <ConfirmEmail theme = {theme} />
           </ProtectedRoute>
         }/>
         <Route path="login" element={<Login theme = {theme} />} />
       </Routes>
       </ThemeProvider>
     </>
-  );
 }
-
-const Navigation = () => (
-  <nav>
-    <Link to="/"> Landing </Link>
-    <Link to="/home"> Home </Link>
-    <Link to="/login"> Login </Link>
-    <Link to="/signup"> Signup </Link>
-  </nav>
-);
