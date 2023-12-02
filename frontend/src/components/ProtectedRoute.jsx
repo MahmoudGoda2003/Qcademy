@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import globals from '../globals';
+import globals from '../utils/globals';
 
 export default function ProtectedRoute ({
     redirectPath,

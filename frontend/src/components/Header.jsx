@@ -1,11 +1,9 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,7 +15,7 @@ import Stack from '@mui/material/Stack';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useNavigate } from "react-router-dom";
-import globals from '../globals';
+import globals from '../utils/globals';
 
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
@@ -45,12 +43,11 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
       default:
     }
   };
-  console.log(globals.user.photoLink);
   return (
     <AppBar position="relative">
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
           <Link to="/home">
-            <img src={require("./LogoFullLight.png")}
+            <img src={require("../img/LogoFullLight.png")}
               style={{  maxHeight: '10vh', maxWidth: '20vh' }}
               alt="Logo"
             ></img>
@@ -76,7 +73,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
           <Box justifyContent={'flex-end'}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="userPhoto" src="https://lh3.googleusercontent.com/a/ACg8ocJQET3H5udgGeQ5xwqVWvf6n8wVQwnRt2yH1nFfjC1W5Rs=s96-c" referrerPolicy="no-referrer" />
+                <Avatar alt="userPhoto" src={globals.user.photoLink} referrerPolicy="no-referrer" />
               </IconButton>
             </Tooltip>
             <Menu

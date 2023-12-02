@@ -13,7 +13,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import globals from "./globals";
+import globals from "./utils/globals";
 
 
 const lightMode = createTheme({
@@ -72,6 +72,12 @@ export default function App() {
                   {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
             </IconButton>
             <Signup theme = {theme} />
+          </>
+        } />
+        <Route path="testing" element={
+          <>
+            <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+            <Home />
           </>
         } />
         <Route path="/confirmEmail" element={

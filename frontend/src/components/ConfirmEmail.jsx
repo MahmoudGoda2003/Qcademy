@@ -2,7 +2,7 @@ import { Button, Grid, Paper, Typography } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import globals from "../globals";
+import globals from '../utils/globals';
 import axios from "axios";
 
 
@@ -60,7 +60,7 @@ export default function ConfirmEmail({theme}) {
 
     return (
         <Grid sx={gridStyle}>
-            <img src={theme.palette.mode === 'light'? require("./LogoFull.png") : require("./LogoFullLight.png")}
+            <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
             style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}
             alt="Logo"
             ></img>

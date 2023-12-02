@@ -2,7 +2,7 @@ import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button
 import { useState } from "react";
 import InfoField from "./InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import globals from "../globals";
+import globals from '../utils/globals';
 
 const VisuallyHiddenStyle = {
   clip: 'rect(0 0 0 0)',
@@ -128,6 +128,7 @@ export default function Profile () {
                         <Avatar
                             alt={firstName.toUpperCase()}
                             src={imageUrl}
+                            referrerPolicy="no-referrer"
                             sx={{ width: '20vw', height: '20vw' }}
                         />
                     </IconButton>
