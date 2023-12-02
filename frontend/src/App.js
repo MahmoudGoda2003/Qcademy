@@ -22,7 +22,7 @@ const lightMode = createTheme({
       main: '#3f51b5',
     },
     secondary: {
-      main: '#3d5afe',
+      main: '#00b0ff',
     },
   },
 });
@@ -34,7 +34,7 @@ const darkMode = createTheme({
       main: '#3f51b5',
     },
     secondary: {
-      main: '#3d5afe',
+      main: '#00b0ff',
     },
   },
 });
@@ -51,52 +51,46 @@ export default function App() {
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Routes>
-        <Route path="/home" element={
-          <ProtectedRoute redirectPath={"/login"}>
-            <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-            <Home />
-          </ProtectedRoute>
-        }/>
-        <Route path="/profile" element={
-          <ProtectedRoute redirectPath={"/login"}>
-            <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-            <Profile />
-          </ProtectedRoute>
-        }/>
-        <Route path="signup" element={
-          <>
-            <IconButton onClick={toggleColorMode} color="inherit">
-                  {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
-            </IconButton>
-            <Signup theme = {theme} />
-          </>
-        } />
-        <Route path="testing" element={
-          <>
-            <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-            <Home />
-          </>
-        } />
-        <Route path="/confirmEmail" element={
-          <ProtectedRoute redirectPath={"/login"}>
-            <IconButton onClick={toggleColorMode} color="inherit">
-                  {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
-            </IconButton>
-            <ConfirmEmail theme = {theme} />
-          </ProtectedRoute>
-        }/>
-        <Route path="login" element={
-          <>
-              <IconButton onClick={toggleColorMode} color="inherit">
-                  {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
-              </IconButton>
-              <Login theme = {theme} />
-          </>
-        } />
-      </Routes>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+          <Routes>
+            <Route path="/home" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <Home />
+              </ProtectedRoute>
+            }/>
+            <Route path="/profile" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <Profile />
+              </ProtectedRoute>
+            }/>
+            <Route path="signup" element={
+              <>
+                <IconButton onClick={toggleColorMode} color="inherit">
+                      {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+                </IconButton>
+                <Signup theme = {theme} />
+              </>
+            } />
+            <Route path="/confirmEmail" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <IconButton onClick={toggleColorMode} color="inherit">
+                      {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+                </IconButton>
+                <ConfirmEmail theme = {theme} />
+              </ProtectedRoute>
+            }/>
+            <Route path="login" element={
+              <>
+                  <IconButton onClick={toggleColorMode} color="inherit">
+                      {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+                  </IconButton>
+                  <Login theme = {theme} />
+              </>
+            } />
+          </Routes>
       </ThemeProvider>
     </>
   );

@@ -1,4 +1,5 @@
 export default {
+
     gridStyle : {
         margin: '2vh',
         padding: '2vh',
@@ -39,5 +40,42 @@ export default {
         flexDirection: 'row',
         margin: '2vh 0vh auto',
         width: '90%'
+    },
+
+    modalStyle : {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    },
+
+    hiddenModalStyle : {
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute',
+        alignItems: 'center',
+        top: '35%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'transparent',
+        border: 'none',
+    },
+
+    VisuallyHiddenStyle : {
+        clip: 'rect(0 0 0 0)',
+        clipPath: 'inset(50%)',
+        height: 1,
+        overflow: 'hidden',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        whiteSpace: 'nowrap',
+        width: 1,
     },
 }

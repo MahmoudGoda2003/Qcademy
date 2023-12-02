@@ -1,22 +1,9 @@
-import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button } from "@mui/material";
+import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
 import { useState } from "react";
 import InfoField from "./InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import globals from '../utils/globals';
-
-const VisuallyHiddenStyle = {
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-};
-
-
+import styles from "../utils/styles";
 
 const getRank = (coursesCompleted) => {
     switch(parseInt(coursesCompleted/5)){
@@ -28,20 +15,6 @@ const getRank = (coursesCompleted) => {
             return "Unranked"
     }
 }
-
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
-
 
 
 export default function Profile () {
@@ -85,12 +58,20 @@ export default function Profile () {
     return (
         <>
             <Modal
-                    open={modal}
-                    onClose={closeHandler}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={modalStyle}>
+                open={modal}
+                onClose={closeHandler}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                closeAfterTransition
+                slots={{ backdrop: Backdrop }}
+                slotProps={{
+                    backdrop: {
+                    timeout: 250,
+                    },
+                }}
+            >
+                <Fade in={modal}>
+                    <Box sx={styles.modalStyle}>
                         <Stack alignItems={'center'}>
                             <Typography id="modal-modal-title" variant="h5" component="h2">
                                 Upload Your Profile Image
@@ -106,7 +87,7 @@ export default function Profile () {
                                 margin:'1vh'
                             }} variant="contained" startIcon={<CloudUploadIcon />}>
                                 Upload Image
-                                <Input sx={VisuallyHiddenStyle} type="file" onChange={chooseImage}/>
+                                <Input sx={styles.VisuallyHiddenStyle} type="file" onChange={chooseImage}/>
                             </Button>
                             <Button variant="outlined" sx={{
                                 margin:'1vh'
@@ -114,6 +95,7 @@ export default function Profile () {
                             onClick={uploadImage}>Confirm</Button>
                         </Stack>
                     </Box>
+                </Fade>
             </Modal>
             <Stack direction={'row'} sx={{marginLeft:'auto', justifyContent:'center', alignItems: 'center'}}>
 
