@@ -1,8 +1,6 @@
 package com.example.backend.exceptions.exptionsHandler;
 
-import com.example.backend.exceptions.exceptions.LoginDataNotValidException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import com.example.backend.exceptions.exception.LoginDataNotValidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -1,7 +1,6 @@
-package com.example.backend.Person.DTO;
+package com.example.backend.person.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter

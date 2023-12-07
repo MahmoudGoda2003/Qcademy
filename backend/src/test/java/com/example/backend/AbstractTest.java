@@ -1,6 +1,5 @@
 package com.example.backend;
 
-import com.example.backend.Person.PersonController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.runner.RunWith;

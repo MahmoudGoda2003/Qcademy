@@ -1,6 +1,6 @@
-package com.example.backend.Person.DTO;
+package com.example.backend.person.dto;
 
-import com.example.backend.Person.model.Person;
+import com.example.backend.person.model.Person;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
@@ -8,9 +8,7 @@ import org.modelmapper.ModelMapper;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class PersonMainInfoDTO {
-
     private String firstName;
     private String lastName;
 

@@ -1,6 +1,6 @@
 package com.example.backend.PersonTests;
-import com.example.backend.Person.model.Person;
-import com.example.backend.Person.repository.PersonRepository;
+import com.example.backend.person.model.Person;
+import com.example.backend.person.repository.PersonRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -115,7 +115,6 @@ class PersonRepositoryTest {
     }
     @Test
     void test_save_NullConstraintViolation() {
-
         Person nullPerson = new Person();
         nullPerson.setFirstName("Mohamed");
         nullPerson.setFirstName("yousef");
