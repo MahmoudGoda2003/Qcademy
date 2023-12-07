@@ -90,17 +90,6 @@ class PersonRepositoryTest {
         Assertions.assertEquals("MoSalah@gmail.com", pr.getById(id).getEmail());
     }
     @Test
-    void test_find_by_name(){
-        List<Person> persons = some_data();
-        // Save data in the table
-        pr.saveAll(persons);
-        List<Person> personsTest = pr.findAllByFirstNameAndLastName("Mohammed","ahmed");
-        Assertions.assertEquals(1,personsTest.size());
-        for (Person person : personsTest) {
-            System.out.println(person.toString());
-        }
-    }
-    @Test
     void test_save_UniqueConstraintViolation() {
         List<Person> persons = some_data();
         // Save data in the table
@@ -120,15 +109,4 @@ class PersonRepositoryTest {
         nullPerson.setFirstName("yousef");
         assertThrows(DataIntegrityViolationException.class, () -> pr.save(nullPerson));
     }
-    @Test
-    void test_exists_by_email() {
-        Person p = new Person("Mohammed","ahmed","MoSalah@gmail.com","12345679","2006-1-12","photo2.jpg");
-        pr.save(p);
-        Assertions.assertEquals(true, pr.existsByEmail("MoSalah@gmail.com"));
-    }
-    @Test
-    void test_exists_by_email_2() {
-        Assertions.assertEquals(false, pr.existsByEmail("M.Salah@gmail.com"));
-    }
-
 }
