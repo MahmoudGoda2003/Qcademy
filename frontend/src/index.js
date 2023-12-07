@@ -5,8 +5,7 @@ import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import globals from './globals';
-
+import globals from './utils/globals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

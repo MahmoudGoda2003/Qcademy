@@ -1,22 +1,9 @@
-import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button } from "@mui/material";
-import { useState } from "react";
+import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
+import { useState, useEffect } from "react";
 import InfoField from "./InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import globals from "../globals";
-
-const VisuallyHiddenStyle = {
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-};
-
-
+import globals from '../utils/globals';
+import styles from "../utils/styles";
 
 const getRank = (coursesCompleted) => {
     switch(parseInt(coursesCompleted/5)){
@@ -28,20 +15,6 @@ const getRank = (coursesCompleted) => {
             return "Unranked"
     }
 }
-
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
-
-
 
 
 export default function Profile () {
@@ -58,6 +31,14 @@ export default function Profile () {
     const [modal, setModal] = useState(false)
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null)
+
+    useEffect(() => {
+        globals.user.firstName = firstName;
+        globals.user.lastName = lastName;
+        globals.user.education = education;
+        globals.user.phone = phone;
+        globals.user.photoLink = imageUrl;
+    })
 
     const chooseImage = (e) => {
         setTempImageUrl(URL.createObjectURL(e.target.files[0]));
@@ -85,12 +66,20 @@ export default function Profile () {
     return (
         <>
             <Modal
-                    open={modal}
-                    onClose={closeHandler}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={modalStyle}>
+                open={modal}
+                onClose={closeHandler}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                closeAfterTransition
+                slots={{ backdrop: Backdrop }}
+                slotProps={{
+                    backdrop: {
+                    timeout: 250,
+                    },
+                }}
+            >
+                <Fade in={modal}>
+                    <Box sx={styles.modalStyle}>
                         <Stack alignItems={'center'}>
                             <Typography id="modal-modal-title" variant="h5" component="h2">
                                 Upload Your Profile Image
@@ -106,7 +95,7 @@ export default function Profile () {
                                 margin:'1vh'
                             }} variant="contained" startIcon={<CloudUploadIcon />}>
                                 Upload Image
-                                <Input sx={VisuallyHiddenStyle} type="file" onChange={chooseImage}/>
+                                <Input sx={styles.VisuallyHiddenStyle} type="file" onChange={chooseImage}/>
                             </Button>
                             <Button variant="outlined" sx={{
                                 margin:'1vh'
@@ -114,6 +103,7 @@ export default function Profile () {
                             onClick={uploadImage}>Confirm</Button>
                         </Stack>
                     </Box>
+                </Fade>
             </Modal>
             <Stack direction={'row'} sx={{marginLeft:'auto', justifyContent:'center', alignItems: 'center'}}>
 
@@ -128,6 +118,7 @@ export default function Profile () {
                         <Avatar
                             alt={firstName.toUpperCase()}
                             src={imageUrl}
+                            referrerPolicy="no-referrer"
                             sx={{ width: '20vw', height: '20vw' }}
                         />
                     </IconButton>
@@ -148,7 +139,7 @@ export default function Profile () {
                 </Paper>
                 <Stack padding={'1vh'} margin={'1vh'}>
                     <Stack direction={'row'}>
-                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName}></InfoField>
+                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName} onChange={() => {globals.user.firstName = firstName}}></InfoField>
                         <InfoField field={'Last Name'} value={lastName} setValue={setLastName}></InfoField>
                     </Stack>
                     <InfoField field={'Education'} value={education} setValue={setEducation}></InfoField>
