@@ -1,6 +1,7 @@
 package com.example.backend.PersonTests;
 
 import com.example.backend.exceptions.exception.LoginDataNotValidException;
+import com.example.backend.exceptions.exception.WrongDataEnteredException;
 import com.example.backend.person.dto.PersonInfoDTO;
 import com.example.backend.person.dto.PersonMainInfoDTO;
 import com.example.backend.person.dto.SignUpDTO;
@@ -8,6 +9,8 @@ import com.example.backend.person.model.Person;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.Authenticator;
 import com.example.backend.person.service.PersonService;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -96,4 +100,13 @@ class PersonServiceTest {
         assertThrows(HttpClientErrorException.class, () -> ps.signInUsingGoogle(null, "ss"));
         assertThrows(HttpClientErrorException.class, () -> ps.getGoogleObject("ss"));
     }
+
+//    @Test
+//    void test_sendValidationCode() throws MessagingException {
+//       pr.save(new Person("ali", "amr", "aliam@gmail.com", "12345679", "2020-11-12", "photo0.jpg"));
+//       HttpServletResponse response = mock(HttpServletResponse.class);
+//       assertThrows(WrongDataEnteredException.class, () -> ps.sendValidationCode(response, "aliam@gmail.com"));
+//       assertEquals("Email already exists", ps.sendValidationCode(response, "aliam@gmail.com").getBody());
+//    }
+
 }

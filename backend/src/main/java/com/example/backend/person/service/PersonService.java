@@ -66,8 +66,7 @@ public class PersonService {
     }
 
     public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email, String code) throws MessagingException {
-        Person person = this.personRepository.findByEmail(email);
-        if (person != null) {
+        if (personRepository.existsPersonByEmail(email)) {
             throw new WrongDataEnteredException("Email already exists");
         }
         String validationCode = code + email;
@@ -83,8 +82,11 @@ public class PersonService {
         if (validationCookie == null) {
             throw new DataNotFoundException("Try to sign up again");
         }
+        if (personRepository.existsPersonByEmail(signUpDTO.getEmail())) {
+            throw new WrongDataEnteredException("Email already exists");
+        }
         if (!encoder.matches(signUpDTO.getCode() + signUpDTO.getEmail(), validationCookie.getValue())) {
-            throw new WrongDataEnteredException("Wrong code, try again");
+            throw new WrongDataEnteredException("Wrong code, please try again");
         }
         savePerson(Person.convert(signUpDTO));
         return new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
@@ -103,7 +105,7 @@ public class PersonService {
 
     public ResponseEntity<PersonInfoDTO> signInUsingGoogle(HttpServletResponse response, String accessToken) {
             Person person = getGoogleObject(accessToken);
-            if (personRepository.findByEmail(person.getEmail()) == null) {
+            if (!personRepository.existsPersonByEmail(person.getEmail())) {
                 savePerson(person);
             }
             return login(response, person.getEmail(), person.getPassword());

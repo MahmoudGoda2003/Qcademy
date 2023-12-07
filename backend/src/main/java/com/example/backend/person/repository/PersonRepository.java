@@ -16,4 +16,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      * @return Person
      */
     Person findByEmail(String email);
+
+    boolean existsPersonByEmail(String email);
 }

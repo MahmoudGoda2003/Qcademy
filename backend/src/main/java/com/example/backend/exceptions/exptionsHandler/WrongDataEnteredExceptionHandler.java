@@ -18,7 +18,7 @@ public class WrongDataEnteredExceptionHandler {
     @ResponseBody
     Map<String, String> onWrongDataEnteredException(WrongDataEnteredException e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message", e.getLocalizedMessage());
+        error.put("error message", e.getMessage());
         return error;
     }
 }

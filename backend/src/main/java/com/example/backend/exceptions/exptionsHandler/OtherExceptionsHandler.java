@@ -17,7 +17,7 @@ public class OtherExceptionsHandler {
     @ResponseBody
     Map<String, String> onOtherExceptions(Exception e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message", String.valueOf(e));
+        error.put("error message", "");
         return error;
     }
 }

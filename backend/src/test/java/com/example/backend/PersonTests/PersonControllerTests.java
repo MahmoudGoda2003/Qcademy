@@ -1,10 +1,8 @@
 package com.example.backend.PersonTests;
 
 import com.example.backend.AbstractTest;
-import com.example.backend.exceptions.exception.LoginDataNotValidException;
-import com.example.backend.exceptions.exception.WrongDataEnteredException;
-import com.example.backend.person.dto.SignUpDTO;
 import com.example.backend.person.PersonController;
+import com.example.backend.person.dto.SignUpDTO;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.Before;
@@ -17,9 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.client.HttpClientErrorException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 @SpringBootTest
