@@ -1,7 +1,6 @@
 package com.example.backend.Person.repository;
 
 import com.example.backend.Person.model.Person;
-import com.example.backend.Person.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,7 +38,4 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
      */
     @Query("SELECT person.password FROM Person person WHERE person.email = :e")
     String findPasswordByEmail(@Param("e") String email);
-
-    @Query("SELECT person.role FROM Person person WHERE person.id = :userId")
-    Role findRoleById(@Param("userId") Long userId);
 }
