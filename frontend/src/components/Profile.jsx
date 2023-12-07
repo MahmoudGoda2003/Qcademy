@@ -1,5 +1,5 @@
 import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InfoField from "./InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import globals from '../utils/globals';
@@ -31,6 +31,14 @@ export default function Profile () {
     const [modal, setModal] = useState(false)
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null)
+
+    useEffect(() => {
+        globals.user.firstName = firstName;
+        globals.user.lastName = lastName;
+        globals.user.education = education;
+        globals.user.phone = phone;
+        globals.user.photoLink = imageUrl;
+    })
 
     const chooseImage = (e) => {
         setTempImageUrl(URL.createObjectURL(e.target.files[0]));
@@ -131,7 +139,7 @@ export default function Profile () {
                 </Paper>
                 <Stack padding={'1vh'} margin={'1vh'}>
                     <Stack direction={'row'}>
-                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName}></InfoField>
+                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName} onChange={() => {globals.user.firstName = firstName}}></InfoField>
                         <InfoField field={'Last Name'} value={lastName} setValue={setLastName}></InfoField>
                     </Stack>
                     <InfoField field={'Education'} value={education} setValue={setEducation}></InfoField>

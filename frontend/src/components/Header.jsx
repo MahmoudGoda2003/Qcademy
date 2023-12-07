@@ -40,6 +40,12 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
       case "Profile":
         navigate(`/profile`)
         break
+      case "Logout":
+        globals.user = null;
+        localStorage.removeItem("user")
+        navigate(`/login`)
+        console.log(globals.user)
+        break
       default:
     }
   };

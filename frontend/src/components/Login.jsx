@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField, Typography, Checkbox, FormControlLabel, Box, Modal, Backdrop, Fade, CircularProgress } from "@mui/material"
+import { Button, Grid, Paper, TextField, Typography, Box, Modal, Backdrop, Fade, CircularProgress } from "@mui/material"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useGoogleLogin } from '@react-oauth/google';
@@ -13,13 +13,11 @@ export default function Login({theme}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [remember, setRemember] = useState(false);
     const [modal, setModal] = useState(false)
 
     const fields = {
         email: "email",
         password: "password",
-        remember: "remember",
     }
 
     const handleChange = e => {
@@ -36,12 +34,12 @@ export default function Login({theme}) {
                     lastName: result.data.lastName,
                     photoLink: result.data.photoLink
                 }
-                navigate("/home")
+                localStorage.setItem("user", JSON.stringify(globals.user));
+                navigate("/home");
             }catch (error) {
                 alert('An error occurred, please try again later :(')
                 console.error(error);
             }
-            // console.log(response);
         },
         onError: error => console.log(error),
     });
@@ -51,7 +49,6 @@ export default function Login({theme}) {
         const checkUser = {
             email: email,
             password: password,
-            remember: remember,
         }
         setModal(true);
         try {
@@ -69,7 +66,8 @@ export default function Login({theme}) {
                 email: response.data.email,
                 dateOfBirth: response.data.dateOfBirth
             }
-            navigate("/home")
+            localStorage.setItem("user", JSON.stringify(globals.user));
+            navigate("/home");
         } catch (error) {
             alert('Invalid email or password')
             console.error(error);
@@ -133,16 +131,6 @@ export default function Login({theme}) {
                             type={fields.password}
                             name={fields.password}
                             onChange={handleChange}
-                        />
-                        <FormControlLabel
-                            sx={styles.gridElementText}
-                            control={
-                                <Checkbox
-                                    name={fields.remember}
-                                    onChange={() => setRemember(!remember)}
-                                />
-                            }
-                            label="Remember Me"
                         />
                         <Typography sx={styles.gridElementText}>
                             Don't have an account? <Link to='/signup'>Create New Account</Link>

@@ -35,6 +35,7 @@ export default function Signup({theme}) {
         if (event.target.name === fields.lastName) setLastName(event.target.value);
         if (event.target.name === fields.email) setEmail(event.target.value);
         if (event.target.name === fields.password) setPassword(event.target.value);
+        document.getElementById(event.target.id).setCustomValidity("");
     }
 
     const handleSignUp =  async (event) => {
@@ -60,7 +61,6 @@ export default function Signup({theme}) {
     }
 
     const googleLogin = useGoogleLogin({
-        
         onSuccess: async (response) => {
             setModal(true);
             try{
@@ -70,6 +70,7 @@ export default function Signup({theme}) {
                     lastName: result.data.lastName,
                     photoLink: result.data.photoLink
                 }
+                localStorage.setItem("user", JSON.stringify(globals.user));
                 navigate("/home")
             }catch (error) {
                 alert('An error occurred, please try again later :(')
@@ -138,7 +139,13 @@ export default function Signup({theme}) {
                         </Grid>
                         <TextField sx={styles.gridElement} required label="E-mail" type={fields.email} name={fields.email} onChange={handleChange}/>
                         <TextField
+                            onInvalid={() => {
+                                document
+                                .getElementById("password-field")
+                                .setCustomValidity("Password should include the following: \n • Number\n • Lowercase Letter\n • Uppercase Letter\n • Symbol");
+                            }}
                             sx={styles.gridElement}
+                            id="password-field"
                             required
                             label="Password"
                             type="Password"
