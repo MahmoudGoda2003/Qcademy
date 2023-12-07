@@ -6,6 +6,12 @@ import lombok.*;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,9 +35,11 @@ public class Person {
     private String dateOfBirth;
     @Column(name = "photo_link")
     private String photoLink;
+    @Column(name = "role")
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
 
-    @Autowired
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public Person(String firstName, String lastName, String email, String password, String dateOfBirth, String photoLink) {
         this.firstName = firstName;
@@ -40,6 +48,7 @@ public class Person {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.photoLink = photoLink;
+        this.role = Role.STUDENT;
     }
 
     public static Person convert(SignUpDTO signUpDTO) {

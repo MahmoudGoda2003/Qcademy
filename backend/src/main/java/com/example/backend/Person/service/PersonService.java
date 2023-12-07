@@ -4,8 +4,10 @@ import com.example.backend.Person.DTO.PersonInfoDTO;
 import com.example.backend.Person.DTO.SignUpDTO;
 import com.example.backend.Person.model.OTP;
 import com.example.backend.Person.model.Person;
+import com.example.backend.Person.model.Role;
 import com.example.backend.Person.repository.OTPRepository;
 import com.example.backend.Person.repository.PersonRepository;
+import com.example.backend.Services.JwtService;
 import com.example.backend.Services.MailSenderService;
 import com.example.backend.exceptions.exceptions.DataNotFoundException;
 import com.example.backend.exceptions.exceptions.LoginDataNotValidException;
@@ -35,7 +37,7 @@ public class PersonService {
     @Autowired
     private final MailSenderService mailSenderService;
     @Autowired
-    private final Authenticator authenticator = new Authenticator();
+    private final JwtService authenticator = new JwtService();
     private final PasswordEncoder encoder = new BCryptPasswordEncoder();
     private final Random random = new Random();
 
@@ -126,5 +128,10 @@ public class PersonService {
         String token = authenticator.createToken(person, false, false);
         if (response!=null) response.addCookie(createSessionCookie(token));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(PersonInfoDTO.convert(person));
+    }
+
+
+    public Role getUserRole(Long userId) {
+        return personRepository.findRoleById(userId);
     }
 }
