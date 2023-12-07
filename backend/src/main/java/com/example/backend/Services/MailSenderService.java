@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 public class MailSenderService {
     @Autowired
     private final JavaMailSender mailSender;
-    private String  htmlBody;
+    private final String  htmlBody;
 
     public MailSenderService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
