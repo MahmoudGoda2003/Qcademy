@@ -37,7 +37,7 @@ public class Person {
     private String photoLink;
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
-    private Role role;
+    private Role role = Role.STUDENT;
 
     private static ModelMapper modelMapper = new ModelMapper();
 
@@ -48,7 +48,6 @@ public class Person {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.photoLink = photoLink;
-        this.role = Role.STUDENT;
     }
 
     public static Person convert(SignUpDTO signUpDTO) {

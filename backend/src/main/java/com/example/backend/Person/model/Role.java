@@ -2,5 +2,6 @@ package com.example.backend.Person.model;
 
 public enum Role {
     STUDENT,
-    ADMIN
+    ADMIN,
+    TEACHER
 }

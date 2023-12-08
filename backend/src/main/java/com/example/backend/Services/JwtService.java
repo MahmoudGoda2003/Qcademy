@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    @Value("${JwtSecret}")
-    private static String JWT_SECRET;
+    @Value("${jwt.secret}")
+    private String JWT_SECRET;
 
     public JwtService() { }
 
@@ -40,16 +41,16 @@ public class JwtService {
         return (role == actualRole) && !(expirationDate.before(new Date()));
     }
 
-    private static Claims extractAllClaims(String jwt){
+    private Claims extractAllClaims(String jwt){
         return Jwts
                 .parserBuilder()
-                .setSigningKey(getSecretKey())
+                .setSigningKey(this.getSecretKey())
                 .build()
                 .parseClaimsJws(jwt)
                 .getBody();
     }
 
-    private static Key getSecretKey() {
+    private Key getSecretKey() {
         byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }

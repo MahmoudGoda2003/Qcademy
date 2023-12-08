@@ -29,9 +29,7 @@ import java.security.Security;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -45,33 +43,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         String jwt = null;
         for (Cookie cookie : cookies) {
-            if ("jwt".equals(cookie.getName())) {
+            if ("qcademy".equals(cookie.getName())) {
                 jwt = cookie.getValue();
-                System.out.println(cookie);
             }
         }
         if(jwt == null){
             filterChain.doFilter(request, response);
             return;
         }
-
         Long userId = jwtService.extractUserId(jwt);
         Role actualRole = personService.getUserRole(userId);
-        if(actualRole != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            if(jwtService.isTokenValid(jwt, actualRole)){
-                UserDetails personUserDetails = new PersonUserDetails(userId, actualRole);
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        personUserDetails,
-                        null,
-                        personUserDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            }
+        if((actualRole != null)
+                && (SecurityContextHolder.getContext().getAuthentication() == null)
+                && (jwtService.isTokenValid(jwt, actualRole)))
+        {
+            UserDetails personUserDetails = new PersonUserDetails(userId, actualRole);
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    personUserDetails,
+                    null,
+                    personUserDetails.getAuthorities()
+            );
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authToken);
         }
-
         filterChain.doFilter(request, response);
     }
 }

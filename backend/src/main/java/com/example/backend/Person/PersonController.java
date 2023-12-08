@@ -21,13 +21,11 @@ public class PersonController {
     }
 
     @PostMapping("/signup")
-    @Async
     public ResponseEntity<String> signUp(@RequestBody String email) throws MessagingException {
         return personService.sendOTP(email);
     }
 
     @PostMapping("/signup/validate")
-    @Async
     public ResponseEntity<String> validateOTP(@RequestBody SignUpDTO signUpDTO){
         return personService.validateOTP(signUpDTO);
     }
