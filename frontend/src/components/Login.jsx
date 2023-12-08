@@ -32,7 +32,10 @@ export default function Login({theme}) {
                 globals.user = {
                     firstName: result.data.firstName,
                     lastName: result.data.lastName,
-                    photoLink: result.data.photoLink
+                    photoLink: result.data.photoLink,
+                    phone: result.data.phone,
+                    education: result.data.education,
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960'
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 navigate("/home");
@@ -64,7 +67,9 @@ export default function Login({theme}) {
                 lastName: response.data.lastName,
                 photoLink: response.data.photoLink,
                 email: response.data.email,
-                dateOfBirth: response.data.dateOfBirth
+                dateOfBirth: response.data.dateOfBirth,
+                phone: response.data.phone,
+                education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960'
             }
             localStorage.setItem("user", JSON.stringify(globals.user));
             navigate("/home");

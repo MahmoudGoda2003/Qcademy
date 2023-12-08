@@ -4,6 +4,8 @@ import InfoField from "./InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import globals from '../utils/globals';
 import styles from "../utils/styles";
+import DateField from "./DateField";
+import axios from "axios";
 
 const getRank = (coursesCompleted) => {
     switch(parseInt(coursesCompleted/5)){
@@ -21,23 +23,28 @@ export default function Profile () {
 
     const [firstName, setFirstName] = useState(globals.user.firstName);
     const [lastName, setLastName] = useState(globals.user.lastName);
-    const [education, setEducation] = useState('school');
-    const [phone, setPhone] = useState('0222021908');
-    const [imageUrl, setImageUrl] = useState((globals.user.photoLink)? globals.user.photoLink: '');
+    const [education, setEducation] = useState((globals.user.education));
+    const [phone, setPhone] = useState((globals.user.phone));
+    const [dateOfBirth, setDob] = useState((globals.user.dateOfBirth));
+    const [imageUrl, setImageUrl] = useState((globals.user.photoLink));
+
+    //To be changed upon handling in the backend
     const [enrolledCourses, setEnrolledCourses] = useState(11);
     const [completedCourses, setCompletedCourses] = useState(19);
-
-    const [dob, setDob] = useState((globals.user.dateOfBirth)? globals.user.dateOfBirth: 'You didn\'t tell me <:^(');
+    
     const [modal, setModal] = useState(false)
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null)
 
     useEffect(() => {
-        globals.user.firstName = firstName;
-        globals.user.lastName = lastName;
-        globals.user.education = education;
-        globals.user.phone = phone;
-        globals.user.photoLink = imageUrl;
+        globals.user.firstName = firstName
+        globals.user.lastName = lastName
+        globals.user.education = education
+        globals.user.dateOfBirth = dateOfBirth.$D + '-' + (dateOfBirth.$M+1) + '-' + dateOfBirth.$y
+        globals.user.photoLink = imageUrl
+        globals.user.phone = phone
+        localStorage.setItem("user", JSON.stringify(globals.user));
+        //axios.post(`${globals.baseURL}/person/test`, globals.user)       modify when routine is added in backend
     })
 
     const chooseImage = (e) => {
@@ -139,12 +146,12 @@ export default function Profile () {
                 </Paper>
                 <Stack padding={'1vh'} margin={'1vh'}>
                     <Stack direction={'row'}>
-                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName} onChange={() => {globals.user.firstName = firstName}}></InfoField>
+                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName}></InfoField>
                         <InfoField field={'Last Name'} value={lastName} setValue={setLastName}></InfoField>
                     </Stack>
                     <InfoField field={'Education'} value={education} setValue={setEducation}></InfoField>
                     <InfoField field={'Phone Number'} value={phone} setValue={setPhone}></InfoField>
-                    <InfoField field={'Date Of Birth'} value={dob} setValue={setDob}></InfoField>
+                    <DateField field={'Date Of Birth'} value={dateOfBirth} setValue={setDob}></DateField>
                 </Stack>
             </Stack>
         </>

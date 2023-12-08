@@ -68,7 +68,10 @@ export default function Signup({theme}) {
                 globals.user = {
                     firstName: result.data.firstName,
                     lastName: result.data.lastName,
-                    photoLink: result.data.photoLink
+                    photoLink: result.data.photoLink,
+                    phone: result.data.phone? result.data.phone : '',
+                    education: result.data.education? result.data.education : '',
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960'
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 navigate("/home")
@@ -181,6 +184,7 @@ export default function Signup({theme}) {
                                 sx={styles.gridElement}
                                 required 
                                 disableFuture
+                                format="DD/MM/YYYY"
                                 label="Birth date"
                                 value={DOB}
                                 slotProps={{
