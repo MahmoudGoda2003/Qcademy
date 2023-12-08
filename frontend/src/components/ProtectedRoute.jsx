@@ -7,7 +7,6 @@ export default function ProtectedRoute ({
   })
   {
     globals.user = JSON.parse(localStorage.getItem("user"))
-    console.log(globals.user);
     if (!globals.user) {
       return <Navigate to={redirectPath} replace />;
     }

@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField, Typography, LinearProgress, Modal, Backdrop, Fade, Box, CircularProgress } from "@mui/material"
+import { Button, Grid, Paper, TextField, Typography, LinearProgress } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -9,6 +9,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import axios from 'axios'
 import globals from '../utils/globals';
 import styles from "../utils/styles";
+import LoadingModal from "./LoadingModal";
 
 
 export default function Signup({theme}) {
@@ -40,6 +41,7 @@ export default function Signup({theme}) {
 
     const handleSignUp =  async (event) => {
         event.preventDefault();
+        setModal(true);
         const user = {
             firstName: firstName,
             lastName: lastName,
@@ -47,8 +49,6 @@ export default function Signup({theme}) {
             password: password,
             dateOfBirth: DOB.$D + "-" + DOB.$M + "-" + DOB.$y
         }
-        // TODO: send info to backend
-        setModal(true);
         try {
             await axios.post(`${globals.baseURL}/person/signup`, user.email, {headers: {"Content-Type": "text/plain"}})
             globals.user = user;
@@ -89,26 +89,7 @@ export default function Signup({theme}) {
 
     return (
         <>
-            <Modal
-                open={modal}
-                onClose={closeModal}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                    timeout: 250,
-                    },
-                }}
-                >
-                    <Fade in={modal}>
-                        <Box sx={styles.hiddenModalStyle}>
-                        <Typography color={'white'} margin={'2vh'} fontSize={20}>Processing Your Info...</Typography>
-                        <CircularProgress margin={'1vh'} color="secondary" />
-                        </Box>
-                    </Fade>
-            </Modal>
+            <LoadingModal open={modal} handleClose={closeModal} message={'Proccessing your info'} />
             <Grid sx={styles.gridStyle}>
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
                 style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}

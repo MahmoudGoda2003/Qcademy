@@ -14,7 +14,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import globals from "./utils/globals";
 
 
 const lightMode = createTheme({
@@ -63,6 +62,12 @@ export default function App() {
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
                 <Profile />
+              </ProtectedRoute>
+            }/>
+            <Route path="/teacher" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <TeacherHome />
               </ProtectedRoute>
             }/>
             <Route path="/signup" element={
