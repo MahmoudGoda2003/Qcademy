@@ -9,7 +9,7 @@ export default function InfoField ({field, value, setValue}) {
 
     const changeValue = (e) => {
         setEdit(false);
-        if (field='Phone Number'&&(isNaN(e.target.value)||!isInteger(e.target.value))) alert("Please enter a valid number");
+        if (field==='Phone Number'&&(isNaN(e.target.value)||!isInteger(e.target.value))) alert("Please enter a valid number");
         else setValue(e.target.value);;
     }
 

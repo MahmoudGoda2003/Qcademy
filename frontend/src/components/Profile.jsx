@@ -52,13 +52,18 @@ export default function Profile () {
         setImageFile(e.target.files[0]);
     }
 
-    const uploadImage = () => {
+    const uploadImage = async (event) => {
         if(imageFile == null)
             return
         /// send imagefile to backend
-        setImageUrl(tempImageUrl)
-        setImageFile(null)
-        closeHandler()
+        try {
+            const result = await axios.post(`https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5&source=`+tempImageUrl, {})
+            setImageUrl(result.image.url)
+            setImageFile(null)
+            closeHandler()
+        } catch (error) {
+            alert("internal server error, try again later")
+        }
     }
     
     const openHandler = () => {
