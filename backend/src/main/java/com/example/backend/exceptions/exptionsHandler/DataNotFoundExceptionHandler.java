@@ -1,6 +1,8 @@
 package com.example.backend.exceptions.exptionsHandler;
 
 import com.example.backend.exceptions.exception.DataNotFoundException;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class DataNotFoundExceptionHandler {
 
     @ExceptionHandler(DataNotFoundException.class)
