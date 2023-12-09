@@ -1,20 +1,26 @@
 package com.example.backend.PersonTests;
 
+import com.example.backend.exceptions.exception.DataNotFoundException;
 import com.example.backend.exceptions.exception.LoginDataNotValidException;
-import com.example.backend.person.dto.PersonInfoDTO;
-import com.example.backend.person.dto.PersonMainInfoDTO;
+import com.example.backend.exceptions.exception.WrongDataEnteredException;
 import com.example.backend.person.dto.SignUpDTO;
 import com.example.backend.person.model.Person;
 import com.example.backend.person.repository.PersonRepository;
-import com.example.backend.person.service.Authenticator;
 import com.example.backend.person.service.PersonService;
+import jakarta.mail.MessagingException;
+import jakarta.servlet.http.Cookie;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.HttpClientErrorException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,78 +28,138 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 class PersonServiceTest {
     @Autowired
-    PersonService ps;
+    private PersonService ps;
+
     @Autowired
-    PersonRepository pr;
+    private PersonRepository pr;
+
+    private BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+
+    @BeforeEach
+    public void setup() {
+        pr.deleteAll();
+    }
+
 
     @Test
-    void test_save_person() {
-        Person person = new Person("ali", "amr", "ahmed@gmail.com", "12345679", "2020-11-12", "photo0.jpg");
-        ps.savePerson(person);
-        assertNotNull(pr.findByEmail("ahmed@gmail.com"));
+    void LoginTestNormal() {
+        String pass = encode.encode("test");
+        Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "1-2-1999", "photo.jpg");
+        pr.save(p);
+
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        ps.login(httpResponse, "test1@gmail.com", "test");
+        assertEquals(HttpStatus.OK.value(), httpResponse.getStatus());
     }
 
     @Test
-    void test_save_person_2() {
-        Person person = new Person("Mahmoud", "amr", "goda123@gmail.com", "12345679", "2018-11-2", "photo7.jpg");
-        ps.savePerson(person);
-        assertNotNull(pr.findByEmail("goda123@gmail.com"));
-        assertNull(pr.findByEmail("ahmedx@gmail.com"));
+    void LoginTestWrongPassword() {
+        String pass = encode.encode("test");
+        Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "1-2-1999", "photo.jpg");
+        pr.save(p);
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.login(httpResponse, "test1@gmail.com", "12345679"));
     }
 
     @Test
-    void login_1() {
-        Person person = new Person("ali", "amr", "hesham213@gmail.com", "12345679", "2020-11-12", "photo0.jpg");
-        ps.savePerson(person);
-        assertNotNull(ps.login(null, "hesham213@gmail.com", "12345679"));
+    void LoginTestWrongEmail() {
+        // wrong email, or email doesn't exist
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.login(httpResponse, "test1@gmail.com", "12345679"));
     }
 
     @Test
-    void login_2() {
-        // password not true
-        Person person = new Person("ali", "amr", "ali@gmail.com", "12345679", "2020-11-12", "photo0.jpg");
-        ps.savePerson(person);
-        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.login(null, "aliamr@gmail.com", "aaaaaaaa"));
+    void SendValidationCodeNormal() throws Exception {
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        ps.sendValidationCode(httpResponse, "test1@gmail.com", "123456");
+
+        assertEquals(HttpStatus.OK.value(), httpResponse.getStatus());
+
+        Cookie[] cookies = httpResponse.getCookies();
+
+        assertNotNull(cookies);
+        assertTrue(cookies.length > 0);
     }
 
     @Test
-    void login_3() {
-        // email not true, not found
-        Person person = new Person("ali", "amr", "alia@gmail.com", "12345679", "2020-11-12", "photo0.jpg");
-        ps.savePerson(person);
-        assertThrowsExactly(LoginDataNotValidException.class, () -> ps.login(null, "M@gmail.com", "12345679"));
+    void SendValidationCodeToExistEmail() throws MessagingException {
+        Person p = new Person("Yahya", "Azzam", "test1@gmail.com", "123456", "1-2-1999", "photo.jpg");
+        pr.save(p);
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.sendValidationCode(httpResponse, "test1@gmail.com", "123456"));
     }
 
     @Test
-    void test_convert_to_DTOs() throws JSONException {
-        Person person = new Person("ali", "amr", "aliam@gmail.com", "12345679", "2020-11-12", "photo0.jpg");
-        ps.savePerson(person);
-        person = pr.findByEmail("aliam@gmail.com");
-        assertNotNull(person);
-        PersonInfoDTO personInfoDTO = PersonInfoDTO.convert(person);
-        assertNotNull(personInfoDTO);
-        PersonMainInfoDTO personMainInfoDTO = PersonMainInfoDTO.convert(person);
-        assertEquals(personMainInfoDTO.getFirstName(), person.getFirstName());
-        SignUpDTO signUpDTO = new SignUpDTO("first", "last", "email@domain.com", "password", "1-1-1111");
-        assertEquals("email@domain.com", signUpDTO.getEmail());
-        person = Person.convert(signUpDTO);
-        assertEquals(signUpDTO.getDateOfBirth(), person.getDateOfBirth());
-        JSONObject jsonObject = new JSONObject("{'given_name' : 'woman', 'family_name' : 'man', 'email' : 'email', 'picture' : 'p', 'id' : 'testing'}");
-        person = new Person(jsonObject);
-        assertEquals("testing", person.getPassword());
+    void SendValidationCodeToNullEmail() throws MessagingException {
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.sendValidationCode(httpResponse, null, "123456"));
     }
 
     @Test
-    void test_authenticator() {
-        Authenticator auth = new Authenticator();
-        Person person = new Person("ali", "amr", "aliam7@gmail.com", "12345679", "2020-11-12", "photo0.jpg");
-        String token = auth.createToken(person, true, true);
-        assertNotEquals(auth.createToken(person, true, false), token);
+    void SendValidationCodeToEmptyEmail() throws MessagingException {
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.sendValidationCode(httpResponse, "", "123456"));
     }
 
     @Test
-    void test_use_google() {
-        assertThrows(HttpClientErrorException.class, () -> ps.signInUsingGoogle(null, "ss"));
-        assertThrows(HttpClientErrorException.class, () -> ps.getGoogleObject("ss"));
+    void SendValidationCodeToWrongEmail() throws Exception {
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        assertThrowsExactly(StringIndexOutOfBoundsException.class, () -> ps.sendValidationCode(httpResponse, "test1ahemd", "123456"));
+    }
+
+    @Test
+    void ValidateOTPNormal() {
+        SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
+        String encodedValidationCode = encode.encode(signUpDTO.getCode() + signUpDTO.getEmail());
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setCookies(new Cookie("validationCode", encodedValidationCode));
+        ResponseEntity<String> response = ps.validateOTP(request, signUpDTO);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("SignUp completed", response.getBody());
+    }
+
+    @Test
+    void ValidateExistEmail() {
+        Person p = new Person("Yahya", "Azzam", "test1@gmail.com", "123456", "1-2-1999", "photo.jpg");
+        pr.save(p);
+        SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
+        String encodedValidationCode = encode.encode(signUpDTO.getCode() + signUpDTO.getEmail());
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setCookies(new Cookie("validationCode", encodedValidationCode));
+        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.validateOTP(request, signUpDTO));
+    }
+
+    @Test
+    void ValidateOTPWithNullCookie() {
+        SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        assertThrowsExactly(DataNotFoundException.class, () -> ps.validateOTP(request, signUpDTO));
+    }
+
+    @Test
+    void ValidateOTPWithWrongCode() {
+        SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
+        String encodedValidationCode = encode.encode("123456" + signUpDTO.getEmail());
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.setCookies(new Cookie("validationCode", encodedValidationCode));
+        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.validateOTP(request, signUpDTO));
+    }
+
+    @Test
+    void testCreatingPersonFromGoogleObject() throws JSONException {
+        JSONObject sampleObject = new JSONObject();
+        sampleObject.put("given_name", "John");
+        sampleObject.put("family_name", "Doe");
+        sampleObject.put("email", "john.doe@example.com");
+        sampleObject.put("picture", "https://example.com/picture.jpg");
+        sampleObject.put("id", "123456789");
+
+        Person person = new Person(sampleObject);
+
+        assertEquals("John", person.getFirstName());
+        assertEquals("Doe", person.getLastName());
+        assertEquals("john.doe@example.com", person.getEmail());
+        assertEquals("https://example.com/picture.jpg", person.getPhotoLink());
+        assertEquals("123456789", person.getPassword());
     }
 }

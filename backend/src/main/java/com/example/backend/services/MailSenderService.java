@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -40,6 +41,7 @@ public class MailSenderService {
         return template;
     }
 
+    @SneakyThrows
     public void sendNewMail(String to, String code) throws MessagingException {
         String replacedHtmlBody = replacePlaceholders(htmlBody, to.substring(0, to.indexOf('@')), code);
 
