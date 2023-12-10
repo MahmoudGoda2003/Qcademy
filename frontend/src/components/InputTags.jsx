@@ -1,5 +1,4 @@
-import { Cancel, Tag } from "@mui/icons-material";
-import { Chip, FormControl, Grid, Stack, TextField, Typography } from "@mui/material";
+import { Chip, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRef, useState } from "react";
 
@@ -16,18 +15,17 @@ const Tags = ({ data, handleDelete }) => {
   );
 };
 
-export default function InputTags() {
-  const [tags, SetTags] = useState([]);
+export default function InputTags({tags, setTags}) {
   const tagRef = useRef();
 
   const handleDelete = (value) => {
     const newtags = tags.filter((val) => val !== value);
-    SetTags(newtags);
+    setTags(newtags);
   };
   const handleOnSubmit = (e) => {
     e.preventDefault();
     if (tags.includes(tagRef.current.value)) return;
-    SetTags([...tags, tagRef.current.value]);
+    setTags([...tags, tagRef.current.value]);
     tagRef.current.value = "";
   };
   return (

@@ -68,6 +68,8 @@ export default function Teacher(props) {
     }]
 
     const [open, setOpen] = useState(false);
+    const [courses, setCourses] = useState(globals.user.courses);
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -77,13 +79,17 @@ export default function Teacher(props) {
         setOpen(false);
     };
 
+    const CreateCourse = (course) => {
+        setCourses(courses => [...courses, course]);
+    }
+
     const TextStyle = { fontFamily: 'Segoe Ui', fontWeight: 'lighter' };
-    
+
     const TextStyle2 = { color: 'gray' };
 
     return (
         <>
-            {(globals.user.courses === 0) ?
+            {(courses === 0) ?
                 <>
                     <Typography variant='h3' marginTop='5vh' marginLeft='10vh' sx={TextStyle}>Manage Your Courses ...</Typography>
                     <Typography variant='h6' marginLeft='15vh' sx={TextStyle}>These Are All The Courses You've Created</Typography>
@@ -102,7 +108,7 @@ export default function Teacher(props) {
                         alignItems="flex-start"
                         padding={3}
                     >
-                        {globals.user.courses.map((course, index) => (
+                        {courses.map((course, index) => (
                             <CourseCard
                                 key={index}
                                 name={course.name}
@@ -119,7 +125,7 @@ export default function Teacher(props) {
                     <Fab color="secondary" aria-label="add" sx={{ position: 'fixed', bottom: 50, right: 10 }} onClick={handleClickOpen}>
                         <AddIcon />
                     </Fab>
-                    <CreateCourses open={open} handleClose={handleClose} />
+                    <CreateCourses open={open} handleClose={handleClose} onCreateCourse={CreateCourse} />
 
                 </>
             }

@@ -23,13 +23,14 @@ const VisuallyHiddenStyle = {
     whiteSpace: 'nowrap',
 };
 
-export default function CreateCourse({ open, handleClose }) {
+export default function CreateCourse({ open, handleClose, onCreateCourse }) {
 
     const [imageUrl, setImageUrl] = useState();
     const [title, setTitle] = useState();
     const [description, setDescription] = useState();
     const [startDate, setStartDate] = useState();
     const [duration, setDuration] = useState();
+    const [tags, setTags] = useState([]);
 
     const chooseImage = (e) => {
         setImageUrl(URL.createObjectURL(e.target.files[0]));
@@ -49,10 +50,15 @@ export default function CreateCourse({ open, handleClose }) {
         const course =  {
             name: title,
             description: description,
-            image: imageUrl
+            image: imageUrl,
+            startDate: startDate,
+            duration: duration,
+            tags: tags,
+            teacherName: globals.user.firstName + " " + globals.user.lastName,
         }
-        globals.user.courses.push(course)
-        console.log(globals.user.courses)
+        onCreateCourse(course);
+        handleClose();
+        /***** TODO: add course to database *****/
     }
 
 
@@ -112,13 +118,12 @@ export default function CreateCourse({ open, handleClose }) {
                         rows={5}
                         onChange={handleChange}
                     />
-                    <InputTags />
+                    <InputTags tags={tags} setTags={setTags} />
                     <Stack direction={'row'}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 sx={{margin: '2vh 0.5vh'}}
                                 required 
-                                disableFuture
                                 label="Start Date"
                                 value={startDate}
                                 slotProps={{
