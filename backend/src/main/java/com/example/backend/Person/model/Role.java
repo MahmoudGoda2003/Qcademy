@@ -1,4 +1,4 @@
-package com.example.backend.Person.model;
+package com.example.backend.person.model;
 
 public enum Role {
     STUDENT,

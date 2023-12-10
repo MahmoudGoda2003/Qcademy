@@ -1,6 +1,6 @@
-package com.example.backend.Teacher;
+package com.example.backend.teacher;
 
-import com.example.backend.Person.model.Role;
+import com.example.backend.person.model.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

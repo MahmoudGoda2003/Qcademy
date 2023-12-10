@@ -1,9 +1,6 @@
-package com.example.backend.Admin;
+package com.example.backend.admin;
 
-import com.example.backend.Person.model.Role;
-import jakarta.mail.MessagingException;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
+import com.example.backend.person.model.Role;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

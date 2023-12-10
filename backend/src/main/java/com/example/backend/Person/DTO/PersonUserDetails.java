@@ -1,7 +1,7 @@
-package com.example.backend.Person.DTO;
+package com.example.backend.person.dto;
 
 
-import com.example.backend.Person.model.Role;
+import com.example.backend.person.model.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

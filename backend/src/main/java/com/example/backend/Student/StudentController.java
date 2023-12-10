@@ -1,7 +1,6 @@
-package com.example.backend.Student;
+package com.example.backend.student;
 
-import com.example.backend.Person.model.Role;
-import org.springframework.scheduling.annotation.Async;
+import com.example.backend.person.model.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

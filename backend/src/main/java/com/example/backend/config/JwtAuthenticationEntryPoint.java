@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.naming.AuthenticationException;
+
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;

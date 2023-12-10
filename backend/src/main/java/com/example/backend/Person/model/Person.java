@@ -1,17 +1,10 @@
-package com.example.backend.Person.model;
+package com.example.backend.person.model;
 
-import com.example.backend.Person.DTO.SignUpDTO;
+import com.example.backend.person.dto.SignUpDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Getter

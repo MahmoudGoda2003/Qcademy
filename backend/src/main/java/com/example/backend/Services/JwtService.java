@@ -1,16 +1,11 @@
-package com.example.backend.Services;
+package com.example.backend.services;
 
-import com.example.backend.Person.model.Person;
-import com.example.backend.Person.model.Role;
-import com.example.backend.Person.service.PersonService;
+import com.example.backend.person.model.Person;
+import com.example.backend.person.model.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
