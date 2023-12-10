@@ -123,7 +123,8 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 sx={{margin: '2vh 0.5vh'}}
-                                required 
+                                required
+                                disablePast
                                 label="Start Date"
                                 value={startDate}
                                 slotProps={{

@@ -94,6 +94,14 @@ export default function App() {
                 <ConfirmEmail theme = {theme} />
               </ProtectedRoute>
             }/>
+            <Route path="/teacher" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <IconButton onClick={toggleColorMode} color="inherit">
+                      {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+                </IconButton>
+                <TeacherHome theme = {theme} />
+              </ProtectedRoute>
+            }/>
           </Routes>
       </ThemeProvider>
     </>
