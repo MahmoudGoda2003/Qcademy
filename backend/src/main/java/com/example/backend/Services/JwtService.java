@@ -23,7 +23,7 @@ public class JwtService {
 
     public JwtService() { }
 
-    public String createToken(Person person, boolean isTeacher, boolean isAdmin) {
+    public String createToken(Person person) {
         return Jwts
                 .builder()
                 .setSubject(person.getRole().name())

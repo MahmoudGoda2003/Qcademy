@@ -1,5 +1,4 @@
 package com.example.backend.Person.service;
-
 import com.example.backend.Person.DTO.PersonInfoDTO;
 import com.example.backend.Person.DTO.SignUpDTO;
 import com.example.backend.Person.model.OTP;
@@ -59,7 +58,7 @@ public class PersonService {
         Person person = personRepository.findByEmail(email);
         if(person==null||!encoder.matches(password, person.getPassword()))
             throw new LoginDataNotValidException("password or email isn't valid");
-        String token = authenticator.createToken(person, false, false);
+        String token = authenticator.createToken(person);
         if (response!=null) response.addCookie(createSessionCookie(token));
         return new ResponseEntity<>(PersonInfoDTO.convert(person), HttpStatus.ACCEPTED);
     }
@@ -126,7 +125,7 @@ public class PersonService {
         Person person = getGoogleObject(accessToken);
         if (personRepository.existsByEmail(person.getEmail())) return login(response, person.getEmail(), person.getPassword());
         savePerson(person);
-        String token = authenticator.createToken(person, false, false);
+        String token = authenticator.createToken(person);
         if (response!=null) response.addCookie(createSessionCookie(token));
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(PersonInfoDTO.convert(person));
     }
