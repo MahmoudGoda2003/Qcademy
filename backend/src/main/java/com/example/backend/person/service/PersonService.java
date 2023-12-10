@@ -9,12 +9,12 @@ import com.example.backend.person.model.Person;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.services.CookiesService;
 import com.example.backend.services.MailSenderService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
+
 
 @Service
 public class PersonService {
@@ -31,6 +32,7 @@ public class PersonService {
     private final CookiesService cookiesService;
     private final PasswordEncoder encoder;
     private final Random random;
+    private final String secretKey;
 
     @Autowired
     public PersonService(PersonRepository personRepository, MailSenderService mailSenderService) {
@@ -40,7 +42,9 @@ public class PersonService {
         this.encoder = new BCryptPasswordEncoder();
         this.random = new Random();
         this.cookiesService = new CookiesService();
+        this.secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
     }
+
 
     private void savePerson(Person person) {
         String nonEncodedPass = person.getPassword();
@@ -49,16 +53,17 @@ public class PersonService {
         this.personRepository.save(person);
     }
 
-    public ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, String email, String password) {
+    public ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, String email, String password) throws Exception {
         Person person = this.personRepository.findByEmail(email);
         if (person == null) {
             throw new LoginDataNotValidException("password or email isn't valid");
         }
-        return login(response, person, password, false);
+        String encodedPassword = this.cookiesService.hashCode(password + email + this.secretKey);
+        return login(response, person, encodedPassword, false);
     }
 
     private ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, Person person, String password, boolean isGoogle) {
-        if (!isGoogle && !this.encoder.matches(password, person.getPassword()))
+        if (!isGoogle && !password.equals(person.getPassword()))
             throw new LoginDataNotValidException("password or email isn't valid");
         String token = this.authenticator.createToken(person, false, false);
         Cookie sissionCookie = this.cookiesService.createCookie("qcademy", token, 24 * 60 * 60);
@@ -66,20 +71,19 @@ public class PersonService {
         return new ResponseEntity<>(PersonMainInfoDTO.convert(person), HttpStatus.ACCEPTED);
     }
 
-    public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email) throws MessagingException {
+    public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email) throws Exception {
         String code = String.valueOf(this.random.nextInt(100000, 999999));
         return sendValidationCode(response, email, code);
     }
 
-    public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email, String code) throws MessagingException {
+    public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email, String code) throws Exception {
         if (email == null || email.isEmpty()) {
             throw new WrongDataEnteredException("Email is empty");
         }
         if (personRepository.existsPersonByEmail(email)) {
             throw new WrongDataEnteredException("Email already exists");
         }
-        String validationCode = code + email;
-        String encodedValidationCode = this.encoder.encode(validationCode);
+        String encodedValidationCode = this.cookiesService.hashCode(code + email + this.secretKey);
         Cookie validationCookie = this.cookiesService.createCookie("validationCode", encodedValidationCode, 60 * 30);
         response.addCookie(validationCookie);
         mailSenderService.sendNewMail(email, code);
@@ -103,7 +107,7 @@ public class PersonService {
         return new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
     }
 
-    private Person getGoogleObject(String accessToken) {
+    private Person getGoogleObject(String accessToken) throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         headers.set("Accept", "application/json");
@@ -111,12 +115,12 @@ public class PersonService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> entity = restTemplate.exchange("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + accessToken, HttpMethod.GET, httpEntity, String.class);
         JSONObject object = new JSONObject(entity.getBody());
-        String encodedPassword = this.encoder.encode(object.getString("id") + object.getString("email"));
+        String encodedPassword = this.cookiesService.hashCode(object.getString("id") + object.getString("email") + this.secretKey);
         object.put("id", encodedPassword);
         return new Person(object);
     }
 
-    public ResponseEntity<PersonMainInfoDTO> signInUsingGoogle(HttpServletResponse response, String accessToken) {
+    public ResponseEntity<PersonMainInfoDTO> signInUsingGoogle(HttpServletResponse response, String accessToken) throws Exception {
         Person person = getGoogleObject(accessToken);
         if (!personRepository.existsPersonByEmail(person.getEmail())) {
             savePerson(person);

@@ -7,12 +7,14 @@ import com.example.backend.person.dto.PersonMainInfoDTO;
 import com.example.backend.person.dto.SignUpDTO;
 import com.example.backend.person.model.Person;
 import com.example.backend.person.repository.PersonRepository;
+import com.example.backend.services.CookiesService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,11 @@ public class PersonControllerTests extends AbstractTest {
     private PersonController pc;
     @Autowired
     private PersonRepository pr;
+
+    @Autowired
+    private CookiesService cookiesService;
+
+    private String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
 
     @Override
     @Before
@@ -153,7 +160,7 @@ public class PersonControllerTests extends AbstractTest {
 
     @Test
     public void loginNormal() throws Exception {
-        String pass = encode.encode("test");
+        String pass = this.cookiesService.hashCode("test" + "test1@gmail.com" + this.secretKey);
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "01-02-1999", "photo.jpg");
         pr.save(p);
         String uri = "/person/login";
@@ -210,8 +217,8 @@ public class PersonControllerTests extends AbstractTest {
     }
 
     @Test
-    public void login_method() {
-        String pass = encode.encode("test");
+    public void login_method() throws Exception {
+        String pass = this.cookiesService.hashCode("test" + "test1@gmail.com" + this.secretKey);
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "01-02-1999", "photo.jpg");
         pr.save(p);
         LoginDTO loginDTO = new LoginDTO("test1@gmail.com", "test");

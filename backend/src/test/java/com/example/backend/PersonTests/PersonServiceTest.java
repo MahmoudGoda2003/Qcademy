@@ -7,6 +7,7 @@ import com.example.backend.person.dto.SignUpDTO;
 import com.example.backend.person.model.Person;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.PersonService;
+import com.example.backend.services.CookiesService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import org.json.JSONException;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -35,6 +37,11 @@ class PersonServiceTest {
 
     private BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
 
+    @Autowired
+    private CookiesService cookiesService;
+
+    private String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
+
     @BeforeEach
     public void setup() {
         pr.deleteAll();
@@ -42,8 +49,8 @@ class PersonServiceTest {
 
 
     @Test
-    void LoginTestNormal() {
-        String pass = encode.encode("test");
+    void LoginTestNormal() throws Exception {
+        String pass = this.cookiesService.hashCode("test" + "test1@gmail.com" + this.secretKey);
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "1-2-1999", "photo.jpg");
         pr.save(p);
 

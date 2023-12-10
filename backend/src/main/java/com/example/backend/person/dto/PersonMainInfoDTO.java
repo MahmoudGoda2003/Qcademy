@@ -17,11 +17,14 @@ public class PersonMainInfoDTO {
     private static final ModelMapper modelMapper = new ModelMapper();
     @NotBlank(message = "First name cannot be blank")
     private String firstName;
+
     @NotBlank(message = "Last name cannot be blank")
     private String lastName;
+
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Invalid email format")
     private String email;
+
     private String photoLink;
 
     public static PersonMainInfoDTO convert(Person person) {

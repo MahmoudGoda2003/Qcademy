@@ -5,19 +5,24 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.Test;
 
+import java.util.Base64;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CookiesServiceTest {
+
+
+    private final CookiesService cookiesService = new CookiesService();
+
     @Test
     public void testCreateCookie() {
-        CookiesService cookiesService = new CookiesService();
         String cookieName = "testCookie";
         String cookieData = "testData";
         int lifeTime = 3600;
 
-        Cookie cookie = cookiesService.createCookie(cookieName, cookieData, lifeTime);
+        Cookie cookie = this.cookiesService.createCookie(cookieName, cookieData, lifeTime);
 
         assertEquals(cookieName, cookie.getName());
         assertEquals(cookieData, cookie.getValue());
@@ -27,7 +32,6 @@ public class CookiesServiceTest {
 
     @Test
     public void testGetCookie() {
-        CookiesService cookiesService = new CookiesService();
 
         HttpServletRequest request = mock(HttpServletRequest.class);
 
@@ -37,12 +41,19 @@ public class CookiesServiceTest {
 
         when(request.getCookies()).thenReturn(cookies);
 
-        Cookie resultCookie = cookiesService.getCookie(request, "cookie1");
+        Cookie resultCookie = this.cookiesService.getCookie(request, "cookie1");
         assertNotNull(resultCookie);
         assertEquals("data1", resultCookie.getValue());
 
-        resultCookie = cookiesService.getCookie(request, "nonExistingCookie");
+        resultCookie = this.cookiesService.getCookie(request, "nonExistingCookie");
         assertNull(resultCookie);
+    }
+
+    @Test
+    public void testHashCode() throws Exception {
+        String input = "test";
+        String hashedInput = this.cookiesService.hashCode(input);
+        assertEquals(hashedInput, this.cookiesService.hashCode(input));
     }
 
 }

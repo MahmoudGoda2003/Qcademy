@@ -25,7 +25,7 @@ public class PersonController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(HttpServletResponse response, @RequestBody String email) throws MessagingException {
+    public ResponseEntity<String> signUp(HttpServletResponse response, @RequestBody String email) throws Exception {
         return personService.sendValidationCode(response, email);
     }
 
@@ -35,12 +35,12 @@ public class PersonController {
     }
 
     @PostMapping("/google")
-    public ResponseEntity<PersonMainInfoDTO> googleSignIn(HttpServletResponse response, @RequestBody String accessToken) {
+    public ResponseEntity<PersonMainInfoDTO> googleSignIn(HttpServletResponse response, @RequestBody String accessToken) throws Exception {
         return personService.signInUsingGoogle(response, accessToken);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<PersonMainInfoDTO> logIn(HttpServletResponse response, @Valid @RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<PersonMainInfoDTO> logIn(HttpServletResponse response, @Valid @RequestBody LoginDTO loginDTO) throws Exception {
         return personService.login(response, loginDTO.getEmail(), loginDTO.getPassword());
     }
 }
