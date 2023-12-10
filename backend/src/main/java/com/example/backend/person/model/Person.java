@@ -1,18 +1,21 @@
-package com.example.backend.Person.model;
+package com.example.backend.person.model;
 
-import com.example.backend.Person.DTO.SignUpDTO;
+import com.example.backend.person.dto.SignUpDTO;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Persons_Data", indexes = {@Index(name = "index_email", columnList = "email", unique = true)})
+@Table(name = "Persons_Data", indexes = {@Index(name = "index_email", columnList = "email")})
 public class Person {
+    private static final ModelMapper modelMapper = new ModelMapper();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
@@ -29,9 +32,8 @@ public class Person {
     private String dateOfBirth;
     @Column(name = "photo_link")
     private String photoLink;
-
-    @Autowired
-    private static final ModelMapper modelMapper = new ModelMapper();
+    @Column(name = "bio")
+    private String bio;
 
     public Person(String firstName, String lastName, String email, String password, String dateOfBirth, String photoLink) {
         this.firstName = firstName;
@@ -42,15 +44,15 @@ public class Person {
         this.photoLink = photoLink;
     }
 
-    public static Person convert(SignUpDTO signUpDTO) {
-        return modelMapper.map(signUpDTO, Person.class);
-    }
-
     public Person(JSONObject object) {
         firstName = object.getString("given_name");
         lastName = object.getString("family_name");
         email = object.getString("email");
         photoLink = object.getString("picture");
         password = object.getString("id");
+    }
+
+    public static Person convert(SignUpDTO signUpDTO) {
+        return modelMapper.map(signUpDTO, Person.class);
     }
 }
