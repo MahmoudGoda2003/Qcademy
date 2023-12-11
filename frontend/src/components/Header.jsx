@@ -44,12 +44,13 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
         globals.user = null;
         localStorage.removeItem("user")
         navigate(`/login`)
+        console.log(globals.user)
         break
       default:
     }
   };
   return (
-    <AppBar position="relative">
+    <AppBar position="relative" width={'100%'}>
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
           <Link to="/home">
             <img src={require("../img/LogoFullLight.png")}

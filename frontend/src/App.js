@@ -65,6 +65,12 @@ export default function App() {
                 <Profile />
               </ProtectedRoute>
             }/>
+            <Route path="/teacher" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <TeacherHome />
+              </ProtectedRoute>
+            }/>
             <Route path="/signup" element={
               <UnProtectedRoute redirectPath={"/home"}>
                 <IconButton onClick={toggleColorMode} color="inherit">
