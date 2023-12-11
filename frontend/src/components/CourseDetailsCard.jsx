@@ -10,9 +10,10 @@ const RATING_PRECISION = 0.5
 const DEFAULT_RATING = 0
 
 const gridElement = {
-    margin: '2vh auto',
+    margin: '1vh auto',
     width: '100%'
 }
+
 export default function CourseDetailsCard({name, description, image, tags, rating, courseid, teacherName}) {
 
     return (
@@ -30,28 +31,12 @@ export default function CourseDetailsCard({name, description, image, tags, ratin
                         {name}
                     </Typography>
                     <Rating name="half-rating" defaultValue={(rating===undefined)? DEFAULT_RATING: rating} precision={RATING_PRECISION} readOnly/>
-                    <Typography variant="body2" color="text.secondary">
-                        {description}
+                    <Typography 
+                        sx={gridElement}
+                        color="text.secondary">
+                        By: {teacherName}
                     </Typography>
-                    {
-                        tags.map((tag) => {
-                            return <Chip
-                                sx={{
-                                    marginRight: '1%',
-                                    marginTop: '2%'
-                                }}
-                                key={tag} label={tag}></Chip>
-                        })
-                    }
-                    <Button variant="contained" size="large" sx={gridElement} type="submit" align="centre">Enroll Now</Button>
-
-
-                    <Typography sx={{
-                        marginTop: '2vh'
-                    }}
-                                color="text.secondary">
-                        Created By: {teacherName}
-                    </Typography>
+                    <Button variant="contained" size="large" sx={gridElement} type="submit">Enroll Now</Button>
                 </CardContent>
         </Card>
     );

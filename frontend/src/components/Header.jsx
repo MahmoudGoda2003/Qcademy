@@ -45,7 +45,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
       default:
     }
   };
-  console.log(globals.user.photoLink);
+
   return (
     <AppBar position="relative">
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
@@ -81,7 +81,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
-              id="menu-appbar"
+              id="menu-appbar"    
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',

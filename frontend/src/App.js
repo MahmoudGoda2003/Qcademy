@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import globals from "./globals";
+import CourseDetails from "./components/CourseDetails";
 
 
 const lightMode = createTheme({
@@ -88,6 +89,12 @@ export default function App() {
                   {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
               </IconButton>
               <Login theme = {theme} />
+          </>
+        } />
+        <Route path="details" element={
+          <>
+            <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+            <CourseDetails theme = {theme} />
           </>
         } />
       </Routes>
