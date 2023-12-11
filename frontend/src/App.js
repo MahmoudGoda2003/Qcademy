@@ -91,11 +91,11 @@ export default function App() {
               <Login theme = {theme} />
           </>
         } />
-        <Route path="details" element={
-          <>
+        <Route path="course/:courseId" element={
+          <ProtectedRoute redirectPath={"/login"}>
             <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-            <CourseDetails theme = {theme} />
-          </>
+            <CourseDetails />
+          </ProtectedRoute>
         } />
       </Routes>
       </ThemeProvider>

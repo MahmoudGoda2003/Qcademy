@@ -6,42 +6,11 @@ import CourseDetailsCard from "./CourseDetailsCard";
 import Divider from '@mui/material/Divider';
 import DetailsView from "./DetailsView";
 import ModuleList from './ModuleList';
+import { useLocation } from 'react-router-dom';
 
 export default function CourseDetails() {
 
-    const enrolledCourses = [{
-        name: "Data Structures",
-        description: "How to structure data, this course will help you in you journey to a software engineering job.",
-        image: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
-        tags: ['Trees', 'Graphs', 'Arrays'],
-        rating: 4,
-        courseid: '23',
-        teacherName: 'Ahmed Ayman'
-    },{
-        name: "The Way Of C",
-        description: "Become superior, think like a computer ;^)",
-        image: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg",
-        tags: ['Pointers', 'Memory leaks', 'File descriptors'],
-        rating: 5,
-        courseid: '15',
-        teacherName: 'Terry A. Davis'
-    },{
-        name: "Data Structures",
-        description: "How to structure data",
-        image: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
-        tags: ['Trees', 'Graphs', 'Arrays'],
-        rating: 4,
-        courseid: '23',
-        teacherName: 'Ahmed Ayman'
-    },{
-        name: "The Way Of C",
-        description: "Become superior, think like a computer ;^)",
-        image: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg",
-        tags: ['Pointers', 'Memory leaks', 'File descriptors'],
-        rating: 5,
-        courseid: '15',
-        teacherName: 'Terry A. Davis'
-    }]
+    const location = useLocation();
 
     const titleStyle = {
         margin: '2vh 0',
@@ -51,7 +20,8 @@ export default function CourseDetails() {
         margin: '0 0.5vw 2vh',
     }
 
-    let course = enrolledCourses[0];
+    const course = location.state.course;
+
     return (
         // overflow:'auto', maxWidth: '100%', padding: '2vh'
         <>
