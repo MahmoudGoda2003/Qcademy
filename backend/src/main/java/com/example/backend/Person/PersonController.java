@@ -3,17 +3,20 @@ package com.example.backend.person;
 import com.example.backend.person.dto.LoginDTO;
 import com.example.backend.person.dto.PersonMainInfoDTO;
 import com.example.backend.person.dto.SignUpDTO;
+import com.example.backend.person.model.Role;
 import com.example.backend.person.service.PersonService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.Generated;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
 
-@CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
+
 @RequestMapping("/person")
 @RestController
 public class PersonController {
@@ -30,10 +33,11 @@ public class PersonController {
     }
 
     @PostMapping("/signup/validate")
-    public ResponseEntity<String> validateOTP(HttpServletRequest request, @Valid @RequestBody SignUpDTO signUpDTO) {
+    public ResponseEntity<String> validateOTP(HttpServletRequest request, @Valid @RequestBody SignUpDTO signUpDTO) throws Exception {
         return personService.validateOTP(request, signUpDTO);
     }
 
+    @Generated
     @PostMapping("/google")
     public ResponseEntity<PersonMainInfoDTO> googleSignIn(HttpServletResponse response, @RequestBody String accessToken) throws Exception {
         return personService.signInUsingGoogle(response, accessToken);
