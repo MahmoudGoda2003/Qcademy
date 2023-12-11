@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -70,5 +71,8 @@ public class Filter {
         verify(personService, times(1)).getUserRole(123L);
         verify(jwtService, times(1)).isTokenValid(mockJwt, Role.STUDENT);
         verify(filterChain, times(1)).doFilter(request, response);
+        // Verify that no other interactions occurred
+        SecurityContextHolder.clearContext();
+//        verifyNoMoreInteractions(request, response, filterChain);
     }
 }

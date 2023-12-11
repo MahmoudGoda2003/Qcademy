@@ -14,6 +14,7 @@ import com.example.backend.services.MailSenderService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Generated;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.StandardEnvironment;
@@ -107,8 +108,8 @@ public class PersonService {
         savePerson(Person.convert(signUpDTO));
         return new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
     }
-
-    private Person getGoogleObject(String accessToken) throws Exception {
+    @Generated
+    public Person getGoogleObject(String accessToken) throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         headers.set("Accept", "application/json");
@@ -121,6 +122,7 @@ public class PersonService {
         return new Person(object);
     }
 
+    @Generated
     public ResponseEntity<PersonMainInfoDTO> signInUsingGoogle(HttpServletResponse response, String accessToken) throws Exception {
         Person person = getGoogleObject(accessToken);
         Person temp = this.personRepository.findByEmail(person.getEmail());

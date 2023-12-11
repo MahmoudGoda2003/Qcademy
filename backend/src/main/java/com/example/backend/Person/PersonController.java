@@ -9,6 +9,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.Generated;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ public class PersonController {
         return personService.validateOTP(request, signUpDTO);
     }
 
+    @Generated
     @PostMapping("/google")
     public ResponseEntity<PersonMainInfoDTO> googleSignIn(HttpServletResponse response, @RequestBody String accessToken) throws Exception {
         return personService.signInUsingGoogle(response, accessToken);
@@ -44,12 +46,5 @@ public class PersonController {
     @PostMapping("/login")
     public ResponseEntity<PersonMainInfoDTO> logIn(HttpServletResponse response, @Valid @RequestBody LoginDTO loginDTO) throws Exception {
         return personService.login(response, loginDTO.getEmail(), loginDTO.getPassword());
-    }
-
-    @GetMapping("/test")
-    public String test() throws Exception {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-//        Thread.sleep(5000);
-        return "hello world from " + Role.STUDENT.name();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.backend.PersonTests;
 
+import static org.mockito.Mockito.*;
 import com.example.backend.exceptions.exception.DataNotFoundException;
 import com.example.backend.exceptions.exception.LoginDataNotValidException;
 import com.example.backend.exceptions.exception.WrongDataEnteredException;
@@ -18,12 +19,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.StandardEnvironment;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 

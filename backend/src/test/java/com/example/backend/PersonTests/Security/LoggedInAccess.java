@@ -56,10 +56,10 @@ public class LoggedInAccess {
     public void setup() throws Exception {
         pr.deleteAll();
         String pass = encode.encode("test");
-        Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", pass, "1-2-1999", "photo.jpg");
         userId = pr.save(p).getId();
         MockHttpServletResponse httpResponse = new MockHttpServletResponse();
-        ps.login(httpResponse, "test1@gmail.com", "test");
+        ps.login(httpResponse, "sectest11@gmail.com", "test");
         assertEquals(HttpStatus.OK.value(), httpResponse.getStatus());
     }
 
@@ -144,28 +144,40 @@ public class LoggedInAccess {
     @Test
     void testPersonEndPointAsAdmin() throws Exception {
         ps.setUserRole(userId, Role.ADMIN);
-        mockMvc.perform(MockMvcRequestBuilders.post("/person/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId))))
+        mockMvc.perform(MockMvcRequestBuilders.post("/person/login").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId))))
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError());
     }
 
 
     @Test
-    void testAdminEndPoint() throws Exception {
+    void testAdminEndpoint() throws Exception {
         ps.setUserRole(userId, Role.ADMIN);
-        assertNotNull(mockMvc.perform(MockMvcRequestBuilders.post("/admin/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId)))).andReturn());
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId))))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("hello world from " + Role.ADMIN.name()));
     }
-
 
     @Test
     void testTeacherEndPoint() throws Exception {
         ps.setUserRole(userId, Role.TEACHER);
-        assertNotNull(mockMvc.perform(MockMvcRequestBuilders.post("/teacher/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId)))).andReturn());
+        mockMvc.perform(MockMvcRequestBuilders.get("/teacher/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("hello world from " + Role.TEACHER.name()));
     }
-
 
     @Test
     void testStudentEndPoint() throws Exception {
         ps.setUserRole(userId, Role.STUDENT);
-        assertNotNull(mockMvc.perform(MockMvcRequestBuilders.post("/student/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId)))).andReturn());
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId))))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("hello world from " + Role.STUDENT.name()));
     }
+
+    @Test
+    void testWithJWTNull() throws Exception {
+        ps.setUserRole(userId, Role.STUDENT);
+        mockMvc.perform(MockMvcRequestBuilders.get("/student/").cookie(new Cookie("hello", "world")))
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
 }
