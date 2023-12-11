@@ -76,9 +76,6 @@ export default function CourseDetails() {
                     {/*TODO: Add real module view*/}
                     <ModuleList></ModuleList>
                     <Divider sx={{margin: '3vh'}}/>
-
-
-
                 </Stack>
             </Stack>
         </>
