@@ -3,10 +3,12 @@ package com.example.backend.PersonTests.Security;
 import com.example.backend.person.model.Role;
 import com.example.backend.services.JwtService;
 import io.jsonwebtoken.Claims;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
@@ -22,6 +24,11 @@ class JwtServiceTest {
 
     @InjectMocks
     private JwtService jwtService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Test
     void createToken() {
