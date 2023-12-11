@@ -28,6 +28,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LoggedInAccess {
@@ -144,5 +146,26 @@ public class LoggedInAccess {
         ps.setUserRole(userId, Role.ADMIN);
         mockMvc.perform(MockMvcRequestBuilders.post("/person/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId))))
                 .andExpect(MockMvcResultMatchers.status().isInternalServerError());
+    }
+
+
+    @Test
+    void testAdminEndPoint() throws Exception {
+        ps.setUserRole(userId, Role.ADMIN);
+        assertNotNull(mockMvc.perform(MockMvcRequestBuilders.post("/admin/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId)))).andReturn());
+    }
+
+
+    @Test
+    void testTeacherEndPoint() throws Exception {
+        ps.setUserRole(userId, Role.TEACHER);
+        assertNotNull(mockMvc.perform(MockMvcRequestBuilders.post("/teacher/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId)))).andReturn());
+    }
+
+
+    @Test
+    void testStudentEndPoint() throws Exception {
+        ps.setUserRole(userId, Role.STUDENT);
+        assertNotNull(mockMvc.perform(MockMvcRequestBuilders.post("/student/test").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId)))).andReturn());
     }
 }
