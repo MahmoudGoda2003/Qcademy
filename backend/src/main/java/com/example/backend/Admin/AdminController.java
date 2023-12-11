@@ -9,7 +9,6 @@ public class AdminController {
 
     @GetMapping("test")
     public String test() throws Exception {
-        System.out.println("hello world");
         return "hello world from " + Role.ADMIN.name();
     }
 }

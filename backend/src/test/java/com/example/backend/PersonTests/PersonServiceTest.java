@@ -3,10 +3,14 @@ package com.example.backend.PersonTests;
 import com.example.backend.exceptions.exception.DataNotFoundException;
 import com.example.backend.exceptions.exception.LoginDataNotValidException;
 import com.example.backend.exceptions.exception.WrongDataEnteredException;
+import com.example.backend.person.dto.SignUpDTO;
+import com.example.backend.person.model.Person;
+import com.example.backend.person.model.Role;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.PersonService;
 import com.example.backend.services.CookiesService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.Cookie;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +25,8 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @ActiveProfiles("test")
 class PersonServiceTest {
@@ -30,12 +36,12 @@ class PersonServiceTest {
     @Autowired
     private PersonRepository pr;
 
-    private BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
 
     @Autowired
     private CookiesService cookiesService;
 
-    private String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
+    private final String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
 
     @BeforeEach
     public void setup() {
@@ -45,7 +51,7 @@ class PersonServiceTest {
 
     @Test
     void LoginTestNormal() throws Exception {
-        String pass = this.cookiesService.hashCode("test" + "test1@gmail.com" + this.secretKey);
+        String pass = this.encode.encode("test");
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "1-2-1999", "photo.jpg");
         pr.save(p);
 
@@ -110,9 +116,9 @@ class PersonServiceTest {
     }
 
     @Test
-    void ValidateOTPNormal() {
+    void ValidateOTPNormal() throws Exception {
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
-        String encodedValidationCode = encode.encode(signUpDTO.getCode() + signUpDTO.getEmail());
+        String encodedValidationCode = this.cookiesService.hashCode(signUpDTO.getCode() + signUpDTO.getEmail() + this.secretKey);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("validationCode", encodedValidationCode));
         ResponseEntity<String> response = ps.validateOTP(request, signUpDTO);
@@ -121,11 +127,11 @@ class PersonServiceTest {
     }
 
     @Test
-    void ValidateExistEmail() {
+    void ValidateExistEmail() throws Exception {
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", "123456", "1-2-1999", "photo.jpg");
         pr.save(p);
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
-        String encodedValidationCode = encode.encode(signUpDTO.getCode() + signUpDTO.getEmail());
+        String encodedValidationCode = this.cookiesService.hashCode(signUpDTO.getCode() + signUpDTO.getEmail() + this.secretKey);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("validationCode", encodedValidationCode));
         assertThrowsExactly(WrongDataEnteredException.class, () -> ps.validateOTP(request, signUpDTO));
@@ -139,9 +145,9 @@ class PersonServiceTest {
     }
 
     @Test
-    void ValidateOTPWithWrongCode() {
+    void ValidateOTPWithWrongCode() throws Exception {
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
-        String encodedValidationCode = encode.encode("123456" + signUpDTO.getEmail());
+        String encodedValidationCode = this.cookiesService.hashCode("21341235" + signUpDTO.getEmail() + this.secretKey);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("validationCode", encodedValidationCode));
         assertThrowsExactly(WrongDataEnteredException.class, () -> ps.validateOTP(request, signUpDTO));
@@ -155,13 +161,30 @@ class PersonServiceTest {
         sampleObject.put("email", "john.doe@example.com");
         sampleObject.put("picture", "https://example.com/picture.jpg");
         sampleObject.put("id", "123456789");
-
+        sampleObject.put("password", "test");
         Person person = new Person(sampleObject);
 
         assertEquals("John", person.getFirstName());
         assertEquals("Doe", person.getLastName());
         assertEquals("john.doe@example.com", person.getEmail());
         assertEquals("https://example.com/picture.jpg", person.getPhotoLink());
-        assertEquals("123456789", person.getPassword());
+        assertEquals("test", person.getPassword());
+    }
+
+    @Test
+    void getUserRole() {
+        String pass = encode.encode("test");
+        Person p = new Person("Yahya", "Azzam", "test1234@gmail.com", pass, "1-2-1999", "photo.jpg");
+        Long userId = pr.save(p).getId();
+        assertEquals(Role.STUDENT, ps.getUserRole(userId));
+    }
+
+    @Test
+    void changeUserRole() {
+        String pass = encode.encode("test");
+        Person p = new Person("Yahya", "Azzam", "test1231234124@gmail.com", pass, "1-2-1999", "photo.jpg");
+        Long userId = pr.save(p).getId();
+        ps.setUserRole(userId, Role.TEACHER);
+        assertEquals(Role.TEACHER, ps.getUserRole(userId));
     }
 }

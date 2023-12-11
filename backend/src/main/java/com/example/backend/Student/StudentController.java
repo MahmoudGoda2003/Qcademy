@@ -2,6 +2,7 @@ package com.example.backend.student;
 
 import com.example.backend.person.model.Role;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class StudentController {
     @GetMapping("test")
     public String test() throws Exception {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-//        Thread.sleep(5000);
         return "hello world from " + Role.STUDENT.name();
     }
 }

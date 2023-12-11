@@ -24,6 +24,8 @@ public class Person {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "bio")
+    private String bio;
     @Column(name = "date_of_birth")
     private String dateOfBirth;
     @Column(name = "photo_link")
@@ -52,6 +54,7 @@ public class Person {
         lastName = object.getString("family_name");
         email = object.getString("email");
         photoLink = object.getString("picture");
-        password = object.getString("id");
+        password = object.getString("password");
     }
+
 }

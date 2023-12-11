@@ -6,6 +6,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -13,16 +14,15 @@ import java.util.Date;
 
 @Service
 public class JwtService {
-    @Value("${jwt.secret}")
-    private String JWT_SECRET;
+    private final String JWT_SECRET = new StandardEnvironment().getProperty("QcademyAuthKey");;
 
     public JwtService() { }
 
-    public String createToken(Person person) {
+    public String createToken(Role role, Long id) {
         return Jwts
                 .builder()
-                .setSubject(person.getRole().name())
-                .setId(person.getId().toString())
+                .setSubject(role.name())
+                .setId(id.toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)

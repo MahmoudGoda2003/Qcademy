@@ -42,11 +42,11 @@ public class PersonControllerTests extends AbstractTest {
     @Autowired
     private CookiesService cookiesService;
 
-    private String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
+    private final String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
 
     @Override
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         super.setup();
         pr.deleteAll();
     }
@@ -92,7 +92,7 @@ public class PersonControllerTests extends AbstractTest {
         String uri = "/person/signup/validate";
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "01-02-1999", "201356");
 
-        String encodedValidationCode = encode.encode(signUpDTO.getCode() + signUpDTO.getEmail());
+        String encodedValidationCode = this.cookiesService.hashCode(signUpDTO.getCode() + signUpDTO.getEmail() + this.secretKey);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(uri)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -133,7 +133,7 @@ public class PersonControllerTests extends AbstractTest {
         String uri = "/person/signup/validate";
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "01-02-1999", "201356");
 
-        String encodedValidationCode = encode.encode("123456" + signUpDTO.getEmail());
+        String encodedValidationCode = this.cookiesService.hashCode("2341234" + signUpDTO.getEmail() + this.secretKey);
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(uri)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -147,9 +147,9 @@ public class PersonControllerTests extends AbstractTest {
     }
 
     @Test
-    public void ValidateOtp_method() {
+    public void ValidateOtp_method() throws Exception {
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "01-02-1999", "201356");
-        String encodedValidationCode = encode.encode(signUpDTO.getCode() + signUpDTO.getEmail());
+        String encodedValidationCode = this.cookiesService.hashCode(signUpDTO.getCode() + signUpDTO.getEmail() + this.secretKey);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("validationCode", encodedValidationCode));
 
@@ -160,7 +160,7 @@ public class PersonControllerTests extends AbstractTest {
 
     @Test
     public void loginNormal() throws Exception {
-        String pass = this.cookiesService.hashCode("test" + "test1@gmail.com" + this.secretKey);
+        String pass = this.encode.encode("test");
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "01-02-1999", "photo.jpg");
         pr.save(p);
         String uri = "/person/login";
@@ -218,7 +218,7 @@ public class PersonControllerTests extends AbstractTest {
 
     @Test
     public void login_method() throws Exception {
-        String pass = this.cookiesService.hashCode("test" + "test1@gmail.com" + this.secretKey);
+        String pass = this.encode.encode("test");
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "01-02-1999", "photo.jpg");
         pr.save(p);
         LoginDTO loginDTO = new LoginDTO("test1@gmail.com", "test");
