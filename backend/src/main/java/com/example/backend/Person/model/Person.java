@@ -1,11 +1,10 @@
-package com.example.backend.Person.model;
+package com.example.backend.person.model;
 
-import com.example.backend.Person.DTO.SignUpDTO;
+import com.example.backend.person.dto.SignUpDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @Getter
@@ -25,13 +24,17 @@ public class Person {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "bio")
+    private String bio;
     @Column(name = "date_of_birth")
     private String dateOfBirth;
     @Column(name = "photo_link")
     private String photoLink;
+    @Column(name = "role")
+    @Enumerated(EnumType.ORDINAL)
+    private Role role = Role.STUDENT;
 
-    @Autowired
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public Person(String firstName, String lastName, String email, String password, String dateOfBirth, String photoLink) {
         this.firstName = firstName;
@@ -51,6 +54,7 @@ public class Person {
         lastName = object.getString("family_name");
         email = object.getString("email");
         photoLink = object.getString("picture");
-        password = object.getString("id");
+        password = object.getString("password");
     }
+
 }
