@@ -7,12 +7,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.AuthenticationException;
 
 import java.io.IOException;
 
 import static org.mockito.Mockito.*;
-
+@SpringBootTest
+@AutoConfigureMockMvc
 public class EntryPointException {
 
     @InjectMocks
