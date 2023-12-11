@@ -1,19 +1,16 @@
-import React, { useRef } from 'react';
-import { Dialog, Paper } from '@mui/material';
-import Draggable from 'react-draggable';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
+import React, { useState } from 'react';
 import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import Chip from '@mui/material/Chip';
-import { useState } from 'react';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
-
-
+import { Backdrop, Button, Chip, Fade, InputAdornment, Modal } from '@mui/material';
+import { Stack } from '@mui/system';
+import styles from '../utils/styles';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import InputTags from './InputTags';
+import globals from '../utils/globals';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const VisuallyHiddenStyle = {
     clip: 'rect(0 0 0 0)',
@@ -26,83 +23,133 @@ const VisuallyHiddenStyle = {
     whiteSpace: 'nowrap',
 };
 
-function PaperComponent(props) {
-    return (
-        <Draggable
-            handle="#draggable-dialog-title"
-            cancel={'[class*="MuiDialogContent-root"]'}
-        >
-            <Paper {...props} />
-        </Draggable>
-    );
-}
-
 export default function CreateCourse({ open, handleClose }) {
 
-    const [tempImageUrl, setTempImageUrl] = React.useState('');
+    const [imageUrl, setImageUrl] = useState();
+    const [title, setTitle] = useState();
+    const [description, setDescription] = useState();
+    const [startDate, setStartDate] = useState();
+    const [duration, setDuration] = useState();
 
     const chooseImage = (e) => {
-        setTempImageUrl(URL.createObjectURL(e.target.files[0]));
-        console.log(URL.createObjectURL(e.target.files[0]));
+        setImageUrl(URL.createObjectURL(e.target.files[0]));
     }
 
     const handleInputImg = () => {
         document.getElementById('fileInput').click();
     };
 
+    const handleChange = event => {
+        if (event.target.name === "Title") setTitle(event.target.value);
+        if (event.target.name === "Description") setDescription(event.target.value);
+        if (event.target.name === "Duration") setDuration(event.target.value);
+    }
+
+    const addCourse = () => {
+        const course =  {
+            name: title,
+            description: description,
+            image: imageUrl
+        }
+        globals.user.courses.push(course)
+        console.log(globals.user.courses)
+    }
+
+
     return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            PaperComponent={PaperComponent}
-            aria-labelledby="draggable-dialog-title"
-            fullWidth
-            maxWidth="xs"
+        <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+            backdrop: {
+            timeout: 250,
+            },
+        }}
         >
-            <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                Create Course
-            </DialogTitle>
-            <DialogContent>
-                <CardActionArea onClick={handleInputImg} >
-                    <CardMedia
-                        component="img"
-                        image={tempImageUrl}
-                        alt="Course image"
-                        sx={{ maxHeight: '25vh', minHeight: '25Vh' }}
+            <Fade in={open}>
+                <Stack sx={styles.modalStyle2} alignItems={'left'}>
+                    <CardActionArea onClick={handleInputImg} >
+                        { imageUrl ?
+                            <CardMedia
+                                component="img"
+                                image={imageUrl}
+                                alt="Course image"
+                                sx={{ maxHeight: '25vh', minHeight: '25Vh' }}
+                            /> 
+                            :
+                            <CardMedia
+                                alt="Course image"
+                                sx={{
+                                    maxHeight: '25vh',
+                                    minHeight: '25Vh',
+                                    display:'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                            >
+                                <AddPhotoAlternateIcon sx={{ fontSize: 100 }}/>
+                            </CardMedia>
+                        }
+                    </CardActionArea>
+                    <Input sx={VisuallyHiddenStyle} type="file" onChange={chooseImage} id='fileInput' />
+                    <TextField
+                        margin="normal"
+                        label="Title"
+                        name="Title"
+                        variant="outlined"
+                        onChange={handleChange}
                     />
-                </CardActionArea>
-                <Input sx={VisuallyHiddenStyle} type="file" onChange={chooseImage} id='fileInput' />
-
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    label="Title"
-                    fullWidth
-                    variant="standard"
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    label="Description"
-                    fullWidth
-                    variant="standard"
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    label="tages"
-                    fullWidth
-                    variant="standard"
-                />
-
-            </DialogContent>
-            <DialogActions>
-                <Button autoFocus onClick={handleClose}>
-                    Cancel
-                </Button>
-                <Button onClick={handleClose}>Submit</Button>
-            </DialogActions>
-        </Dialog>
-
+                    <TextField
+                        margin="normal"
+                        label="Description"
+                        name="Description"
+                        variant="outlined"
+                        multiline
+                        rows={5}
+                        onChange={handleChange}
+                    />
+                    <InputTags />
+                    <Stack direction={'row'}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                sx={{margin: '2vh 0.5vh'}}
+                                required 
+                                disableFuture
+                                label="Start Date"
+                                value={startDate}
+                                slotProps={{
+                                    textField: {
+                                    },
+                                }}
+                                onChange={(newValue) => setStartDate(newValue)} />
+                        </LocalizationProvider>
+                        <TextField
+                            sx={{margin: '2vh 0.5vh'}}
+                            label="Estimated Duration"
+                            name="Duration"
+                            variant="outlined"
+                            onChange={handleChange}
+                            InputProps={{
+                                pattern: '[0-9]*',
+                                endAdornment: <InputAdornment position="end">Weeks</InputAdornment>,
+                            }}
+                        />
+                    </Stack>
+                    <Button
+                        variant='contained'
+                        sx={{
+                            margin: '2vh 0 0',
+                        }}
+                        onClick={addCourse}
+                    >
+                        Create New Course
+                    </Button>
+                </Stack>
+            </Fade>
+        </Modal>
     );
 }
