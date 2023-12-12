@@ -49,6 +49,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
       default:
     }
   };
+
   return (
     <AppBar position="relative" width={'100%'}>
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
@@ -84,7 +85,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
-              id="menu-appbar"
+              id="menu-appbar"    
               anchorEl={anchorElUser}
               anchorOrigin={{
                 vertical: 'top',

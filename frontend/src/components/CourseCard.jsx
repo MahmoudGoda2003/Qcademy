@@ -10,34 +10,33 @@ const RATING_PRECISION = 0.5
 const DEFAULT_RATING = 0
 
 
-export default function CourseCard({name, description, image, tags, rating, courseid, teacherName}) {
+export default function CourseCard({course}) {
     const navigate = useNavigate();
 
     const navTo = (courseid) => {
-        console.log(courseid);
-        navigate(`/course/${courseid}`)
+        console.log(course);
+        navigate(`/course/${courseid}`, {state: { course:course }})
     }
-
     
     return (
         <Card sx={{minWidth:'45vh', maxWidth:'45vh'}}>
-            <CardActionArea courseid={courseid} onClick={() => {navTo(courseid)}}>
+            <CardActionArea courseid={course.courseid} onClick={() => {navTo(course.courseid)}}>
                 <CardMedia
                     component="img"
-                    image={(image===undefined)? DEFAULT_IMAGE: image}
+                    image={(course.image===undefined)? DEFAULT_IMAGE: course.image}
                     alt="personal image"
                     sx={{maxWidth:'45vh', maxHeight:'25vh', minHeight:'25Vh'}}
                 />
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                    {name}
+                    {course.name}
                 </Typography>
-                <Rating name="half-rating" defaultValue={(rating===undefined)? DEFAULT_RATING: rating} precision={RATING_PRECISION} readOnly/>
+                <Rating name="half-rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
                 <Typography variant="body2" color="text.secondary">
-                    {description}
+                    {course.description}
                 </Typography>
                 {
-                    tags.map((tag) => {
+                    course.tags.map((tag) => {
                         return <Chip 
                         sx={{
                             marginRight: '1%',
@@ -53,7 +52,7 @@ export default function CourseCard({name, description, image, tags, rating, cour
                     marginTop: '2vh'
                 }} 
                 color="text.secondary">
-                    Created By: {teacherName}
+                    Created By: {course.teacherName}
                 </Typography>
                 </CardContent>
             </CardActionArea>

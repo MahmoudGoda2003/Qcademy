@@ -14,6 +14,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import CourseDetails from "./components/CourseDetails";
 import globals from "./utils/globals";
 
 
@@ -95,6 +96,12 @@ export default function App() {
                 <ConfirmEmail theme = {theme} />
               </ProtectedRoute>
             }/>
+            <Route path="course/:courseId" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <CourseDetails />
+              </ProtectedRoute>
+        } />
           </Routes>
       </ThemeProvider>
     </>
