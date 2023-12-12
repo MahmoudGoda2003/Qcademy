@@ -1,13 +1,12 @@
 import { Button, Grid, Paper, TextField, Typography, Box, Modal, Backdrop, Fade, CircularProgress } from "@mui/material"
-import { Button, Grid, Paper, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useGoogleLogin } from '@react-oauth/google';
 import GoogleIcon from '@mui/icons-material/Google';
 import axios from "axios";
 import globals from '../utils/globals';
-import styles from "../utils/styles";]
-import LoadingModal from "./LoadingModal";]
+import styles from "../utils/styles";
+import LoadingModal from "./LoadingModal";
 
 export default function Login({theme}) {
 
