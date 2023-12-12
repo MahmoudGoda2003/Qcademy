@@ -1,11 +1,11 @@
-package com.example.backend.Admin.repository;
+package com.example.backend.admin.repository;
 
-import com.example.backend.Admin.model.Admin;
+import com.example.backend.admin.model.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
 
-    boolean existsAdminByUserId(Long userId);
+    boolean existsByUserId(Long id);
 }
