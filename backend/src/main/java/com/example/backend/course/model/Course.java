@@ -16,7 +16,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Column(name = "courseId")
-    private int courseId;
+    private int Id;
 
     @Column(name = "name")
     private String name;
@@ -25,7 +25,8 @@ public class Course {
     private String description;
 
     @Column(name = "tags")
-    private String tags;
+    @ElementCollection
+    private ArrayList<String> tags;
 
     @Column(name = "photo_link")
     private String photoLink;
@@ -40,6 +41,5 @@ public class Course {
     private String startDate;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private ArrayList<Module> module;
-
+    private ArrayList<CourseModule> module;
 }
