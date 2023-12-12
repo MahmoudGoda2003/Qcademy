@@ -9,7 +9,7 @@ import {
     Stack,
     Typography,
     List,
-    ListItemIcon, ListItemText
+    ListItemIcon, ListItemText, CardMedia
 } from '@mui/material';
 import * as React from "react";
 
@@ -34,6 +34,7 @@ export default function CourseInfo() {
     }
     const modules = [{
             name: "Algorithms Module name",
+            description: "How to structure data",
             image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
             tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
             rating: 2.5,
@@ -45,6 +46,7 @@ export default function CourseInfo() {
         },
         {
             name: "Binary search Module name",
+            description: "How to structure data",
             image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
             tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
             rating: 2.5,
@@ -56,14 +58,15 @@ export default function CourseInfo() {
         },
         {
             name: "Complexity Module name",
+            description: "How to structure data",
             image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
             tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
             rating: 2.5,
             moduleid: '13',
             teacherName: 'Michael Elsayed',
             lectureLink: "a",
-            lectureQuiz: "a",
-            lectureAssignment: "a"
+            lectureQuiz: "",
+            lectureAssignment: ""
         }]
 
     const course = {
@@ -80,7 +83,7 @@ export default function CourseInfo() {
         // overflow:'auto', maxWidth: '100%', padding: '2vh'
         <>
             <Stack direction={'row'} spacing={10}
-                   sx={{width: '90%', height: '90%', margin: '2vh 2vw', padding: '2vh 2vw'}}>
+                   sx={{width: '90%', height: '100vh', margin: '2vh 2vw', padding: '2vh 2vw'}}>
 
                 <Stack direction={'column'}
                        sx={{width: '20vw', height: '90%', overflow:'auto'}}
@@ -94,37 +97,48 @@ export default function CourseInfo() {
                 </Stack>
 
                 <Stack direction={'column'}
-                       sx={{width: '70vw', height: '90%', overflow:'auto'}}
+                       sx={{width: '90%', height: '90%', overflow:'auto'}}
                 >
-                    <Typography sx={titleStyle} variant='h4' fontSize={26}>
-                        Description
+                    <Typography>
+                        Lecture Video
                     </Typography>
-                    <Typography sx={bodyStyle} variant='body'>
-                        {course.description}
-                    </Typography>
-                    <Divider sx={{margin: '3vh'}}/>
-                    <Typography sx={titleStyle} variant='h4' fontSize={26}>
-                        Skills you will learn
-                    </Typography>
-                    <Typography sx={bodyStyle} variant='body'>
-                        {
-                            course.tags.map((tag) => {
-                                return <Chip
-                                    sx={{
-                                        margin: '0 0.5vh 0.5vw',
-                                    }}
-                                    key={tag} label={tag}></Chip>
-                            })
-                        }
-                    </Typography>
-                    <Divider sx={{margin: '3vh'}}/>
-                    {/*TODO: Add real module count*/}
-                    <Typography sx={titleStyle} variant='h4' fontSize={26}>
-                        There are 13 modules in this course
-                    </Typography>
-                    {/*TODO: Add real module view*/}
-                    <ModuleList></ModuleList>
-                    <Divider sx={{margin: '3vh'}}/>
+                    <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
+                        <iframe width="100%" height="100%"
+                                src="https://www.youtube.com/embed/7P8yRpu_MoE?si=0h9U4Yw7r07jvW4F"
+                                title="YouTube video player" frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen></iframe>
+                    </Box>
+
+                    {/*<Typography sx={titleStyle} variant='h4' fontSize={26}>*/}
+                    {/*    Description*/}
+                    {/*</Typography>*/}
+                    {/*<Typography sx={bodyStyle} variant='body'>*/}
+                    {/*    {course.description}*/}
+                    {/*</Typography>*/}
+                    {/*<Divider sx={{margin: '3vh'}}/>*/}
+                    {/*<Typography sx={titleStyle} variant='h4' fontSize={26}>*/}
+                    {/*    Skills you will learn*/}
+                    {/*</Typography>*/}
+                    {/*<Typography sx={bodyStyle} variant='body'>*/}
+                    {/*    {*/}
+                    {/*        course.tags.map((tag) => {*/}
+                    {/*            return <Chip*/}
+                    {/*                sx={{*/}
+                    {/*                    margin: '0 0.5vh 0.5vw',*/}
+                    {/*                }}*/}
+                    {/*                key={tag} label={tag}></Chip>*/}
+                    {/*        })*/}
+                    {/*    }*/}
+                    {/*</Typography>*/}
+                    {/*<Divider sx={{margin: '3vh'}}/>*/}
+                    {/*/!*TODO: Add real module count*!/*/}
+                    {/*<Typography sx={titleStyle} variant='h4' fontSize={26}>*/}
+                    {/*    There are 13 modules in this course*/}
+                    {/*</Typography>*/}
+                    {/*/!*TODO: Add real module view*!/*/}
+                    {/*<ModuleList></ModuleList>*/}
+                    {/*<Divider sx={{margin: '3vh'}}/>*/}
                 </Stack>
             </Stack>
         </>
@@ -201,7 +215,11 @@ function CourseMaterials({modules}) {
 
 function Module({module}) {
     const [open, setOpen] = useState(false);
-
+    const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const index = 0;
+    const handleListItemClick = (event, index) => {
+        setSelectedIndex(index);
+    };
     return (
         <List
             sx={{ width: '100%', bgcolor: 'background.paper' }}
@@ -218,7 +236,9 @@ function Module({module}) {
                         <></>:
                         <>
                         {/*navigae to page contain the link of lecture*/}
-                            <ListItemButton >
+                            <ListItemButton
+                                selected={selectedIndex === 1}
+                                onClick={(event) => handleListItemClick(event, 1)}>
                                 <ListItemText primary="Lecture Video" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         </>
@@ -227,7 +247,9 @@ function Module({module}) {
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}
-                            <ListItemButton >
+                            <ListItemButton
+                                selected={selectedIndex === 2}
+                                onClick={(event) => handleListItemClick(event, 2)}>
                                 <ListItemText primary="Quiz" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         </>
@@ -236,7 +258,9 @@ function Module({module}) {
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}
-                            <ListItemButton >
+                            <ListItemButton
+                                selected={selectedIndex === 3}
+                                onClick={(event) => handleListItemClick(event, 3)}>
                                 <ListItemText primary="Assignment" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         </>
