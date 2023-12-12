@@ -1,6 +1,7 @@
 import { IconButton, TextField, Typography, Paper, Stack } from "@mui/material";
 import { useState } from "react";
 import EditIcon from '@mui/icons-material/Edit';
+import { isInteger } from "mathjs";
 import globals from "../utils/globals";
 
 export default function InfoField ({field, value, setValue}) {
@@ -8,7 +9,9 @@ export default function InfoField ({field, value, setValue}) {
     const [edit, setEdit] = useState(false);
 
     const changeValue = (e) => {
-        setValue(e.target.value);
+        setEdit(false);
+        if (field==='Phone Number'&&(isNaN(e.target.value)||!isInteger(e.target.value))) alert("Please enter a valid number");
+        else setValue(e.target.value);;
     }
 
     return (
@@ -25,15 +28,14 @@ export default function InfoField ({field, value, setValue}) {
                         <Typography fontSize={18} color="gray" margin={'1vh 0 1.4vh 2.5vh'} overflow={'hidden'}>{value}</Typography>
                         :
                         <TextField
-                            onChange={changeValue}
                             defaultValue={value}
                             size='small'
                             sx={{
                                 margin: '1vh',
                                 marginTop: 0
                             }}
-                            onKeyUp={(e)=>{if (e.key == "Enter") {setEdit(false)}}}
-                            onBlur={()=>setEdit(false)}
+                            onKeyUp={(e)=>{if (e.key === "Enter") {changeValue(e)}}}
+                            onBlur={(e)=>{changeValue(e)}}
                         >
                         </TextField>
                     }

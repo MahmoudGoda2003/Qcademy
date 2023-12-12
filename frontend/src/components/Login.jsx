@@ -1,3 +1,4 @@
+import { Button, Grid, Paper, TextField, Typography, Box, Modal, Backdrop, Fade, CircularProgress } from "@mui/material"
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -5,8 +6,8 @@ import { useGoogleLogin } from '@react-oauth/google';
 import GoogleIcon from '@mui/icons-material/Google';
 import axios from "axios";
 import globals from '../utils/globals';
-import styles from "../utils/styles";
-import LoadingModal from "./LoadingModal";
+import styles from "../utils/styles";]
+import LoadingModal from "./LoadingModal";]
 
 export default function Login({theme}) {
 
@@ -34,7 +35,10 @@ export default function Login({theme}) {
                 globals.user = {
                     firstName: result.data.firstName,
                     lastName: result.data.lastName,
-                    photoLink: result.data.photoLink
+                    photoLink: result.data.photoLink,
+                    phone: result.data.phone,
+                    education: result.data.education,
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960'
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 navigate("/home");
@@ -62,7 +66,9 @@ export default function Login({theme}) {
                 lastName: response.data.lastName,
                 photoLink: response.data.photoLink,
                 email: response.data.email,
-                dateOfBirth: response.data.dateOfBirth
+                dateOfBirth: response.data.dateOfBirth,
+                phone: response.data.phone,
+                education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960'
             }
             localStorage.setItem("user", JSON.stringify(globals.user));
             navigate("/home");
