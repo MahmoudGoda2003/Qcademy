@@ -1,31 +1,30 @@
 package com.example.backend.course.model;
 
-
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Courses_Data")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "number")
-    private int number;
+    @Column(name = "courseId")
+    private int courseId;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "tages")
+    @Column(name = "tags")
     private String tags;
 
     @Column(name = "photo_link")
@@ -39,5 +38,8 @@ public class Course {
 
     @Column(name = "Start_date")
     private String startDate;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
+    private ArrayList<Module> module;
 
 }

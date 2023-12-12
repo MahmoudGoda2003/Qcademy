@@ -50,9 +50,9 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
         const course =  {
             name: title,
             description: description,
-            image: imageUrl,
-            startDate: startDate,
-            duration: duration,
+            photoLink: imageUrl,
+            startDate: startDate.$D + "-" + startDate.$M + "-" + startDate.$y,
+            estimatedTime: duration,
             tags: tags,
             teacherName: globals.user.firstName + " " + globals.user.lastName,
         }
