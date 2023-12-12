@@ -2,10 +2,7 @@ package com.example.backend.person.model;
 
 import com.example.backend.person.dto.SignUpDTO;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 
@@ -13,9 +10,8 @@ import org.modelmapper.ModelMapper;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Persons_Data", indexes = {@Index(name = "index_email", columnList = "email")})
+@Table(name = "Persons_Data", indexes = {@Index(name = "index_email", columnList = "email", unique = true)})
 public class Person {
-    private static final ModelMapper modelMapper = new ModelMapper();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
@@ -28,12 +24,17 @@ public class Person {
     private String email;
     @Column(name = "password", nullable = false)
     private String password;
+    @Column(name = "bio")
+    private String bio;
     @Column(name = "date_of_birth")
     private String dateOfBirth;
     @Column(name = "photo_link")
     private String photoLink;
-    @Column(name = "bio")
-    private String bio;
+    @Column(name = "role")
+    @Enumerated(EnumType.ORDINAL)
+    private Role role = Role.STUDENT;
+
+    private static ModelMapper modelMapper = new ModelMapper();
 
     public Person(String firstName, String lastName, String email, String password, String dateOfBirth, String photoLink) {
         this.firstName = firstName;
@@ -44,15 +45,16 @@ public class Person {
         this.photoLink = photoLink;
     }
 
+    public static Person convert(SignUpDTO signUpDTO) {
+        return modelMapper.map(signUpDTO, Person.class);
+    }
+
     public Person(JSONObject object) {
         firstName = object.getString("given_name");
         lastName = object.getString("family_name");
         email = object.getString("email");
         photoLink = object.getString("picture");
-        password = object.getString("id");
+        password = object.getString("password");
     }
 
-    public static Person convert(SignUpDTO signUpDTO) {
-        return modelMapper.map(signUpDTO, Person.class);
-    }
 }

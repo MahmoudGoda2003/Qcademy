@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField, Typography, LinearProgress } from "@mui/material"
+import { Button, Grid, Paper, TextField, Typography, LinearProgress, Modal, Backdrop, Fade, Box, CircularProgress } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -49,6 +49,8 @@ export default function Signup({theme}) {
             password: password,
             dateOfBirth: DOB.$D + "-" + DOB.$M + "-" + DOB.$y
         }
+        // TODO: send info to backend
+        setModal(true);
         try {
             await axios.post(`${globals.baseURL}/person/signup`, user.email, {headers: {"Content-Type": "text/plain"}})
             globals.user = user;
@@ -68,7 +70,10 @@ export default function Signup({theme}) {
                 globals.user = {
                     firstName: result.data.firstName,
                     lastName: result.data.lastName,
-                    photoLink: result.data.photoLink
+                    photoLink: result.data.photoLink,
+                    phone: result.data.phone? result.data.phone : '',
+                    education: result.data.education? result.data.education : '',
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960'
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 navigate("/home")
@@ -162,6 +167,7 @@ export default function Signup({theme}) {
                                 sx={styles.gridElement}
                                 required 
                                 disableFuture
+                                format="DD/MM/YYYY"
                                 label="Birth date"
                                 value={DOB}
                                 slotProps={{
