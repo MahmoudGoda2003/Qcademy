@@ -12,6 +12,10 @@ import Chip from '@mui/material/Chip';
 import { useState } from 'react';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import styles from "../utils/styles";
 
 
 
@@ -40,6 +44,17 @@ function PaperComponent(props) {
 export default function CreateCourse({ open, handleClose }) {
 
     const [tempImageUrl, setTempImageUrl] = React.useState('');
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [tages, setTages] = useState([]);
+    const [startDate, setStartDate] = useState(null);
+
+    const fields = {
+        title: "title",
+        description: "description",
+        tages: "tages",
+        startDate: "startDate"
+    }
 
     const chooseImage = (e) => {
         setTempImageUrl(URL.createObjectURL(e.target.files[0]));
@@ -49,6 +64,32 @@ export default function CreateCourse({ open, handleClose }) {
     const handleInputImg = () => {
         document.getElementById('fileInput').click();
     };
+
+    const handleChange = event =>{
+        if (event.target.name === fields.title) setTitle(event.target.value);
+        if (event.target.name === fields.description) setDescription(event.target.value);
+        if (event.target.name === fields.tages) setTages(event.target.value);
+    }
+
+    const handleCreation = async(event) => {
+        event.preventDefault();
+        const course = {
+            title: title,
+            description: description,
+            imageURL: tempImageUrl,
+            tages: tages,
+            startDate: startDate.$D + '-' + startDate.$M + '-' + startDate.$y
+        }
+        try {
+            /*await axios.post(`${globals.baseURL}/course/create`, course)
+            globals.user = user;
+            alert('The course is created successfully')
+            navigate('/teacherHome');*/
+        } catch (error) {
+            alert('Error creating course, try again later')
+            console.error(error);
+        }
+    }
 
     return (
         <Dialog
@@ -75,10 +116,12 @@ export default function CreateCourse({ open, handleClose }) {
 
                 <TextField
                     autoFocus
+                    required
                     margin="dense"
                     label="Title"
                     fullWidth
                     variant="standard"
+                    onChange={handleChange}
                 />
                 <TextField
                     autoFocus
@@ -86,21 +129,38 @@ export default function CreateCourse({ open, handleClose }) {
                     label="Description"
                     fullWidth
                     variant="standard"
+                    onChange={handleChange}
                 />
                 <TextField
                     autoFocus
+                    required
                     margin="dense"
-                    label="tages"
+                    label="Tages"
                     fullWidth
                     variant="standard"
+                    onChange={handleChange}
                 />
-
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DatePicker
+                                sx={styles.gridElement}
+                                required 
+                                disablePast
+                                format="DD/MM/YYYY"
+                                label="Start date"
+                                value={startDate}
+                                slotProps={{
+                                    textField: {
+                                    required: true,
+                                    },
+                                }}
+                                onChange={(newValue) => setStartDate(newValue)} />
+                        </LocalizationProvider>
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button onClick={handleClose}>Submit</Button>
+                <Button onClick={handleCreation}>Submit</Button>
             </DialogActions>
         </Dialog>
 

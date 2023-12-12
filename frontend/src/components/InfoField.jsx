@@ -22,7 +22,7 @@ export default function InfoField ({field, value, setValue}) {
                         <EditIcon />
                     </IconButton>
                 </Stack>
-                <Stack width="15vw" margin='1vh'>
+                <Stack width="24vw" margin='1vh'>
                     {!edit ? 
                         <Typography fontSize={18} color="gray" margin={'1vh 0 1.4vh 2.5vh'} overflow={'hidden'}>{value}</Typography>
                         :

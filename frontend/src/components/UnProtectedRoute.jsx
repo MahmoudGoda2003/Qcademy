@@ -7,6 +7,7 @@ export default function UpProtectedRoute ({
   })
   {
     globals.user = JSON.parse(localStorage.getItem("user"))
+    globals.course = JSON.parse(localStorage.getItem("course"))
     if (globals.user) {
       return <Navigate to={redirectPath} replace />;
     }

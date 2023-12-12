@@ -5,7 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import styles from "../utils/styles";
 import dayjs from "dayjs";
 
-export default function DateField ({field, value, setValue}) {
+export default function BirthDateField ({field, value, setValue}) {
     return (
         <Stack margin={'1vh'}>
             <Paper elevation={2}>

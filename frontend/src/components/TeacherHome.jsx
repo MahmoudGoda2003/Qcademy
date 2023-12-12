@@ -14,6 +14,8 @@ export default function Teacher(props) {
         image: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
         tags: ['Trees', 'Graphs', 'Arrays'],
         rating: 4,
+        duration: 14,
+        startDate: '2024-03-02',
         courseid: '23',
         teacherName: 'Ahmed Ayman'
     }, {
@@ -22,6 +24,8 @@ export default function Teacher(props) {
         image: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg",
         tags: ['Pointers', 'Memory leaks', 'File descriptors'],
         rating: 5,
+        duration: 12,
+        startDate: '2024-01-12',
         courseid: '15',
         teacherName: 'Terry A. Davis'
     }, {
@@ -30,6 +34,8 @@ export default function Teacher(props) {
         image: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
         tags: ['Trees', 'Graphs', 'Arrays'],
         rating: 4,
+        duration: 14,
+        startDate: '2024-03-02',
         courseid: '23',
         teacherName: 'Ahmed Ayman'
     }, {
@@ -38,6 +44,8 @@ export default function Teacher(props) {
         image: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg",
         tags: ['Pointers', 'Memory leaks', 'File descriptors'],
         rating: 5,
+        duration: 12,
+        startDate: '2024-01-12',
         courseid: '15',
         teacherName: 'Terry A. Davis'
     }, {
@@ -46,6 +54,8 @@ export default function Teacher(props) {
         image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
         tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
         rating: 2.5,
+        duration: 10,
+        startDate: '2023-12-10',
         courseid: '12',
         teacherName: 'Michael Elsayed'
     }, {
@@ -54,6 +64,8 @@ export default function Teacher(props) {
         image: "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
         tags: ['Classes', 'Interfaces', 'More classes', 'More layers'],
         rating: 0.5,
+        duration: 11,
+        startDate: '2024-02-09',
         courseid: '19',
         teacherName: 'Joseph Magdy'
     }, {
@@ -62,6 +74,8 @@ export default function Teacher(props) {
         image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
         tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
         rating: 2.5,
+        duration: 10,
+        startDate: '2023-12-10',
         courseid: '12',
         teacherName: 'Michael Elsayed'
     }]
@@ -114,7 +128,9 @@ export default function Teacher(props) {
                                 tags={course.tags.slice(0, 5)}
                                 rating={course.rating}
                                 courseid={course.courseid}
-                                teacherName={course.teacherName}>
+                                teacherName={course.teacherName}
+                                duration={course.duration}
+                                startDate={course.startDate}>
                             </CourseCard>
                         ))}
                     </Grid>

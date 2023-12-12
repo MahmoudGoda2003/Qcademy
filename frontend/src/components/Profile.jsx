@@ -4,7 +4,7 @@ import InfoField from "./InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import globals from '../utils/globals';
 import styles from "../utils/styles";
-import DateField from "./DateField";
+import BirthDateField from "./BirthDateField";
 import axios from "axios";
 
 const getRank = (coursesCompleted) => {
@@ -40,7 +40,7 @@ export default function Profile () {
         globals.user.firstName = firstName
         globals.user.lastName = lastName
         globals.user.education = education
-        globals.user.dateOfBirth = dateOfBirth.$D + '-' + (dateOfBirth.$M+1) + '-' + dateOfBirth.$y
+        globals.user.dateOfBirth = dateOfBirth.$D + '-' + dateOfBirth.$M + '-' + dateOfBirth.$y
         globals.user.photoLink = imageUrl
         globals.user.phone = phone
         localStorage.setItem("user", JSON.stringify(globals.user));
@@ -156,7 +156,7 @@ export default function Profile () {
                     </Stack>
                     <InfoField field={'Education'} value={education} setValue={setEducation}></InfoField>
                     <InfoField field={'Phone Number'} value={phone} setValue={setPhone}></InfoField>
-                    <DateField field={'Date Of Birth'} value={dateOfBirth} setValue={setDob}></DateField>
+                    <BirthDateField field={'Date Of Birth'} value={dateOfBirth} setValue={setDob}></BirthDateField>
                 </Stack>
             </Stack>
         </>
