@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField, Typography, Box, Modal, Backdrop, Fade, CircularProgress } from "@mui/material"
+import { Button, Grid, Paper, TextField, Typography } from "@mui/material"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useGoogleLogin } from '@react-oauth/google';
@@ -37,9 +37,10 @@ export default function Login({theme}) {
                     photoLink: result.data.photoLink,
                     phone: result.data.phone,
                     education: result.data.education,
-                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960'
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : null
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
+                closeModal();
                 navigate("/home");
             }catch (error) {
                 alert('An error occurred, please try again later :(')

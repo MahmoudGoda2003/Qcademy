@@ -25,7 +25,7 @@ export default function InfoField ({field, value, setValue}) {
                 </Stack>
                 <Stack width="15vw" margin='1vh'>
                     {!edit ? 
-                        <Typography fontSize={18} color="gray" margin={'1vh 0 1.4vh 2.5vh'} overflow={'hidden'}>{value}</Typography>
+                        <Typography fontSize={18} color="gray" margin={'1vh 0 1.4vh 2.5vh'} overflow={'hidden'}>{value? value : "You didn't tell us :^("}</Typography>
                         :
                         <TextField
                             defaultValue={value}

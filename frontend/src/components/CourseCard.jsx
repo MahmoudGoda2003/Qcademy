@@ -23,7 +23,7 @@ export default function CourseCard({course}) {
             <CardActionArea courseid={course.courseid} onClick={() => {navTo(course.courseid)}}>
                 <CardMedia
                     component="img"
-                    image={(course.image===undefined)? DEFAULT_IMAGE: course.image}
+                    image={(course.photoLink===undefined)? DEFAULT_IMAGE: course.photoLink}
                     alt="personal image"
                     sx={{maxWidth:'45vh', maxHeight:'25vh', minHeight:'25Vh'}}
                 />

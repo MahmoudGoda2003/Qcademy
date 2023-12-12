@@ -11,6 +11,7 @@ import InputTags from './InputTags';
 import globals from '../utils/globals';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import axios from 'axios';
 
 const VisuallyHiddenStyle = {
     clip: 'rect(0 0 0 0)',
@@ -23,16 +24,19 @@ const VisuallyHiddenStyle = {
     whiteSpace: 'nowrap',
 };
 
-export default function CreateCourse({ open, handleClose }) {
+export default function CreateCourse({ open, handleClose, onCreateCourse }) {
 
     const [imageUrl, setImageUrl] = useState();
+    const [imageFile, setImageFile] = useState();
     const [title, setTitle] = useState();
     const [description, setDescription] = useState();
     const [startDate, setStartDate] = useState();
     const [duration, setDuration] = useState();
+    const [tags, setTags] = useState([]);
 
     const chooseImage = (e) => {
         setImageUrl(URL.createObjectURL(e.target.files[0]));
+        setImageFile(e.target.files[0]);
     }
 
     const handleInputImg = () => {
@@ -45,14 +49,37 @@ export default function CreateCourse({ open, handleClose }) {
         if (event.target.name === "Duration") setDuration(event.target.value);
     }
 
-    const addCourse = () => {
+    const addCourse = async (event) => {
+        let uploadedImage = {};
+        try {
+            const formData = new FormData ();
+            formData.append("file", imageFile);
+            formData.append("upload_preset", "xdmym8xv");
+            formData.append("api_key", "593319395186373");
+
+            const response = await axios.post(
+                "https://api.cloudinary.com/v1_1/dlcy5giof/image/upload",
+                formData
+            )            
+            uploadedImage = response.data.secure_url;
+        } 
+        catch (error) {
+            console.log(error)
+        }
         const course =  {
             name: title,
             description: description,
-            image: imageUrl
+            photoLink: uploadedImage,
+            tags: tags,
+            startDate: startDate.$D + '-' + startDate.$M + "-" + startDate.$y,
+            estimatedTime: duration,
+            teacherName: globals.user.firstName + " " + globals.user.lastName,
         }
-        globals.user.courses.push(course)
-        console.log(globals.user.courses)
+        console.log(course);
+        onCreateCourse(course);
+        setImageUrl(null);
+        setImageFile(null);
+        handleClose();
     }
 
 
@@ -112,13 +139,13 @@ export default function CreateCourse({ open, handleClose }) {
                         rows={5}
                         onChange={handleChange}
                     />
-                    <InputTags />
+                    <InputTags tags={tags} setTags={setTags} />
                     <Stack direction={'row'}>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                 sx={{margin: '2vh 0.5vh'}}
-                                required 
-                                disableFuture
+                                required
+                                disablePast
                                 label="Start Date"
                                 value={startDate}
                                 slotProps={{

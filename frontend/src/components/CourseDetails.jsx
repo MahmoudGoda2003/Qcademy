@@ -1,10 +1,7 @@
-import Header from './Header';
-import Box from '@mui/material/Box';
 import {Chip, Stack, Typography} from '@mui/material';
 import * as React from "react";
 import CourseDetailsCard from "./CourseDetailsCard";
 import Divider from '@mui/material/Divider';
-import DetailsView from "./DetailsView";
 import ModuleList from './ModuleList';
 import { useLocation } from 'react-router-dom';
 
@@ -26,8 +23,7 @@ export default function CourseDetails() {
         // overflow:'auto', maxWidth: '100%', padding: '2vh'
         <>
             <Stack direction={'row'} spacing={10}
-                   sx={{width: '90%', height: '60%', margin: '2vh 2vw 2vh', padding: '2vh 2vw'}}>
-                
+                   sx={{width: '90%', height: '60%', margin: '2vh 2vw', padding: '2vh 2vw'}}>
                 <div style={{position: 'sticky', top: 5}}>
                 <Stack sx={{position: 'sticky', top: 5}}>
                     <CourseDetailsCard

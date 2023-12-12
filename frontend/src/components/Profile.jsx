@@ -8,6 +8,7 @@ import DateField from "./DateField";
 import axios from "axios";
 
 const getRank = (coursesCompleted) => {
+
     switch(parseInt(coursesCompleted/5)){
         case 0:
             return "👶  newbie 👶"
@@ -40,7 +41,7 @@ export default function Profile () {
         globals.user.firstName = firstName
         globals.user.lastName = lastName
         globals.user.education = education
-        globals.user.dateOfBirth = dateOfBirth.$D + '-' + (dateOfBirth.$M+1) + '-' + dateOfBirth.$y
+        globals.user.dateOfBirth = dateOfBirth
         globals.user.photoLink = imageUrl
         globals.user.phone = phone
         localStorage.setItem("user", JSON.stringify(globals.user));
@@ -55,14 +56,21 @@ export default function Profile () {
     const uploadImage = async (event) => {
         if(imageFile == null)
             return
-        /// send imagefile to backend
+        let uploadedImage = {};
         try {
-            const result = await axios.post(`https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5&source=`+tempImageUrl, {})
-            setImageUrl(result.image.url)
-            setImageFile(null)
+            const formData = new FormData ();
+            formData.append("file", imageFile);
+            formData.append("upload_preset", "xdmym8xv");
+            formData.append("api_key", "593319395186373");
+
+            const response = await axios.post(
+                "https://api.cloudinary.com/v1_1/dlcy5giof/image/upload",
+                formData
+            )
+            uploadedImage = response.data.secure_url;
             closeHandler()
         } catch (error) {
-            alert("internal server error, try again later")
+            console.log(error)
         }
     }
     

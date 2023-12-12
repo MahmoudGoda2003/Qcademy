@@ -14,7 +14,7 @@ const gridElement = {
     width: '100%'
 }
 
-export default function CourseDetailsCard({name, description, image, tags, rating, courseid, teacherName}) {
+export default function CourseDetailsCard({name, image, rating, teacherName}) {
 
     return (
 
