@@ -1,7 +1,6 @@
-package com.example.backend.Admin.model;
+package com.example.backend.admin.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Admin")
+@Table(name = "admin")
 public class Admin {
     @Id
+    @Column(name = "admin_id")
     private Long userId;
 
 

@@ -1,6 +1,6 @@
-package com.example.backend.Admin.service;
+package com.example.backend.admin.service;
 
-import com.example.backend.Admin.repository.AdminRepository;
+import com.example.backend.admin.repository.AdminRepository;
 import com.example.backend.person.model.Role;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.PersonService;
