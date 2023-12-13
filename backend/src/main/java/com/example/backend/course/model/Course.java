@@ -1,10 +1,12 @@
 package com.example.backend.course.model;
 
 import com.example.backend.course.courseModule.model.CourseModule;
+import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.student.model.Student;
 import com.example.backend.teacher.model.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 
@@ -43,6 +45,9 @@ public class Course {
     @Column(name = "Start_date")
     private String startDate;
 
+    @Column(name = "teacherName")
+    private String teacherName;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private ArrayList<CourseModule> module;
 
@@ -52,4 +57,10 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    private static final ModelMapper modelMapper = new ModelMapper();
+    public static Course convert(CourseMainInfoDTO courseDTO) {
+        return modelMapper.map(courseDTO, Course.class);
+    }
+
 }
