@@ -37,7 +37,7 @@ public class CourseService {
         return courseRepository.deleteById(courseId);
     }
 
-    public Optional<Course> findCourse(int courseId) {
+    public Course findCourse(int courseId) {
         return courseRepository.findById(courseId);
     }
     public List<Course> findAllCourses() {
