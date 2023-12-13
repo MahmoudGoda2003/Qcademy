@@ -11,6 +11,8 @@ import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.services.CookiesService;
 import com.example.backend.services.JwtService;
 import com.example.backend.services.MailSenderService;
+import com.example.backend.student.repository.StudentRepository;
+import com.example.backend.student.service.StudentService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,11 +38,15 @@ public class PersonService {
     private final PasswordEncoder encoder;
     private final Random random;
     private final String secretKey;
+    private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
     @Autowired
-    public PersonService(PersonRepository personRepository, MailSenderService mailSenderService) {
+    public PersonService(PersonRepository personRepository, MailSenderService mailSenderService, StudentRepository studentRepository, StudentService studentService) {
         this.personRepository = personRepository;
         this.mailSenderService = mailSenderService;
+        this.studentRepository = studentRepository;
+        this.studentService = studentService;
         this.authenticator = new JwtService();
         this.encoder = new BCryptPasswordEncoder();
         this.random = new Random();
@@ -53,6 +59,8 @@ public class PersonService {
         String nonEncodedPass = person.getPassword();
         String encodedPass = this.encoder.encode(nonEncodedPass);
         person.setPassword(encodedPass);
+        Person savedPerson = this.personRepository.save(person);
+        this.studentService.saveStudent(savedPerson.getId());
         return this.personRepository.save(person);
     }
 
