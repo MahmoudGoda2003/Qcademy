@@ -21,7 +21,7 @@ public class SignUpTest extends AbstractTest {
 
     @Override
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         super.setup();
     }
 

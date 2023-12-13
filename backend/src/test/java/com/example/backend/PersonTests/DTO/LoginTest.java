@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class LoginTest extends AbstractTest {
     @Override
     @Before
-    public void setup() {
+    public void setup() throws Exception {
         super.setup();
     }
 
