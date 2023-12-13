@@ -16,8 +16,8 @@ public class AdminController {
     }
 
     @PostMapping("changeRole")
-    public ResponseEntity<String> changeRole(@RequestBody ChangeRoleDTO changeRoleDTO) throws Exception {
-        return adminService.changePersonRole(changeRoleDTO);
+    public ResponseEntity<String> changeRole(@RequestBody String userId) throws Exception {
+        return adminService.changePersonRole(Long.parseLong(userId));
     }
 
     @GetMapping("test")

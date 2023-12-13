@@ -10,6 +10,8 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     boolean existsPromotionByUserId(Long userId);
 
-    @Transactional
+
     void deletePromotionByUserId(Long userId);
+
+    Promotion findPromotionByUserId(Long userId);
 }

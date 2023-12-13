@@ -55,7 +55,7 @@ public class PersonService {
     }
 
 
-    private Person savePerson(Person person) {
+    public Person savePerson(Person person) {
         String nonEncodedPass = person.getPassword();
         String encodedPass = this.encoder.encode(nonEncodedPass);
         person.setPassword(encodedPass);

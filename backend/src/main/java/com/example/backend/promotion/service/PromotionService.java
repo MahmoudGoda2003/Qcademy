@@ -6,9 +6,10 @@ import com.example.backend.person.model.Role;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.promotion.model.Promotion;
 import com.example.backend.promotion.repository.PromotionRepository;
-import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PromotionService {
@@ -30,7 +31,9 @@ public class PromotionService {
 
 
     @Transactional
-    public void deletePromotion(Long userId){
+    public Promotion getAndDeletePromotion(Long userId){
+        Promotion promotion = this.promotionRepository.findPromotionByUserId(userId);
         this.promotionRepository.deletePromotionByUserId(userId);
+        return promotion;
     }
 }
