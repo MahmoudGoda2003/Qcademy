@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,13 +39,16 @@ public class LectureService {
         CourseModule module = courseModuleRepository.findCourseModuleByCourseAndWeekNumber
                 (lectureDTO.getModule().getCourse(),
                         lectureDTO.getModule().getWeekNumber());
-        if(module == null){
+        if(module == null)
             throw new DataNotFoundException("CourseModule not found");
-        }
+
+        if(module.getLecture() == null)
+            module.setLecture(new ArrayList<>());
+
         module.getLecture().add(savedLecture);
         courseModuleRepository.save(module);
     }
-    
+
     public List<Lecture> getAlLectures() {
         return lectureRepository.findAll();
     }

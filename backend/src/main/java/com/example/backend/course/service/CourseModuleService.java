@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -37,9 +38,11 @@ public class CourseModuleService  {
     public void createCourseModule(CourseModuleDTO courseModuleDTO) {
         CourseModule savedModule = saveCourseModule(CourseModule.convert(courseModuleDTO));
         Course course = courseRepository.findById(courseModuleDTO.getCourse().getId());
-        if(course == null){
+        if(course == null)
             throw new DataNotFoundException("Course not found");
-        }
+
+        if(course.getModule() == null)
+            course.setModule(new ArrayList<>());
         course.getModule().add(savedModule);
         courseRepository.save(course);
     }
