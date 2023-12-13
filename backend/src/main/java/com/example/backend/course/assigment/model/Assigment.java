@@ -1,8 +1,9 @@
-package com.example.backend.course.model;
+package com.example.backend.course.assigment.model;
 
-
+import com.example.backend.course.courseModule.model.CourseModule;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
@@ -10,13 +11,10 @@ import java.util.ArrayList;
 @Getter
 @Setter
 @Table(name = "Assigment_data")
+@IdClass(AssigmentId.class)
 public class Assigment {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
-    @Column(name = "assigment_number")
-    private int number;
+    private short number;
 
     @Column(name = "assigment_name", nullable = false)
     private String name;
@@ -24,10 +22,14 @@ public class Assigment {
     @Column(name = "assigment_url", nullable = false)
     private String assigmentURL;
 
-    @ManyToOne
-    @JoinColumn(name = "module")
-    private CourseModule module;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assigment")
     private ArrayList<SolvedAssigment> solvedAssigment;
+
+    @Id
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "module_course_id"),
+            @JoinColumn(name = "module_week_number")
+    })
+    private CourseModule module;
 }

@@ -1,7 +1,7 @@
 package com.example.backend.course.service;
 
 import com.example.backend.course.model.Course;
-import com.example.backend.course.repository.CourseRepository;
+import com.example.backend.course.courseModule.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

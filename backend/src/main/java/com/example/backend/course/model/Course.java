@@ -1,5 +1,8 @@
 package com.example.backend.course.model;
 
+import com.example.backend.course.courseModule.model.CourseModule;
+import com.example.backend.student.model.Student;
+import com.example.backend.teacher.model.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,8 +18,8 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "courseId")
-    private int Id;
+    @Column(name = "course_id")
+    private int id;
 
     @Column(name = "name")
     private String name;
@@ -42,4 +45,11 @@ public class Course {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private ArrayList<CourseModule> module;
+
+    @ManyToMany(mappedBy = "courses")
+    private ArrayList<Student> students;
+
+    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    private Teacher teacher;
 }

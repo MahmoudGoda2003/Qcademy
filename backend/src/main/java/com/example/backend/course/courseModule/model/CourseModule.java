@@ -1,24 +1,24 @@
-package com.example.backend.course.model;
+package com.example.backend.course.courseModule.model;
 
+import com.example.backend.course.assigment.model.Assigment;
+import com.example.backend.course.model.Course;
+import com.example.backend.course.lecture.model.Lecture;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "Module_data")
+@IdClass(CourseModuleId.class)
 public class CourseModule {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
-    @Column(name = "week_number")
-    private int Number;
 
+    @Id
+    @Column(name = "week_number")
+    private int weekNumber;
     @Column(name = "publish_date", nullable = false)
     private String publishDate;
 
@@ -29,8 +29,9 @@ public class CourseModule {
     @Column(name = "quiz")
     private String quizURL;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "course")
+    @JoinColumn(name = "course_id")
     private Course course;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")

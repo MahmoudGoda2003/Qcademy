@@ -1,9 +1,8 @@
-package com.example.backend.course.model;
+package com.example.backend.course.lecture.model;
 
 
+import com.example.backend.course.courseModule.model.CourseModule;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,13 +10,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "Lecture_data")
+@IdClass(LectureId.class)
 public class Lecture {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @Column(name = "lecture_number")
-    private short Number;
+    private short number;
 
     @Column(name = "lecture_url", nullable = false)
     private String videoURL;
@@ -25,7 +23,11 @@ public class Lecture {
     @Column(name = "lecture_name", nullable = false)
     private String name;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "module")
+    @JoinColumns({
+            @JoinColumn(name = "module_course_id", referencedColumnName = "course_id"),
+            @JoinColumn(name = "module_week_number", referencedColumnName = "week_number")
+    })
     private CourseModule module;
 }
