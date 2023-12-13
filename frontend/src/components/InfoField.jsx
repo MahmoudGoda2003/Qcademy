@@ -2,7 +2,6 @@ import { IconButton, TextField, Typography, Paper, Stack } from "@mui/material";
 import { useState } from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import { isInteger } from "mathjs";
-import globals from "../utils/globals";
 
 export default function InfoField ({field, value, setValue}) {
 

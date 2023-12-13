@@ -9,7 +9,6 @@ import GoogleIcon from '@mui/icons-material/Google';
 import axios from 'axios'
 import globals from '../utils/globals';
 import styles from "../utils/styles";
-import LoadingModal from "./LoadingModal";
 
 
 export default function Signup({theme}) {
@@ -41,7 +40,6 @@ export default function Signup({theme}) {
 
     const handleSignUp =  async (event) => {
         event.preventDefault();
-        setModal(true);
         const user = {
             firstName: firstName,
             lastName: lastName,
@@ -94,7 +92,26 @@ export default function Signup({theme}) {
 
     return (
         <>
-            <LoadingModal open={modal} handleClose={closeModal} message={'Proccessing your info'} />
+            <Modal
+                open={modal}
+                onClose={closeModal}
+                aria-labelledby="modal-title"
+                aria-describedby="modal-description"
+                closeAfterTransition
+                slots={{ backdrop: Backdrop }}
+                slotProps={{
+                    backdrop: {
+                    timeout: 250,
+                    },
+                }}
+                >
+                    <Fade in={modal}>
+                        <Box sx={styles.hiddenModalStyle}>
+                        <Typography color={'white'} margin={'2vh'} fontSize={20}>Processing Your Info...</Typography>
+                        <CircularProgress margin={'1vh'} color="secondary" />
+                        </Box>
+                    </Fade>
+            </Modal>
             <Grid sx={styles.gridStyle}>
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
                 style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}

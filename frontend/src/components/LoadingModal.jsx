@@ -1,12 +1,13 @@
-import { Modal, Backdrop, Fade, CircularProgress, Box, Typography } from "@mui/material"
-import styles from "../utils/styles";
+import { Modal, Backdrop, Fade, CircularProgress } from "@mui/material"
+import { useState } from "react";
 
-export default function LoadingModal({ open, handleClose, message }) {
+export default function LoadingModal(message) {
+    const [modal, setModal] = useState(false);
 
     return (
         <Modal
-        open={open}
-        onClose={handleClose}
+        open={modal}
+        onClose={closeModal}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         closeAfterTransition
@@ -17,7 +18,7 @@ export default function LoadingModal({ open, handleClose, message }) {
             },
         }}
         >
-            <Fade in={open}>
+            <Fade in={modal}>
                 <Box sx={styles.hiddenModalStyle}>
                 <Typography color={'white'} margin={'2vh'} fontSize={20}>{message}...</Typography>
                 <CircularProgress color="secondary" />

@@ -14,9 +14,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import CourseInformatin from "./components/CourseInformation";
-//import CourseDetails from "./components/CourseDetails";
 import globals from "./utils/globals";
+import CourseInformatin from "./components/CourseInformation";
 
 
 const lightMode = createTheme({
@@ -67,12 +66,6 @@ export default function App() {
                 <Profile />
               </ProtectedRoute>
             }/>
-            <Route path="/teacher" element={
-              <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                <TeacherHome />
-              </ProtectedRoute>
-            }/>
             <Route path="/signup" element={
               <UnProtectedRoute redirectPath={"/home"}>
                 <IconButton onClick={toggleColorMode} color="inherit">
@@ -97,18 +90,18 @@ export default function App() {
                 <ConfirmEmail theme = {theme} />
               </ProtectedRoute>
             }/>
+            <Route path="/teacher" element={
+              <ProtectedRoute redirectPath={"/home"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <TeacherHome />
+              </ProtectedRoute>
+            }/>
             <Route path="/course/update" element={
               <ProtectedRoute redirectPath={"/teacher"}>
                 <Header onThemeChange={toggleColorMode} theme={theme}/>
                 <CourseInformatin />
               </ProtectedRoute>
             }/>
-            /*<Route path="course/:courseId" element={
-              <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                <CourseDetails />
-              </ProtectedRoute>
-        } />*/
           </Routes>
       </ThemeProvider>
     </>

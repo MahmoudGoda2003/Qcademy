@@ -1,9 +1,9 @@
-package com.example.backend.services;
+package com.example.backend.Services;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -17,17 +17,17 @@ import java.time.format.DateTimeFormatter;
 public class MailSenderService {
     @Autowired
     private final JavaMailSender mailSender;
-    private final String htmlBody;
+    private String  htmlBody;
 
     public MailSenderService(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-        this.htmlBody = readHtmlFile();
+        this.htmlBody = readHtmlFile(".\\src\\main\\java\\com\\example\\backend\\Services\\EmailTemplate.html");
     }
 
 
-    private static String readHtmlFile() {
+    private static String readHtmlFile(String filePath) {
         try {
-            byte[] encodedBytes = Files.readAllBytes(Paths.get(".\\src\\main\\java\\com\\example\\backend\\services\\EmailTemplate.html"));
+            byte[] encodedBytes = Files.readAllBytes(Paths.get(filePath));
             return new String(encodedBytes);
         } catch (Exception e) {
             return "";
@@ -41,9 +41,8 @@ public class MailSenderService {
         return template;
     }
 
-    @SneakyThrows
-    public void sendNewMail(String to, String code) throws MessagingException {
-        String replacedHtmlBody = replacePlaceholders(htmlBody, to.substring(0, to.indexOf('@')), code);
+    public void sendNewMail(String to, String OTP) throws MessagingException {
+        String replacedHtmlBody = replacePlaceholders(htmlBody, to.substring(0, to.indexOf('@')), OTP);
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);

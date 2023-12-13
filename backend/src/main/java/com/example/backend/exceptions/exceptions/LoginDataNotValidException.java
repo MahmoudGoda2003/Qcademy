@@ -1,4 +1,4 @@
-package com.example.backend.exceptions.exception;
+package com.example.backend.exceptions.exceptions;
 
 public class LoginDataNotValidException extends RuntimeException {
 

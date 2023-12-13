@@ -10,13 +10,13 @@ const DEFAULT_IMAGE = ""
 const RATING_PRECISION = 0.5
 const DEFAULT_RATING = 0
 
-export default function CourseCard({course}) {
+
+export default function CourseCard({name, description, image, tags, rating, courseid, teacherName, duration, startDate}) {
     const navigate = useNavigate();
 
     const navTo = (courseid) => {
-        console.log(course);
-        // Used for updating course information
-        /*globals.course = {
+        console.log(courseid);
+        globals.course = {
             id: courseid,
             title: name,
             description: description,
@@ -25,29 +25,30 @@ export default function CourseCard({course}) {
             duration: duration,
             startDate: startDate
         }
-        localStorage.setItem("course", JSON.stringify(globals.course));*/
-        navigate(`/course/${courseid}`, {state: { course:course }})
+        localStorage.setItem("course", JSON.stringify(globals.course));
+        navigate(`/course/update`)
     }
+
     
     return (
         <Card sx={{minWidth:'45vh', maxWidth:'45vh'}}>
-            <CardActionArea courseid={course.courseid} onClick={() => {navTo(course.courseid)}}>
+            <CardActionArea courseid={courseid} onClick={() => {navTo(courseid)}}>
                 <CardMedia
                     component="img"
-                    image={(course.image===undefined)? DEFAULT_IMAGE: course.image}
+                    image={(image===undefined)? DEFAULT_IMAGE: image}
                     alt="personal image"
                     sx={{maxWidth:'45vh', maxHeight:'25vh', minHeight:'25Vh'}}
                 />
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
-                    {course.name}
+                    {name}
                 </Typography>
-                <Rating name="half-rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
+                <Rating name="half-rating" defaultValue={(rating===undefined)? DEFAULT_RATING: rating} precision={RATING_PRECISION} readOnly/>
                 <Typography variant="body2" color="text.secondary">
-                    {course.description}
+                    {description}
                 </Typography>
                 {
-                    course.tags.map((tag) => {
+                    tags.map((tag) => {
                         return <Chip 
                         sx={{
                             marginRight: '1%',
@@ -63,7 +64,7 @@ export default function CourseCard({course}) {
                     marginTop: '2vh'
                 }} 
                 color="text.secondary">
-                    Created By: {course.teacherName}
+                    Created By: {teacherName}
                 </Typography>
                 </CardContent>
             </CardActionArea>

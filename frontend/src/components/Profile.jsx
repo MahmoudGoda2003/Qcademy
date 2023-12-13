@@ -151,7 +151,7 @@ export default function Profile () {
                 </Paper>
                 <Stack padding={'1vh'} margin={'1vh'}>
                     <Stack direction={'row'}>
-                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName} onChange={() => {globals.user.firstName = firstName}}></InfoField>
+                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName}></InfoField>
                         <InfoField field={'Last Name'} value={lastName} setValue={setLastName}></InfoField>
                     </Stack>
                     <InfoField field={'Education'} value={education} setValue={setEducation}></InfoField>

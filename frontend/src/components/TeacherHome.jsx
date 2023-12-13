@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
 import {Typography } from '@mui/material';
+import * as React from 'react';
 import { Grid} from '@mui/material';
 import CourseCard from './CourseCard';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import CreateCourses from './CreateCourse';
-import globals from '../utils/globals';
 
 
 export default function Teacher(props) {
-    globals.user.courses = [{
+    const CreatedCourses = [{
         name: "Data Structures",
         description: "How to structure data",
         image: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
@@ -81,7 +80,11 @@ export default function Teacher(props) {
         teacherName: 'Michael Elsayed'
     }]
 
-    const [open, setOpen] = useState(false);
+    function add_Course(course) {
+        CreatedCourses.push(course)
+    }
+
+    const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -91,13 +94,13 @@ export default function Teacher(props) {
         setOpen(false);
     };
 
-    const TextStyle = { fontFamily: 'Segoe Ui', fontWeight: 'lighter' };
-    
-    const TextStyle2 = { color: 'gray' };
 
+
+    const TextStyle = { fontFamily: 'Segoe Ui', fontWeight: 'lighter' };
+    const TextStyle2 = { color: 'gray' };
     return (
         <>
-            {(globals.user.courses === 0) ?
+            {(CreatedCourses.length === 0) ?
                 <>
                     <Typography variant='h3' marginTop='5vh' marginLeft='10vh' sx={TextStyle}>Manage Your Courses ...</Typography>
                     <Typography variant='h6' marginLeft='15vh' sx={TextStyle}>These Are All The Courses You've Created</Typography>
@@ -116,7 +119,7 @@ export default function Teacher(props) {
                         alignItems="flex-start"
                         padding={3}
                     >
-                        {globals.user.courses.map((course, index) => (
+                        {CreatedCourses.map((course, index) => (
                             <CourseCard
                                 key={index}
                                 name={course.name}

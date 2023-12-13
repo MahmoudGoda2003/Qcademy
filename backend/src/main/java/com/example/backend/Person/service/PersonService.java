@@ -1,144 +1,130 @@
-package com.example.backend.person.service;
+package com.example.backend.Person.service;
 
-import com.example.backend.exceptions.exception.DataNotFoundException;
-import com.example.backend.exceptions.exception.LoginDataNotValidException;
-import com.example.backend.exceptions.exception.WrongDataEnteredException;
-import com.example.backend.person.dto.PersonMainInfoDTO;
-import com.example.backend.person.dto.SignUpDTO;
-import com.example.backend.person.model.Person;
-import com.example.backend.person.model.Role;
-import com.example.backend.person.repository.PersonRepository;
-import com.example.backend.services.CookiesService;
-import com.example.backend.services.JwtService;
-import com.example.backend.services.MailSenderService;
+import com.example.backend.Person.DTO.PersonInfoDTO;
+import com.example.backend.Person.DTO.SignUpDTO;
+import com.example.backend.Person.model.OTP;
+import com.example.backend.Person.model.Person;
+import com.example.backend.Person.repository.OTPRepository;
+import com.example.backend.Person.repository.PersonRepository;
+import com.example.backend.Services.MailSenderService;
+import com.example.backend.exceptions.exceptions.DataNotFoundException;
+import com.example.backend.exceptions.exceptions.LoginDataNotValidException;
+import com.example.backend.exceptions.exceptions.WrongDataEnteredException;
+
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Generated;
-import org.json.JSONObject;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.json.JSONObject;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Random;
-
 
 @Service
 public class PersonService {
-    private final MailSenderService mailSenderService;
-    private final JwtService authenticator;
-    private final PersonRepository personRepository;
-    private final CookiesService cookiesService;
-    private final PasswordEncoder encoder;
-    private final Random random;
-    private final String secretKey;
-
     @Autowired
-    public PersonService(PersonRepository personRepository, MailSenderService mailSenderService) {
+    private PersonRepository personRepository;
+    @Autowired
+    private OTPRepository OTPRepository;
+    @Autowired
+    private final MailSenderService mailSenderService;
+    @Autowired
+    private final Authenticator authenticator = new Authenticator();
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final Random random = new Random();
+
+    public PersonService(PersonRepository personRepository, OTPRepository OTPRepository,
+                         MailSenderService mailSenderService){
         this.personRepository = personRepository;
         this.mailSenderService = mailSenderService;
-        this.authenticator = new JwtService();
-        this.encoder = new BCryptPasswordEncoder();
-        this.random = new Random();
-        this.cookiesService = new CookiesService();
-        this.secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
+        this.OTPRepository = OTPRepository;
     }
 
-
-    private Person savePerson(Person person) {
+    public void savePerson(Person person){
         String nonEncodedPass = person.getPassword();
-        String encodedPass = this.encoder.encode(nonEncodedPass);
+        String encodedPass = encoder.encode(nonEncodedPass);
         person.setPassword(encodedPass);
-        return this.personRepository.save(person);
+        personRepository.save(person);
     }
 
-    public ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, String email, String password) throws Exception {
-        Person person = this.personRepository.findByEmail(email);
-        if (person == null) {
+   public ResponseEntity<PersonInfoDTO> login(HttpServletResponse response, String email, String password){
+        Person person = personRepository.findByEmail(email);
+        if(person==null||!encoder.matches(password, person.getPassword()))
             throw new LoginDataNotValidException("password or email isn't valid");
-        }
-        return login(response, person, password, false);
+        String token = authenticator.createToken(person, false, false);
+        if (response!=null) response.addCookie(createSessionCookie(token));
+        return new ResponseEntity<>(PersonInfoDTO.convert(person), HttpStatus.ACCEPTED);
     }
 
-    private ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, Person person, String password, boolean isGoogle) {
-        if (!isGoogle && !encoder.matches(password, person.getPassword()))
-            throw new LoginDataNotValidException("password or email isn't valid");
-        String token = this.authenticator.createToken(person.getRole(), person.getId());
-        Cookie sissionCookie = this.cookiesService.createCookie("qcademy", token, 24 * 60 * 60);
-        response.addCookie(sissionCookie);
-        return new ResponseEntity<>(PersonMainInfoDTO.convert(person), HttpStatus.ACCEPTED);
+    public ResponseEntity<String> sendOTP(String email) throws MessagingException {
+        String OTP = String.valueOf(random.nextInt(100000, 999999));
+        return sendOTP(email, OTP);
     }
 
-    public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email) throws Exception {
-        String code = String.valueOf(this.random.nextInt(100000, 999999));
-        return sendValidationCode(response, email, code);
+    public ResponseEntity<String> sendOTP(String email, String otp) throws MessagingException {
+        if (Boolean.TRUE.equals(personRepository.existsByEmail(email))) {
+            throw new WrongDataEnteredException("Email is already in use");
+        }
+        OTP OTP = new OTP(email, encoder.encode(otp));
+        OTPRepository.save(OTP);
+        mailSenderService.sendNewMail(email, otp);
+        return new ResponseEntity<>("Email accepted", HttpStatus.OK);
     }
 
-    public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email, String code) throws Exception {
-        if (email == null || email.isEmpty()) {
-            throw new WrongDataEnteredException("Email is empty");
-        }
-        if (personRepository.existsPersonByEmail(email)) {
-            throw new WrongDataEnteredException("Email already exists");
-        }
-        String encodedValidationCode = this.cookiesService.hashCode(code + email + this.secretKey);
-        Cookie validationCookie = this.cookiesService.createCookie("validationCode", encodedValidationCode, 60 * 30);
-        response.addCookie(validationCookie);
-        mailSenderService.sendNewMail(email, code);
-        return new ResponseEntity<>("Validation code sent", HttpStatus.ACCEPTED);
-    }
-
-    public ResponseEntity<String> validateOTP(HttpServletRequest request, SignUpDTO signUpDTO) throws Exception {
-        if (personRepository.existsPersonByEmail(signUpDTO.getEmail())) {
-            throw new WrongDataEnteredException("Email already exists");
-        }
-
-        Cookie validationCookie = cookiesService.getCookie(request, "validationCode");
-        if (validationCookie == null) {
+    public ResponseEntity<String> validateOTP(SignUpDTO signUpDTO) {
+        OTP otp = OTPRepository.findOTPByEmail(signUpDTO.getEmail());
+        if (otp == null) {
             throw new DataNotFoundException("Try to sign up again");
         }
-
-        if (!validationCookie.getValue().equals(this.cookiesService.hashCode(signUpDTO.getCode() + signUpDTO.getEmail() + this.secretKey))) {
-            throw new WrongDataEnteredException("Wrong code, please try again");
+        Duration timeDifference = Duration.between(otp.getTimeCreated(), Instant.now());
+        if (timeDifference.toMinutes() > 30) {
+            throw new DataNotFoundException("Try to sign up again");
         }
+        if (!encoder.matches(signUpDTO.getCode(), otp.getOTP())) {
+            throw new WrongDataEnteredException("Wrong code, try again");
+        }
+        OTPRepository.deleteById(signUpDTO.getEmail());
         savePerson(Person.convert(signUpDTO));
         return new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
     }
-    @Generated
-    public Person getGoogleObject(String accessToken) throws Exception {
+
+    public Person getGoogleObject(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
+        headers.set("Authorization", "Bearer "+accessToken);
         headers.set("Accept", "application/json");
         HttpEntity<String> httpEntity = new HttpEntity<>("", headers);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> entity = restTemplate.exchange("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + accessToken, HttpMethod.GET, httpEntity, String.class);
+        ResponseEntity<String> entity = restTemplate.exchange("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken, HttpMethod.GET, httpEntity, String.class);
         JSONObject object = new JSONObject(entity.getBody());
-        final String encodedPassword = this.encoder.encode(object.getString("id") + System.nanoTime());
-        object.put("password", encodedPassword);
         return new Person(object);
     }
 
-    @Generated
-    public ResponseEntity<PersonMainInfoDTO> signInUsingGoogle(HttpServletResponse response, String accessToken) throws Exception {
+    public Cookie createSessionCookie(String token) {
+        Cookie cookie = new Cookie("qcademy", token);
+        cookie.setMaxAge(24*60*60);
+        cookie.setHttpOnly(true);
+//        cookie.setSecure(true);  //enable later when using https
+        return cookie;
+    }
+
+    public Cookie deleteCookie() {
+        Cookie cookie = new Cookie("qcademy", null);
+        cookie.setMaxAge(0);
+        return cookie;
+    }
+
+    public ResponseEntity<PersonInfoDTO> signInUsingGoogle(HttpServletResponse response, String accessToken) {
         Person person = getGoogleObject(accessToken);
-        Person temp = this.personRepository.findByEmail(person.getEmail());
-        if (temp == null) {
-            person = savePerson(person);
-        }else{
-            person = temp;
-        }
-        return login(response, person, person.getPassword(), true);
-    }
-
-    public Role getUserRole(Long userId) {
-        return personRepository.findRoleById(userId);
-    }
-
-    public void setUserRole(Long userId, Role newRole) {
-        personRepository.updateRoleById(userId, newRole);
+        if (personRepository.existsByEmail(person.getEmail())) return login(response, person.getEmail(), person.getPassword());
+        savePerson(person);
+        String token = authenticator.createToken(person, false, false);
+        if (response!=null) response.addCookie(createSessionCookie(token));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(PersonInfoDTO.convert(person));
     }
 }

@@ -1,39 +1,41 @@
-package com.example.backend.person.repository;
+package com.example.backend.Person.repository;
 
-import com.example.backend.person.model.Person;
-import com.example.backend.person.model.Role;
-import jakarta.transaction.Transactional;
+import com.example.backend.Person.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
     /**
      * find the person record by Email, and it returns null if the email is not found
      * parameters: Email
-     *
      * @return Person
      */
     Person findByEmail(String email);
 
     /**
-     * find the person record by Email, and it returns null if the email is not found
-     * parameters: Email
-     *
-     * @return Person
+     * find the person record by name, and it returns null if the email is not found
+     * parameters: firstName and lastName
+     * @return list of persons
      */
-    boolean existsPersonByEmail(String email);
+    List<Person> findAllByFirstNameAndLastName(String firstName, String lastName);
 
-    @Query("SELECT person.role FROM Person person WHERE person.id = :userId")
-    Role findRoleById(@Param("userId") Long userId);
+    /**
+     * find if this email exist or not
+     * parameters: Email
+     * @return Boolean [true, False]
+     */
+    Boolean existsByEmail(String email);
 
-
-    @Transactional
-    @Modifying
-    @Query("UPDATE Person u SET u.role = :newRole WHERE u.id = :userId")
-    void updateRoleById(@Param("userId") Long userId, @Param("newRole") Role newRole);
-
+    /**
+     * find the password by email, and it returns null if the email is not found
+     * parameters: email
+     * @return password
+     */
+    @Query("SELECT person.password FROM Person person WHERE person.email = :e")
+    String findPasswordByEmail(@Param("e") String email);
 }

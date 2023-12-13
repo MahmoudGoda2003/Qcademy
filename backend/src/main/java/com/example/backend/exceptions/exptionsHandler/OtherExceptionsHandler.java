@@ -1,5 +1,7 @@
 package com.example.backend.exceptions.exptionsHandler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +19,7 @@ public class OtherExceptionsHandler {
     @ResponseBody
     Map<String, String> onOtherExceptions(Exception e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message", "Internal Server Error");
+        error.put("error message", String.valueOf(e));
         return error;
     }
 }
