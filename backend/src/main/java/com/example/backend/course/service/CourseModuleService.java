@@ -44,8 +44,4 @@ public class CourseModuleService  {
         courseRepository.save(course);
     }
 
-    public ResponseEntity<String> createModule(CourseModuleDTO courseModuleDTO) {
-        createCourseModule(courseModuleDTO);
-        return new ResponseEntity<>("Module Created successfully", HttpStatus.CREATED);
-    }
 }

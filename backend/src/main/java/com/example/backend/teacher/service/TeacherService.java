@@ -1,8 +1,12 @@
 package com.example.backend.teacher.service;
 
 import com.example.backend.course.dto.CourseMainInfoDTO;
+import com.example.backend.course.dto.CourseModuleDTO;
+import com.example.backend.course.dto.LectureDTO;
 import com.example.backend.course.model.Course;
+import com.example.backend.course.service.CourseModuleService;
 import com.example.backend.course.service.CourseService;
+import com.example.backend.course.service.LectureService;
 import com.example.backend.teacher.model.Teacher;
 import com.example.backend.teacher.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +23,16 @@ public class TeacherService {
     private final CourseService courseService;
     private final TeacherRepository teacherRepository;
 
+    private final LectureService lectureService;
+    private final CourseModuleService courseModuleService;
     @Autowired
-    public TeacherService(CourseService courseService, TeacherRepository teacherRepository) {
+    public TeacherService(CourseService courseService,
+                          LectureService lectureService,
+                          CourseModuleService courseModuleService,
+                          TeacherRepository teacherRepository) {
         this.courseService = courseService;
+        this.lectureService = lectureService;
+        this.courseModuleService = courseModuleService;
         this.teacherRepository = teacherRepository;
     }
 
@@ -41,7 +52,15 @@ public class TeacherService {
         courseService.saveCourse(course);
         return new ResponseEntity<>("CourseCreated", HttpStatus.CREATED);
     }
+    public ResponseEntity<String> createLecture(LectureDTO lectureDTO) {
+        lectureService.addLectureToModule(lectureDTO);
+        return new ResponseEntity<>("Lecture Created successfully", HttpStatus.CREATED);
+    }
 
+    public ResponseEntity<String> createModule(CourseModuleDTO courseModuleDTO) {
+        courseModuleService.createCourseModule(courseModuleDTO);
+        return new ResponseEntity<>("Module Created successfully", HttpStatus.CREATED);
+    }
     public ResponseEntity<String> updateModules() {
         return null;
     }

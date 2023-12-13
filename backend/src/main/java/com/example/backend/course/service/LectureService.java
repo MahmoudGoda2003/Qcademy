@@ -44,12 +44,7 @@ public class LectureService {
         module.getLecture().add(savedLecture);
         courseModuleRepository.save(module);
     }
-
-    public ResponseEntity<String> createLecture(LectureDTO lectureDTO) {
-        addLectureToModule(lectureDTO);
-        return new ResponseEntity<>("Lecture Created successfully", HttpStatus.CREATED);
-    }
-
+    
     public List<Lecture> getAlLectures() {
         return lectureRepository.findAll();
     }
