@@ -1,9 +1,11 @@
 package com.example.backend.admin.service;
 
+import com.example.backend.admin.model.Admin;
 import com.example.backend.admin.repository.AdminRepository;
 import com.example.backend.person.model.Role;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.PersonService;
+import com.example.backend.teacher.service.TeacherService;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +16,13 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
     private final PersonRepository personRepository;
+    private final TeacherService teacherService;
     private final PersonService personService;
-    public AdminService(AdminRepository adminRepository, PersonRepository personRepository, PersonService personService) {
-        this.adminRepository = adminRepository;
-        this.personRepository = personRepository;
-        this.personService = personService;
+    public AdminService(AdminRepository aR, PersonRepository pR, PersonService pS, TeacherService tS) {
+        this.adminRepository = aR;
+        this.personRepository = pR;
+        this.personService = pS;
+        this.teacherService = tS;
     }
 
     @Transactional
@@ -26,10 +30,10 @@ public class AdminService {
         personService.setUserRole(userId, role);
         switch (role){
             case TEACHER:
-                //Todo: add adding new teacher logic (check if teacher exists, if not add new entry, if yes then do nothing)
+                teacherService.addTeacher(userId);
                 break;
             case ADMIN:
-                //Todo: add adding new admin logic (check if admin exists, if not add new entry, if yes then do nothing)
+                addAdmin(userId);
                 break;
             case STUDENT:
                 //Todo: add adding new student logic (check if student exists, if not add new entry, if yes then do nothing)
@@ -37,5 +41,10 @@ public class AdminService {
             default:
         }
         return new ResponseEntity<>("Role changing completed", HttpStatus.CREATED);
+    }
+
+    private void addAdmin(Long id) {
+        Admin admin = new Admin(id);
+        adminRepository.save(admin);
     }
 }
