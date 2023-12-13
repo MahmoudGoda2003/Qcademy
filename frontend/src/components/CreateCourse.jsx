@@ -75,8 +75,14 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
             estimatedTime: duration,
             teacherName: globals.user.firstName + " " + globals.user.lastName,
         }
-        console.log(course);
-        onCreateCourse(course);
+        try {
+            const response = await axios.post(`${globals.baseURL}/teacher/createCourse`, course, {withCredentials: true})
+            onCreateCourse(course);
+            console.log(response);
+        }
+        catch (error) {
+            console.log(error);
+        }
         setImageUrl(null);
         setImageFile(null);
         handleClose();

@@ -4,11 +4,10 @@ import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.service.CourseService;
 import com.example.backend.person.model.Role;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/teacher/")
+@RequestMapping("/teacher")
 public class TeacherController {
 
     private final CourseService courseService;
@@ -17,12 +16,12 @@ public class TeacherController {
         this.courseService = courseService;
     }
 
-    @GetMapping("test")
+    @GetMapping("/test")
     public String test() throws Exception {
         return "hello world from " + Role.TEACHER.name();
     }
 
-    @PostMapping("createCourse")
+    @PostMapping("/createCourse")
     public ResponseEntity<String> createCourse(@RequestBody CourseMainInfoDTO course) {
         return courseService.createCourse(course);
     }
