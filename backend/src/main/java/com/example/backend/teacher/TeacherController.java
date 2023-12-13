@@ -3,6 +3,7 @@ package com.example.backend.teacher;
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.service.CourseService;
 import com.example.backend.person.model.Role;
+import com.example.backend.teacher.service.TeacherService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/teacher")
 public class TeacherController {
 
-    private final CourseService courseService;
+    private final TeacherService teacherService;
 
-    public TeacherController(CourseService courseService) {
-        this.courseService = courseService;
+
+    public TeacherController(TeacherService teacherService) {
+        this.teacherService = teacherService;
     }
 
     @GetMapping("/test")
@@ -23,7 +25,12 @@ public class TeacherController {
 
     @PostMapping("/createCourse")
     public ResponseEntity<String> createCourse(@RequestBody CourseMainInfoDTO course) {
-        return courseService.createCourse(course);
+        return teacherService.createCourse(course);
+    }
+
+    @PostMapping("/addModules")
+    public ResponseEntity<String> addModules() {
+        return null;
     }
     
 }
