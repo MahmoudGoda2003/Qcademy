@@ -16,7 +16,6 @@ public class CookiesService {
         Cookie cookie = new Cookie(name, data);
         cookie.setMaxAge(lifeTime);
         cookie.setHttpOnly(true);
-        cookie.setPath("/");
         return cookie;
     }
 
