@@ -5,6 +5,7 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import globals from '../utils/globals';
 import axios from "axios";
 import styles from "../utils/styles";
+import LoadingModal from "./LoadingModal";
 
 
 export default function ConfirmEmail({theme}) {
@@ -34,26 +35,7 @@ export default function ConfirmEmail({theme}) {
 
     return (
         <>
-            <Modal
-                open={modal}
-                onClose={closeModal}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                    timeout: 250,
-                    },
-                }}
-                >
-                    <Fade in={modal}>
-                        <Box sx={styles.hiddenModalStyle}>
-                        <Typography color={'white'} margin={'2vh'} fontSize={20}>Validating Code...</Typography>
-                        <CircularProgress margin={'1vh'} color="secondary" />
-                        </Box>
-                    </Fade>
-            </Modal>
+            <LoadingModal open={modal} handleClose={closeModal} message={'Checking Code'} />
             <Grid sx={styles.gridStyle}>
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
                 style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}

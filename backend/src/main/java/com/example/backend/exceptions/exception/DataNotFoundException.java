@@ -1,4 +1,4 @@
-package com.example.backend.exceptions.exceptions;
+package com.example.backend.exceptions.exception;
 
 public class DataNotFoundException extends RuntimeException {
 

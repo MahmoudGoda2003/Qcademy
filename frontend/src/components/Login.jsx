@@ -6,6 +6,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import axios from "axios";
 import globals from '../utils/globals';
 import styles from "../utils/styles";
+import LoadingModal from "./LoadingModal";
 
 export default function Login({theme}) {
 
@@ -27,6 +28,7 @@ export default function Login({theme}) {
 
     const googleLogin = useGoogleLogin({
         onSuccess: async (response) => {
+            setModal(true);
             try{
                 const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain"}, withCredentials: true})
                 globals.user = {
@@ -49,10 +51,6 @@ export default function Login({theme}) {
     
     const handleSignIn = async (event) => {
         event.preventDefault();
-        const checkUser = {
-            email: email,
-            password: password,
-        }
         setModal(true);
         try {
             const response = await axios.post(`${globals.baseURL}/person/login`, {}, {
@@ -86,26 +84,7 @@ export default function Login({theme}) {
 
     return (
         <>
-            <Modal
-                open={modal}
-                onClose={closeModal}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                    timeout: 250,
-                    },
-                }}
-                >
-                    <Fade in={modal}>
-                        <Box sx={styles.hiddenModalStyle}>
-                        <Typography color={'white'} margin={'2vh'} fontSize={20}>Checking Credentials...</Typography>
-                        <CircularProgress margin={'1vh'} color="secondary" />
-                        </Box>
-                    </Fade>
-            </Modal>
+            <LoadingModal open={modal} handleClose={closeModal} message={'Signing You in'} />
             <Grid sx={styles.gridStyle} >
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
                 style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}
