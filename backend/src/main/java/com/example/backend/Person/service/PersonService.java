@@ -24,6 +24,7 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
@@ -55,13 +56,14 @@ public class PersonService {
     }
 
 
+    @Transactional
     public Person savePerson(Person person) {
         String nonEncodedPass = person.getPassword();
         String encodedPass = this.encoder.encode(nonEncodedPass);
         person.setPassword(encodedPass);
         Person savedPerson = this.personRepository.save(person);
         this.studentService.saveStudent(savedPerson.getId());
-        return this.personRepository.save(person);
+        return savedPerson;
     }
 
     public ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, String email, String password) throws Exception {

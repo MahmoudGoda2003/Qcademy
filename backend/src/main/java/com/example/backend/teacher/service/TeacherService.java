@@ -18,7 +18,6 @@ public class TeacherService {
 
     public ResponseEntity<String> requestPromotion(){
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println(userId);
         promotionService.requestPromotion(userId, Role.ADMIN);
         return new ResponseEntity<>("Promotion request successfully", HttpStatus.CREATED);
     }
