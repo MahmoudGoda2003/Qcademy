@@ -2,10 +2,7 @@ package com.example.backend.teacher;
 
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.dto.CourseModuleDTO;
-import com.example.backend.course.dto.LectureDTO;
-import com.example.backend.course.service.CourseModuleService;
 import com.example.backend.course.service.CourseService;
-import com.example.backend.course.service.LectureService;
 import com.example.backend.person.model.Role;
 import com.example.backend.teacher.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +16,11 @@ import java.util.List;
 public class TeacherController {
 
     private final TeacherService teacherService;
+    private final CourseService courseService;
     @Autowired
-    public TeacherController(TeacherService teacherService) {
+    public TeacherController(TeacherService teacherService, CourseService courseService) {
         this.teacherService = teacherService;
+        this.courseService = courseService;
     }
 
     @GetMapping("test")
@@ -49,4 +48,8 @@ public class TeacherController {
         return teacherService.getCreatedCourses();
     }
 
+    @GetMapping("courseModules")
+    public ResponseEntity<List<CourseModuleDTO>> getCourseModules(@RequestParam int courseId){
+        return this.courseService.getCourseModules(courseId);
+    }
 }

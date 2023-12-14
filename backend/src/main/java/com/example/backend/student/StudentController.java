@@ -1,6 +1,7 @@
 package com.example.backend.student;
 
 import com.example.backend.course.dto.CourseMainInfoDTO;
+import com.example.backend.course.dto.CourseModuleDTO;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.service.CourseService;
 import org.springframework.http.HttpStatus;
@@ -42,5 +43,15 @@ public class StudentController {
     @GetMapping("recommendedCourses")
     public ResponseEntity<List<CourseMainInfoDTO>> getRecommendedCourses(){
         return studentService.getRecommendedCourses();
+    }
+
+    @PostMapping("enrollCourse")
+    public ResponseEntity<String> enrollCourse(@RequestBody int courseId){
+        return studentService.enrollCourse(courseId);
+    }
+
+    @GetMapping("courseModules")
+    public ResponseEntity<List<CourseModuleDTO>> getCourseModules(@RequestParam int courseId){
+        return this.courseService.getCourseModules(courseId);
     }
 }

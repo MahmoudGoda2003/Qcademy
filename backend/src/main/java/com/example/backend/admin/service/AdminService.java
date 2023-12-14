@@ -16,6 +16,7 @@ import com.example.backend.student.repository.StudentRepository;
 import com.example.backend.teacher.model.Teacher;
 import com.example.backend.teacher.repository.TeacherRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,8 @@ public class AdminService {
     private final StudentRepository studentRepository;
     private final PromotionService promotionService;
     private final PersonService personService;
+
+    @Autowired
     public AdminService(AdminRepository adminRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, PromotionService promotionService, PersonService personService) {
         this.adminRepository = adminRepository;
         this.teacherRepository = teacherRepository;

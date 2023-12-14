@@ -8,6 +8,8 @@ import com.example.backend.course.model.Course;
 import com.example.backend.student.model.Student;
 import com.example.backend.teacher.model.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,14 +50,12 @@ public class CourseService {
          return courseModule;
     }
 
-    public List<CourseModuleDTO> getCourseModules(int courseId){
+    public ResponseEntity<List<CourseModuleDTO>> getCourseModules(int courseId){
         Course course = this.courseRepository.findById(courseId);
         List<CourseModuleDTO> courseModulesDTO = new ArrayList<>();
         for (CourseModule courseModule : course.getModule()) {
             courseModulesDTO.add(CourseModuleDTO.convert(courseModule));
         }
-        return courseModulesDTO;
+        return new ResponseEntity<>(courseModulesDTO, HttpStatus.OK);
     }
-
-
 }

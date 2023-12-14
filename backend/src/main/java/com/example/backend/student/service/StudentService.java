@@ -3,10 +3,12 @@ package com.example.backend.student.service;
 import com.example.backend.course.courseModule.repository.CourseRepository;
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.model.Course;
+import com.example.backend.course.service.CourseService;
 import com.example.backend.person.model.Role;
 import com.example.backend.promotion.service.PromotionService;
 import com.example.backend.student.model.Student;
 import com.example.backend.student.repository.StudentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,10 +23,14 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final CourseRepository coursesRepository;
 
-    public StudentService(PromotionService promotionService, StudentRepository studentRepository, CourseRepository coursesRepository) {
+    private final CourseService coursesService;
+
+    @Autowired
+    public StudentService(PromotionService promotionService, StudentRepository studentRepository, CourseRepository coursesRepository, CourseService coursesService) {
         this.promotionService = promotionService;
         this.studentRepository = studentRepository;
         this.coursesRepository = coursesRepository;
+        this.coursesService = coursesService;
     }
 
     public void saveStudent(Long userId){
@@ -55,4 +61,13 @@ public class StudentService {
         }
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }
+    public ResponseEntity<String> enrollCourse(int courseId){
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        Student student = this.studentRepository.findByUserId(userId);
+        Course course = this.coursesService.enrollInCourse(courseId, student);
+        student.getCourses().add(course);
+        this.studentRepository.save(student);
+        return new ResponseEntity<>("Course enrolled successfully", HttpStatus.OK);
+    }
+
 }
