@@ -1,59 +1,25 @@
 import Header from './Header';
 import Box from '@mui/material/Box';
-import { Collapse, ListItemButton, Stack, Typography, List, ListItemText} from '@mui/material';
+import { Collapse, ListItemButton, Stack, Typography, List, ListItemText, Link} from '@mui/material';
 import * as React from "react";
 import { useLocation } from 'react-router-dom';
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-
+import YouTube from 'react-youtube';
 
 export default function CourseInfo() {
 
     const location = useLocation();
 
-    const titleStyle = {
-        margin: '2vh 0',
+    /*const modules = location.state.modules;*/
+
+    const [selectedElement, setSelectedElement] = useState();
+
+    const updateView = (item) => {
+        setSelectedElement(item);
     }
 
-    const bodyStyle = {
-        margin: '0 0.5vw 2vh',
-    }
-    const modules = [{
-            name: "Algorithms Module name",
-            description: "How to structure data",
-            image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
-            tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
-            rating: 2.5,
-            moduleid: '12',
-            teacherName: 'Michael Elsayed',
-            lectureLink: "a",
-            lectureQuiz: "a",
-            lectureAssignment: "a"
-        },
-        {
-            name: "Binary search Module name",
-            description: "How to structure data",
-            image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
-            tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
-            rating: 2.5,
-            moduleid: '11',
-            teacherName: 'Michael Elsayed',
-            lectureLink: "a",
-            lectureQuiz: "a",
-            lectureAssignment: "a"
-        },
-        {
-            name: "Complexity Module name",
-            description: "How to structure data",
-            image: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
-            tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
-            rating: 2.5,
-            moduleid: '13',
-            teacherName: 'Michael Elsayed',
-            lectureLink: "a",
-            lectureQuiz: "",
-            lectureAssignment: ""
-        }]
+    const modules = location.state.modules;
 
     const course = {
         name: "Data Structures",
@@ -74,58 +40,13 @@ export default function CourseInfo() {
                 <Stack direction={'column'}
                        sx={{width: '20vw', height: '90%', overflow:'auto'}}
                 >
-                    <Typography gutterBottom variant="h5" component="div" sx={{margin: '2vh 2vw 2vh'}}>
+                    <Typography variant="h5" component="div" sx={{margin: '2vh 0'}}>
                         {course.name}
                     </Typography>
-                    <CourseMaterials modules={modules}>
-                    </CourseMaterials>
+                    {modules ? <CourseMaterials modules={modules} onUpdate={updateView} /> : <></>}
 
                 </Stack>
-
-                <Stack direction={'column'}
-                       sx={{width: '90%', height: '90%', overflow:'auto'}}
-                >
-                    <Typography>
-                        Lecture Video
-                    </Typography>
-                    <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
-                        <iframe width="100%" height="100%"
-                                src="https://www.youtube.com/embed/7P8yRpu_MoE?si=0h9U4Yw7r07jvW4F"
-                                title="YouTube video player" frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen></iframe>
-                    </Box>
-
-                    {/*<Typography sx={titleStyle} variant='h4' fontSize={26}>*/}
-                    {/*    Description*/}
-                    {/*</Typography>*/}
-                    {/*<Typography sx={bodyStyle} variant='body'>*/}
-                    {/*    {course.description}*/}
-                    {/*</Typography>*/}
-                    {/*<Divider sx={{margin: '3vh'}}/>*/}
-                    {/*<Typography sx={titleStyle} variant='h4' fontSize={26}>*/}
-                    {/*    Skills you will learn*/}
-                    {/*</Typography>*/}
-                    {/*<Typography sx={bodyStyle} variant='body'>*/}
-                    {/*    {*/}
-                    {/*        course.tags.map((tag) => {*/}
-                    {/*            return <Chip*/}
-                    {/*                sx={{*/}
-                    {/*                    margin: '0 0.5vh 0.5vw',*/}
-                    {/*                }}*/}
-                    {/*                key={tag} label={tag}></Chip>*/}
-                    {/*        })*/}
-                    {/*    }*/}
-                    {/*</Typography>*/}
-                    {/*<Divider sx={{margin: '3vh'}}/>*/}
-                    {/*/!*TODO: Add real module count*!/*/}
-                    {/*<Typography sx={titleStyle} variant='h4' fontSize={26}>*/}
-                    {/*    There are 13 modules in this course*/}
-                    {/*</Typography>*/}
-                    {/*/!*TODO: Add real module view*!/*/}
-                    {/*<ModuleList></ModuleList>*/}
-                    {/*<Divider sx={{margin: '3vh'}}/>*/}
-                </Stack>
+                <ViewElement selectedElement={selectedElement} />
             </Stack>
         </>
     );
@@ -133,7 +54,7 @@ export default function CourseInfo() {
 
 
 
-function CourseMaterials({modules}) {
+function CourseMaterials({modules, onUpdate}) {
     const [open, setOpen] = useState(false);
     const [nestedOpen, setNestedOpen] = useState(false);
     return (
@@ -151,6 +72,7 @@ function CourseMaterials({modules}) {
                     {modules.map((module, index) => (
                         <Module
                             module={module}
+                            onUpdate={onUpdate}
                         >
                         </Module>
                     ))}
@@ -199,11 +121,16 @@ function CourseMaterials({modules}) {
     );
 }
 
-function Module({module}) {
+function Module({module, onUpdate}) {
     const [open, setOpen] = useState(false);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const [selectedIndex, setSelectedIndex] = useState(0);
     const index = 0;
-    const handleListItemClick = (event, index) => {
+    const handleListItemClick = (event, index, type, url) => {
+        onUpdate({
+            type: type,
+            url: url,
+            name: "Lecture"
+        });
         setSelectedIndex(index);
     };
     return (
@@ -224,7 +151,7 @@ function Module({module}) {
                         {/*navigae to page contain the link of lecture*/}
                             <ListItemButton
                                 selected={selectedIndex === 1}
-                                onClick={(event) => handleListItemClick(event, 1)}>
+                                onClick={(event) => handleListItemClick(event, 1, "lecture", module.lectureLink)}>
                                 <ListItemText primary="Lecture Video" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         </>
@@ -235,7 +162,7 @@ function Module({module}) {
                             {/*navigae to page contain the link of lecture*/}
                             <ListItemButton
                                 selected={selectedIndex === 2}
-                                onClick={(event) => handleListItemClick(event, 2)}>
+                                onClick={(event) => handleListItemClick(event, 2, "quiz", module.lectureQuiz)}>
                                 <ListItemText primary="Quiz" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         </>
@@ -246,7 +173,7 @@ function Module({module}) {
                             {/*navigae to page contain the link of lecture*/}
                             <ListItemButton
                                 selected={selectedIndex === 3}
-                                onClick={(event) => handleListItemClick(event, 3)}>
+                                onClick={(event) => handleListItemClick(event, 3, "assignment", module.lectureAssignment)}>
                                 <ListItemText primary="Assignment" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         </>
@@ -305,3 +232,38 @@ function Module({module}) {
     );
 }
 
+function ViewElement({selectedElement}) {
+    const options = {
+        height: '585',
+        width: '960',
+        playerVars: {
+            autoplay: 0,
+            controls: 1,
+        },
+    };
+    return (
+        <>
+        {selectedElement === undefined ? <></> :
+        <Stack margin={'0 auto'}
+            sx={{width: '70%', height: '90%', overflow:'auto'}}
+        >
+            <Typography variant='h5' margin={'2vh 0'}>
+                    {selectedElement.name}
+            </Typography>
+            {selectedElement.type === 'lecture' ?
+                <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
+                    <YouTube videoId={selectedElement.url} opts={options}/>
+                </Box>
+
+            :
+            <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
+                <Typography variant='h6' margin={'2vh 0'}>Follow this link to view your {selectedElement.type} </Typography>
+                <Typography variant='h6' margin={'2vh 0'}>
+                    <a href={selectedElement.url}>{selectedElement.type}</a>
+                </Typography>
+            </Box>
+            }
+        </Stack>}
+        </>
+    );
+}

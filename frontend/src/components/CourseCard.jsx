@@ -15,7 +15,7 @@ export default function CourseCard({course}) {
 
     const navTo = (courseid) => {
         console.log(course);
-        navigate(`/course/${courseid}`, {state: { course:course }})
+        navigate(`/course/manage/${courseid}`, {state: { course:course }})
     }
     
     return (
