@@ -1,5 +1,6 @@
 package com.example.backend.PersonTests.Roles;
 
+import com.example.backend.admin.dto.ChangeRoleDTO;
 import com.example.backend.admin.repository.AdminRepository;
 import com.example.backend.person.model.Person;
 import com.example.backend.person.model.Role;
@@ -10,6 +11,8 @@ import com.example.backend.services.JwtService;
 import com.example.backend.student.repository.StudentRepository;
 import com.example.backend.student.service.StudentService;
 import com.example.backend.teacher.repository.TeacherRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.StandardEnvironment;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -62,6 +66,11 @@ public class Student {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    protected String mapToJson(Object o) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.writeValueAsString(o);
     }
 
     @Test
@@ -119,7 +128,10 @@ public class Student {
         assertTrue(promotionRepository.existsById(userId));
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").content(String.valueOf(userId)).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
+                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
         assertSame(ps.getUserRole(userId), Role.TEACHER);

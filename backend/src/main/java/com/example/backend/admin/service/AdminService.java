@@ -1,6 +1,7 @@
 package com.example.backend.admin.service;
 
 import com.example.backend.person.model.Role;
+import com.example.backend.promotion.dto.PromotionDTO;
 import com.example.backend.teacher.service.TeacherService;
 import com.example.backend.admin.dto.ChangeRoleDTO;
 import com.example.backend.admin.model.Admin;
@@ -19,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AdminService {
 
@@ -36,10 +39,12 @@ public class AdminService {
     }
 
     @Transactional
-    public ResponseEntity<String> changePersonRole(Long userId){
+    public ResponseEntity<String> changePersonRole(Long userId, boolean status){
         Promotion promotion = promotionService.getAndDeletePromotion(userId);
         if(promotion == null)
             throw new DataNotFoundException("No promotion with that userId");
+        if(!status)
+            return new ResponseEntity<>("Request refused successfully", HttpStatus.CREATED);
         personService.setUserRole(userId, promotion.getRole());
         switch (promotion.getRole()) {
             case TEACHER -> {
@@ -69,5 +74,8 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-
+    @Transactional
+    public ResponseEntity<List<PromotionDTO>> getPromotionRequests(){
+        return new ResponseEntity<>(this.promotionService.getPromotionRequests(), HttpStatus.OK);
+    }
 }

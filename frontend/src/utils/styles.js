@@ -79,6 +79,19 @@ export default {
         border: 'none',
     },
 
+    hiddenModalStyleTop : {
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute',
+        alignItems: 'center',
+        top: '5%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'transparent',
+        border: 'none',
+    },
+
     VisuallyHiddenStyle : {
         clip: 'rect(0 0 0 0)',
         clipPath: 'inset(50%)',

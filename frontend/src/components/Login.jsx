@@ -7,6 +7,7 @@ import axios from "axios";
 import globals from '../utils/globals';
 import styles from "../utils/styles";
 import LoadingModal from "./LoadingModal";
+import ErrorModal from "./ErrorModal";
 
 export default function Login({theme}) {
 
@@ -15,6 +16,7 @@ export default function Login({theme}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [modal, setModal] = useState(false)
+    const [errorModal, setErrorModal] = useState(false)
 
     const fields = {
         email: "email",
@@ -37,14 +39,15 @@ export default function Login({theme}) {
                     photoLink: result.data.photoLink,
                     phone: result.data.phone,
                     education: result.data.education,
-                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : null
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : null,
+                    role: response.data.role
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 closeModal();
                 navigate("/home");
             }catch (error) {
-                alert('An error occurred, please try again later :(')
-                console.error(error);
+                setErrorModal(true);
+                closeModal();
             }
         },
         onError: error => console.log(error),
@@ -54,11 +57,10 @@ export default function Login({theme}) {
         event.preventDefault();
         setModal(true);
         try {
-            const response = await axios.post(`${globals.baseURL}/person/login`, {}, {
-                params: {
-                    email: email,
-                    password: password
-                },
+            const response = await axios.post(`${globals.baseURL}/person/login`, {
+                email: email,
+                password: password
+            }, {
                 withCredentials: true
             })
             globals.user = {
@@ -68,23 +70,29 @@ export default function Login({theme}) {
                 email: response.data.email,
                 dateOfBirth: response.data.dateOfBirth,
                 phone: response.data.phone,
-                education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960'
+                education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960',
+                role: response.data.role
             }
             localStorage.setItem("user", JSON.stringify(globals.user));
+            closeModal();
             navigate("/home");
         } catch (error) {
-            alert('Invalid email or password')
-            console.error(error);
+            setErrorModal(true);
+            closeModal();
         }
-        closeModal();
     }
 
     const closeModal = () => {
         setModal(false);
     }
 
+    const closeErrorModal = () => {
+        setErrorModal(false);
+    }
+
     return (
         <>
+            <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'An error occurred, please try again later :('} />
             <LoadingModal open={modal} handleClose={closeModal} message={'Signing You in'} />
             <Grid sx={styles.gridStyle} >
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}

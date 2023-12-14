@@ -10,6 +10,7 @@ import axios from 'axios'
 import globals from '../utils/globals';
 import styles from "../utils/styles";
 import LoadingModal from "./LoadingModal";
+import ErrorModal from "./ErrorModal";
 
 
 export default function Signup({theme}) {
@@ -22,6 +23,7 @@ export default function Signup({theme}) {
     const [password, setPassword] = useState('');
     const [DOB, setDOB] = useState(null);
     const [modal, setModal] = useState(false)
+    const [errorModal, setErrorModal] = useState(false)
 
     const fields = {
         firstName: "firstname",
@@ -54,12 +56,12 @@ export default function Signup({theme}) {
         try {
             await axios.post(`${globals.baseURL}/person/signup`, user.email, {headers: {"Content-Type": "text/plain"}})
             globals.user = user;
+            closeModal();
             navigate('/confirmEmail');
         } catch (error) {
-            alert('This email already exists :^O')
-            console.error(error);
+            setErrorModal(true);
+            closeModal();
         }
-        closeModal();
     }
 
     const googleLogin = useGoogleLogin({
@@ -77,12 +79,13 @@ export default function Signup({theme}) {
                     dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960'
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
+                closeModal();
                 navigate("/home")
             }catch (error) {
-                alert('An error occurred, please try again later :(')
+                setErrorModal(true);
+                closeModal();
                 console.error(error);
             }
-            closeModal();
         },
         onError: error => console.log(error),
     });
@@ -91,10 +94,15 @@ export default function Signup({theme}) {
         setModal(false)
     }
 
+    const closeErrorModal = () => {
+        setErrorModal(false);
+    }
+
     const minLength = 8;
 
     return (
         <>
+            <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'An error occurred, please try again later :('} />
             <LoadingModal open={modal} handleClose={closeModal} message={'Proccessing your info'} />
             <Grid sx={styles.gridStyle}>
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}

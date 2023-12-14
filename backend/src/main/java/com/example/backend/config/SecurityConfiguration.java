@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -28,7 +29,9 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(AbstractHttpConfigurer::disable)
+//                .cors(cors -> cors)
                 .authorizeHttpRequests(request -> {
+                    request.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     request.requestMatchers("/person/**").permitAll();
                     request.requestMatchers("/admin/**")
                             .hasAnyAuthority(Role.ADMIN.name());
