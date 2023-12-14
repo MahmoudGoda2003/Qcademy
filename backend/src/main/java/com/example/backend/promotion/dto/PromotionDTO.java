@@ -1,6 +1,5 @@
-package com.example.backend.admin.dto;
+package com.example.backend.promotion.dto;
 
-import com.example.backend.person.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,10 +11,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangeRoleDTO {
-    @NotBlank(message = "UserId cannot be blank")
+public class PromotionDTO {
     private Long userId;
-
-    @NotBlank(message = "Status cannot be blank")
-    private boolean status;
+    private String userName;
+    private String requestedRole;
+    private String userImage;
 }

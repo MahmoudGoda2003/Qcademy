@@ -18,6 +18,7 @@ import CourseDetails from "./components/CourseDetails";
 import globals from "./utils/globals";
 import CourseInfo from "./components/CourseInfo";
 import EditCourse from "./components/EditCourse";
+import Admin from "./components/AdminHome";
 
 
 const lightMode = createTheme({
@@ -43,6 +44,19 @@ const darkMode = createTheme({
   },
 });
 
+const getHome = (role) => {
+  switch(role){
+    case "TEACHER":
+      return<TeacherHome/>
+    case "STUDENT":
+      return <Home />
+    case "ADMIN":
+      return <Admin />
+    default:
+      return <Home />
+  }
+}
+
 export default function App() {
 
   const [theme, setTheme] = useState(lightMode);
@@ -50,28 +64,25 @@ export default function App() {
 
   //TODO: get user info from backend here again if null
 
+  
+
   return (
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-          <Routes>
+          <Admin/>
+          {/* <Routes>
             <Route path="/" element={ <Navigate to={'/home'}/>} />
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                <Home />
+                {getHome(globals.user.role)}
               </ProtectedRoute>
             }/>
             <Route path="/profile" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
                 <Profile />
-              </ProtectedRoute>
-            }/>
-            <Route path="/teacher" element={
-              <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                <TeacherHome />
               </ProtectedRoute>
             }/>
             <Route path="/signup" element={
@@ -122,7 +133,7 @@ export default function App() {
                 <CourseInfo />
               </ProtectedRoute>
             } />
-          </Routes>
+          </Routes> */}
       </ThemeProvider>
     </>
   );
