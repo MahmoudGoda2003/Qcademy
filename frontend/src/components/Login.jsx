@@ -7,6 +7,7 @@ import axios from "axios";
 import globals from '../utils/globals';
 import styles from "../utils/styles";
 import LoadingModal from "./LoadingModal";
+import ErrorModal from "./ErrorModal";
 
 export default function Login({theme}) {
 
@@ -15,6 +16,7 @@ export default function Login({theme}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [modal, setModal] = useState(false)
+    const [errorModal, setErrorModal] = useState(false)
 
     const fields = {
         email: "email",
@@ -43,8 +45,8 @@ export default function Login({theme}) {
                 closeModal();
                 navigate("/home");
             }catch (error) {
-                alert('An error occurred, please try again later :(')
-                console.error(error);
+                setErrorModal(true);
+                closeModal();
             }
         },
         onError: error => console.log(error),
@@ -71,20 +73,25 @@ export default function Login({theme}) {
                 education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960'
             }
             localStorage.setItem("user", JSON.stringify(globals.user));
+            closeModal();
             navigate("/home");
         } catch (error) {
-            alert('Invalid email or password')
-            console.error(error);
+            setErrorModal(true);
+            closeModal();
         }
-        closeModal();
     }
 
     const closeModal = () => {
         setModal(false);
     }
 
+    const closeErrorModal = () => {
+        setErrorModal(false);
+    }
+
     return (
         <>
+            <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'An error occurred, please try again later :('} />
             <LoadingModal open={modal} handleClose={closeModal} message={'Signing You in'} />
             <Grid sx={styles.gridStyle} >
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}

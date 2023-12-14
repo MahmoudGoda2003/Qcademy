@@ -6,6 +6,7 @@ import globals from '../utils/globals';
 import axios from "axios";
 import styles from "../utils/styles";
 import LoadingModal from "./LoadingModal";
+import ErrorModal from "./ErrorModal";
 
 
 export default function ConfirmEmail({theme}) {
@@ -13,6 +14,7 @@ export default function ConfirmEmail({theme}) {
 
     const [code, setCode] = useState('');
     const [modal, setModal] = useState(false);
+    const [errorModal, setErrorModal] = useState(false);
 
     const handleCode = async (event) => {
         event.preventDefault();
@@ -23,10 +25,14 @@ export default function ConfirmEmail({theme}) {
             globals.user = null
             navigate('/login')
         } catch (error) {
-            alert("A problem has occurred, please check the code and try again :^(")
+            setErrorModal(true);
             console.log(error);    
         }
         closeModal();
+    }
+
+    const closeErrorModal = () => {
+        setErrorModal(false);
     }
 
     const closeModal = () => {
@@ -35,6 +41,7 @@ export default function ConfirmEmail({theme}) {
 
     return (
         <>
+            <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'A problem has occurred, please check the code and try again'} />
             <LoadingModal open={modal} handleClose={closeModal} message={'Checking Code'} />
             <Grid sx={styles.gridStyle}>
                 <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
