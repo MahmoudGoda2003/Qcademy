@@ -1,5 +1,6 @@
 package com.example.backend.student;
 
+import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.service.CourseService;
 import org.springframework.http.HttpStatus;
@@ -33,8 +34,13 @@ public class StudentController {
         return "hello world from " + Role.STUDENT.name();
     }
 
-//    @GetMapping("getCourses")
-//    public ResponseEntity<List<Course>> getCourses() {
-//        return new ResponseEntity<>(this.courseService , HttpStatus.OK);
-//    }
+    @GetMapping("enrolledCourses")
+    public ResponseEntity<List<CourseMainInfoDTO>> getEnrolledCourses(){
+        return studentService.getEnrolledCourses();
+    }
+
+    @GetMapping("recommendedCourses")
+    public ResponseEntity<List<CourseMainInfoDTO>> getRecommendedCourses(){
+        return studentService.getRecommendedCourses();
+    }
 }

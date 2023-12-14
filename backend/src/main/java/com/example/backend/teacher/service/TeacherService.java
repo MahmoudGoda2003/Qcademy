@@ -55,13 +55,13 @@ public class TeacherService {
         return new ResponseEntity<>(String.format("{'ModuleCreated':%d}", courseModule.getWeekNumber()), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<String> getCreatedCourses(){
+    public ResponseEntity<List<CourseMainInfoDTO>> getCreatedCourses(){
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
         Teacher teacher = teacherRepository.getByUserId(userId);
         List<CourseMainInfoDTO> courses = new ArrayList<>();
         for (Course course : teacher.getCourses()) {
             courses.add(CourseMainInfoDTO.convert(course));
         }
-        return new ResponseEntity<>(courses.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(courses, HttpStatus.OK);
     }
 }

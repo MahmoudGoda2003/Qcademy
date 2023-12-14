@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/teacher/")
 public class TeacherController {
@@ -32,8 +34,6 @@ public class TeacherController {
         return this.teacherService.createCourse(course);
     }
 
-
-
     @PostMapping("CreateModule")
     public ResponseEntity<String> createModule(@RequestBody CourseModuleDTO courseModuleDTO) {
         return  teacherService.createModule(courseModuleDTO);
@@ -45,7 +45,8 @@ public class TeacherController {
     }
 
     @GetMapping("createdCourses")
-    public ResponseEntity<String> getCreatedCourses(){
+    public ResponseEntity<List<CourseMainInfoDTO>> getCreatedCourses(){
         return teacherService.getCreatedCourses();
     }
+
 }
