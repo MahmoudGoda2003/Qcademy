@@ -1,11 +1,34 @@
-import {Chip, Stack, Typography} from '@mui/material';
+import {Chip, IconButton, Stack, Typography} from '@mui/material';
 import * as React from "react";
 import CourseDetailsCard from "./CourseDetailsCard";
 import Divider from '@mui/material/Divider';
 import ModuleList from './ModuleList';
 import { useLocation } from 'react-router-dom';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { useState } from 'react';
+import CreateModule from './CreateModule';
 
-export default function CourseDetails() {
+export default function EditCourse() {
+
+    const fakeModule = {
+        courseId: 1,
+        name: "moduleName",
+        lectures: ['lectures', 'lectures', 'lectures'],
+        assignments: ['assignments'],
+        slideSets: ['slideSets'],
+        quizzes: ['quizzes']
+    }
+
+    const [open, setOpen] = useState(false);
+    const [modules, setModules] = useState([fakeModule]);
+
+    const handleOpen = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     const location = useLocation();
 
@@ -18,6 +41,10 @@ export default function CourseDetails() {
     }
 
     const course = location.state.course;
+
+    const createModule = (module) => {
+        setModules(modules => [...modules, module]);
+    }
 
     return (
         // overflow:'auto', maxWidth: '100%', padding: '2vh'
@@ -35,7 +62,7 @@ export default function CourseDetails() {
                         rating={course.rating}
                         courseid={course.courseid}
                         teacherName={course.teacherName}
-                        role='student'
+                        role={"teacher"}
                     >
                     </CourseDetailsCard>
                 </Stack>
@@ -67,14 +94,23 @@ export default function CourseDetails() {
                     </Typography>
                     <Divider sx={{margin: '3vh'}}/>
                     {/*TODO: Add real module count*/}
-                    <Typography sx={titleStyle} variant='h4' fontSize={26}>
-                        There are 13 modules in this course
-                    </Typography>
+                    <Stack direction={'row'} alignItems={'center'}>
+                        <Typography sx={titleStyle} variant='h4' fontSize={26}>
+                            Add Module
+                        </Typography>
+                        <IconButton sx={{margin: '0 1vh'}} onClick={handleOpen}>
+                            <AddCircleIcon color='primary'/>
+                        </IconButton>
+                    </Stack>
                     {/*TODO: Add real module view*/}
-                    <ModuleList></ModuleList>
+                    <ModuleList
+                        modules = {modules}
+                    >
+                    </ModuleList>
                     <Divider sx={{margin: '3vh'}}/>
                 </Stack>
             </Stack>
+            <CreateModule open={open} handleClose={handleClose} onCreateModule={createModule} courseId={course.courseid}></CreateModule>
         </>
     );
 }

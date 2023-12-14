@@ -14,7 +14,7 @@ const gridElement = {
     width: '100%'
 }
 
-export default function CourseDetailsCard({name, image, rating, teacherName}) {
+export default function CourseDetailsCard({name, image, rating, teacherName, role}) {
 
     return (
 
@@ -36,7 +36,7 @@ export default function CourseDetailsCard({name, image, rating, teacherName}) {
                         color="text.secondary">
                         By: {teacherName}
                     </Typography>
-                    <Button variant="contained" size="large" sx={gridElement} type="submit">Enroll Now</Button>
+                    {role == "student" ? <Button variant="contained" size="large" sx={gridElement} type="submit">Enroll Now</Button> :<></>}
                 </CardContent>
         </Card>
     );

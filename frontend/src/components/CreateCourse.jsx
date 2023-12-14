@@ -3,7 +3,7 @@ import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
-import { Backdrop, Button, Chip, Fade, InputAdornment, Modal } from '@mui/material';
+import { Backdrop, Button, Chip, Fade, InputAdornment, Modal, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import styles from '../utils/styles';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -105,6 +105,7 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
         >
             <Fade in={open}>
                 <Stack sx={styles.modalStyle2} alignItems={'left'}>
+                    <Typography variant='h5' marginBottom={'1vh'}>Add new Course</Typography>
                     <CardActionArea onClick={handleInputImg} >
                         { imageUrl ?
                             <CardMedia

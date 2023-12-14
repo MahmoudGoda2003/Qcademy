@@ -1,21 +1,7 @@
 import Header from './Header';
 import Box from '@mui/material/Box';
-import {
-    Card,
-    CardActionArea,
-    Chip,
-    Collapse,
-    ListItemButton,
-    Stack,
-    Typography,
-    List,
-    ListItemIcon, ListItemText, CardMedia
-} from '@mui/material';
+import { Collapse, ListItemButton, Stack, Typography, List, ListItemText} from '@mui/material';
 import * as React from "react";
-
-import Divider from '@mui/material/Divider';
-
-import ModuleList from './ModuleList';
 import { useLocation } from 'react-router-dom';
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";

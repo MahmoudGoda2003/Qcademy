@@ -6,6 +6,7 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import CreateCourses from './CreateCourse';
 import globals from '../utils/globals';
+import { Box } from '@mui/system';
 
 
 export default function Teacher(props) {
@@ -82,21 +83,21 @@ export default function Teacher(props) {
         setCourses(courses => [...courses, course]);
     }
 
-    const TextStyle = { fontFamily: 'Segoe Ui', fontWeight: 'lighter' };
+    const TextStyle = {fontFamily: 'sans-serif'}
 
     const TextStyle2 = { color: 'gray' };
 
     return (
-        <>
+        <Box maxWidth='100%' width={'85%'} margin={'auto'}>
             {(courses === 0) ?
                 <>
-                    <Typography variant='h3' marginTop='5vh' marginLeft='10vh' sx={TextStyle}>Manage Your Courses ...</Typography>
-                    <Typography variant='h6' marginLeft='15vh' sx={TextStyle}>These Are All The Courses You've Created</Typography>
-                    <Typography variant='h6' align='center' margin='8vh' sx={TextStyle2}>Let's Learn And Grow Together, Sharing Knowledge To Brighten Our World!</Typography>
+                    <Typography variant='h4' marginTop='7vh' sx={TextStyle}>Manage Your Courses ...</Typography>
+                    <Typography variant='h7' sx={TextStyle}>These Are All The Courses You've Created</Typography>
+                    <Typography variant='h7' align='center' margin='8vh' sx={TextStyle2}>Let's Learn And Grow Together, Sharing Knowledge To Brighten Our World!</Typography>
                 </> :
                 <>
-                    <Typography variant='h3' marginTop='5vh' marginLeft='10vh' sx={TextStyle}>Manage Your Courses ...</Typography>
-                    <Typography variant='h6' marginLeft='15vh' sx={TextStyle}>These Are All The Courses You've Created</Typography>
+                    <Typography variant='h4' marginTop='7vh' sx={TextStyle}>Manage Your Courses ...</Typography>
+                    <Typography variant='h7' sx={TextStyle}>These Are All The Courses You've Created</Typography>
 
                     <Grid
                         container
@@ -105,7 +106,8 @@ export default function Teacher(props) {
                         columnGap={2}
                         justifyContent="space-around"
                         alignItems="flex-start"
-                        padding={3}
+                        margin={'2vh auto'}
+                        padding={'2vh 2vw'}
                     >
                         {courses.map((course, index) => (
                             <CourseCard
@@ -121,6 +123,6 @@ export default function Teacher(props) {
 
                 </>
             }
-        </>
+        </Box>
     );
 }
