@@ -11,6 +11,8 @@ import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.services.CookiesService;
 import com.example.backend.services.JwtService;
 import com.example.backend.services.MailSenderService;
+import com.example.backend.student.repository.StudentRepository;
+import com.example.backend.student.service.StudentService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
@@ -36,11 +39,15 @@ public class PersonService {
     private final PasswordEncoder encoder;
     private final Random random;
     private final String secretKey;
+    private final StudentRepository studentRepository;
+    private final StudentService studentService;
 
     @Autowired
-    public PersonService(PersonRepository personRepository, MailSenderService mailSenderService) {
+    public PersonService(PersonRepository personRepository, MailSenderService mailSenderService, StudentRepository studentRepository, StudentService studentService) {
         this.personRepository = personRepository;
         this.mailSenderService = mailSenderService;
+        this.studentRepository = studentRepository;
+        this.studentService = studentService;
         this.authenticator = new JwtService();
         this.encoder = new BCryptPasswordEncoder();
         this.random = new Random();
@@ -49,11 +56,14 @@ public class PersonService {
     }
 
 
-    private Person savePerson(Person person) {
+    @Transactional
+    public Person savePerson(Person person) {
         String nonEncodedPass = person.getPassword();
         String encodedPass = this.encoder.encode(nonEncodedPass);
         person.setPassword(encodedPass);
-        return this.personRepository.save(person);
+        Person savedPerson = this.personRepository.save(person);
+        this.studentService.saveStudent(savedPerson.getId());
+        return savedPerson;
     }
 
     public ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, String email, String password) throws Exception {
