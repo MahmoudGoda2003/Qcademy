@@ -116,6 +116,12 @@ export default function App() {
                 <EditCourse />
               </ProtectedRoute>
             } />
+            <Route path="course/learn/:courseId/" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <CourseInfo />
+              </ProtectedRoute>
+            } />
           </Routes>
       </ThemeProvider>
     </>

@@ -27,14 +27,7 @@ export default function CourseDetails() {
                 <div style={{position: 'sticky', top: 5}}>
                 <Stack sx={{position: 'sticky', top: 5}}>
                     <CourseDetailsCard
-                        key={1}
-                        name={course.name}
-                        description={course.description}
-                        image={course.photoLink}
-                        tags={course.tags.slice(0, 5)}
-                        rating={course.rating}
-                        courseid={course.courseid}
-                        teacherName={course.teacherName}
+                        course={course}
                         role='student'
                     >
                     </CourseDetailsCard>

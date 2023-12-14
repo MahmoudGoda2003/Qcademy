@@ -17,23 +17,34 @@ export default function Teacher(props) {
         tags: ['Trees', 'Graphs', 'Arrays'],
         rating: 4,
         courseid: '23',
-        teacherName: 'Ahmed Ayman'
-    }, {
-        name: "The Way Of C",
-        description: "Become superior, think like a computer ;^)",
-        photoLink: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg",
-        tags: ['Pointers', 'Memory leaks', 'File descriptors'],
-        rating: 5,
-        courseid: '15',
-        teacherName: 'Terry A. Davis'
-    }, {
-        name: "Data Structures",
-        description: "How to structure data",
-        photoLink: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
-        tags: ['Trees', 'Graphs', 'Arrays'],
-        rating: 4,
-        courseid: '23',
-        teacherName: 'Ahmed Ayman'
+        teacherName: 'Ahmed Ayman', 
+        modules: [{
+            courseId: '23',
+            name: 'Algorithms',
+            lectures: [{lectureName: "Lecture 1", lectureUrl: 'b9eMGE7QtTk'}],
+            assignments: [{assignmentName: "Assignment 1", assignmentUrl: 'https://learnenglish.britishcouncil.org/sites/podcasts/files/LearnEnglish-Listening-A2-Instructions-for-an-assignment.pdf'}],
+            slideSets: [],
+            quizzes: ['https://learnenglishteens.britishcouncil.org/sites/teens/files/friendship_quiz_-_answers.pdf'],
+            moduleid: '12',
+        },
+        {
+            courseId: '23',
+            name: 'Algorithms',
+            lectures: [{lectureName: "Lecture 1", lectureUrl: 'b9eMGE7QtTk'}],
+            assignments: [{assignmentName: "Assignment 1", assignmentUrl: 'https://learnenglish.britishcouncil.org/sites/podcasts/files/LearnEnglish-Listening-A2-Instructions-for-an-assignment.pdf'}],
+            slideSets: [],
+            quizzes: ['https://learnenglishteens.britishcouncil.org/sites/teens/files/friendship_quiz_-_answers.pdf'],
+            moduleid: '12',
+        },
+        {
+            courseId: '23',
+            name: 'Algorithms',
+            lectures: ['b9eMGE7QtTk'],
+            assignments: ['https://learnenglish.britishcouncil.org/sites/podcasts/files/LearnEnglish-Listening-A2-Instructions-for-an-assignment.pdf'],
+            slideSets: [],
+            quizzes: ['https://learnenglishteens.britishcouncil.org/sites/teens/files/friendship_quiz_-_answers.pdf'],
+            moduleid: '12',
+        },],
     }, {
         name: "The Way Of C",
         description: "Become superior, think like a computer ;^)",
@@ -65,7 +76,7 @@ export default function Teacher(props) {
         tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
         rating: 2.5,
         courseid: '12',
-        teacherName: 'Michael Elsayed'
+        teacherName: 'Michael Elsayed',
     }]
 
     const [open, setOpen] = useState(false);

@@ -20,7 +20,6 @@ export default function EditCourse() {
     }
 
     const [open, setOpen] = useState(false);
-    const [modules, setModules] = useState([fakeModule]);
 
     const handleOpen = () => {
         setOpen(true);
@@ -42,6 +41,9 @@ export default function EditCourse() {
 
     const course = location.state.course;
 
+    const [modules, setModules] = useState(course.modules);
+
+
     const createModule = (module) => {
         setModules(modules => [...modules, module]);
     }
@@ -54,14 +56,7 @@ export default function EditCourse() {
                 <div style={{position: 'sticky', top: 5}}>
                 <Stack sx={{position: 'sticky', top: 5}}>
                     <CourseDetailsCard
-                        key={1}
-                        name={course.name}
-                        description={course.description}
-                        image={course.photoLink}
-                        tags={course.tags.slice(0, 5)}
-                        rating={course.rating}
-                        courseid={course.courseid}
-                        teacherName={course.teacherName}
+                        course={course}
                         role={"teacher"}
                     >
                     </CourseDetailsCard>
@@ -93,7 +88,6 @@ export default function EditCourse() {
                     }
                     </Typography>
                     <Divider sx={{margin: '3vh'}}/>
-                    {/*TODO: Add real module count*/}
                     <Stack direction={'row'} alignItems={'center'}>
                         <Typography sx={titleStyle} variant='h4' fontSize={26}>
                             Add Module
@@ -102,11 +96,7 @@ export default function EditCourse() {
                             <AddCircleIcon color='primary'/>
                         </IconButton>
                     </Stack>
-                    {/*TODO: Add real module view*/}
-                    <ModuleList
-                        modules = {modules}
-                    >
-                    </ModuleList>
+                    {modules ? <ModuleList modules = {modules} /> : <></>}
                     <Divider sx={{margin: '3vh'}}/>
                 </Stack>
             </Stack>
