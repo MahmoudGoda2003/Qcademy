@@ -11,8 +11,6 @@ export default function CourseInfo() {
 
     const location = useLocation();
 
-    /*const modules = location.state.modules;*/
-
     const [selectedElement, setSelectedElement] = useState();
 
     const updateView = (item) => {
@@ -122,14 +120,15 @@ function CourseMaterials({modules, onUpdate}) {
 }
 
 function Module({module, onUpdate}) {
+
     const [open, setOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const index = 0;
-    const handleListItemClick = (event, index, type, url) => {
+    const handleListItemClick = (event, index, name, url, type) => {
         onUpdate({
             type: type,
             url: url,
-            name: "Lecture"
+            name: name,
         });
         setSelectedIndex(index);
     };
@@ -145,37 +144,56 @@ function Module({module, onUpdate}) {
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    {(module.lectureLink === "")?
+                    {(module.lectures.toString() === [].toString())?
                         <></>:
                         <>
                         {/*navigae to page contain the link of lecture*/}
+                        {module.lectures.map((lecture) =>(
                             <ListItemButton
-                                selected={selectedIndex === 1}
-                                onClick={(event) => handleListItemClick(event, 1, "lecture", module.lectureLink)}>
-                                <ListItemText primary="Lecture Video" sx={{ marginLeft: '2vw'}} />
+                            selected={selectedIndex === 1}
+                            onClick={(event) => handleListItemClick(event, 1, lecture.lectureName, lecture.lectureUrl, 'lecture')}>
+                            <ListItemText primary="Lecture Video" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
+                        ))}
                         </>
                     }
-                    {(module.lectureQuiz === "")?
+                    {(module.quizzes.toString() === [].toString())?
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}
+                        {module.quizzes.map((quizUrl) =>(
                             <ListItemButton
-                                selected={selectedIndex === 2}
-                                onClick={(event) => handleListItemClick(event, 2, "quiz", module.lectureQuiz)}>
-                                <ListItemText primary="Quiz" sx={{ marginLeft: '2vw'}} />
+                            selected={selectedIndex === 2}
+                            onClick={(event) => handleListItemClick(event, 2, 'Quiz', quizUrl, '')}>
+                            <ListItemText primary="Lecture Quiz" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
+                        ))}
                         </>
                     }
-                    {(module.lectureAssignment === "")?
+                    {(module.assignments.toString() === [].toString())?
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}
+                        {module.assignments.map((assignment) =>(
                             <ListItemButton
-                                selected={selectedIndex === 3}
-                                onClick={(event) => handleListItemClick(event, 3, "assignment", module.lectureAssignment)}>
-                                <ListItemText primary="Assignment" sx={{ marginLeft: '2vw'}} />
+                            selected={selectedIndex === 3}
+                            onClick={(event) => handleListItemClick(event, 3, assignment.assignmentName, assignment.assignmentUrl, '')}>
+                            <ListItemText primary="Lecture Assignment" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
+                        ))}
+                        </>
+                    }
+                    {(module.slideSets.toString() === [].toString())?
+                        <></>:
+                        <>
+                            {/*navigae to page contain the link of lecture*/}
+                        {module.slideSets.map((slidesUrl) =>(
+                            <ListItemButton
+                            selected={selectedIndex === 4}
+                            onClick={(event) => handleListItemClick(event, 4, "slides", slidesUrl, '')}>
+                            <ListItemText primary="Lecture Assignment" sx={{ marginLeft: '2vw'}} />
+                            </ListItemButton>
+                        ))}
                         </>
                     }
                 </List>
@@ -259,7 +277,7 @@ function ViewElement({selectedElement}) {
             <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
                 <Typography variant='h6' margin={'2vh 0'}>Follow this link to view your {selectedElement.type} </Typography>
                 <Typography variant='h6' margin={'2vh 0'}>
-                    <a href={selectedElement.url}>{selectedElement.type}</a>
+                    <a href={selectedElement.url}>{selectedElement.name}</a>
                 </Typography>
             </Box>
             }

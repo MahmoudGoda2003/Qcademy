@@ -20,7 +20,6 @@ export default function EditCourse() {
     }
 
     const [open, setOpen] = useState(false);
-    const [modules, setModules] = useState([fakeModule]);
 
     const handleOpen = () => {
         setOpen(true);
@@ -41,6 +40,9 @@ export default function EditCourse() {
     }
 
     const course = location.state.course;
+
+    const [modules, setModules] = useState(course.modules);
+
 
     const createModule = (module) => {
         setModules(modules => [...modules, module]);
@@ -94,10 +96,7 @@ export default function EditCourse() {
                             <AddCircleIcon color='primary'/>
                         </IconButton>
                     </Stack>
-                    <ModuleList
-                        modules = {modules}
-                    >
-                    </ModuleList>
+                    {modules ? <ModuleList modules = {modules} /> : <></>}
                     <Divider sx={{margin: '3vh'}}/>
                 </Stack>
             </Stack>
