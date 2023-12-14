@@ -41,4 +41,9 @@ public class TeacherController {
     public ResponseEntity<String> createModule(@RequestBody CourseModuleDTO courseModuleDTO) {
         return  teacherService.createModule(courseModuleDTO);
     }
+
+    @PostMapping("/requestPromotion")
+    public ResponseEntity<String> requestPromotion() throws Exception {
+        return teacherService.requestPromotion();
+    }
 }

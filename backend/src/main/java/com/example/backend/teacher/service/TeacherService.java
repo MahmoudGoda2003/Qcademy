@@ -10,10 +10,13 @@ import com.example.backend.course.service.LectureService;
 import com.example.backend.teacher.model.Teacher;
 import com.example.backend.teacher.repository.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.example.backend.person.model.Role;
+import com.example.backend.promotion.service.PromotionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,17 +27,28 @@ public class TeacherService {
     private final CourseService courseService;
     private final TeacherRepository teacherRepository;
 
+    private final PromotionService promotionService;
+
     private final LectureService lectureService;
     private final CourseModuleService courseModuleService;
     @Autowired
     public TeacherService(CourseService courseService,
                           LectureService lectureService,
                           CourseModuleService courseModuleService,
-                          TeacherRepository teacherRepository) {
+                          TeacherRepository teacherRepository,
+                          PromotionService promotionService) {
+        this.promotionService = promotionService;
         this.courseService = courseService;
         this.lectureService = lectureService;
         this.courseModuleService = courseModuleService;
         this.teacherRepository = teacherRepository;
+    }
+
+    public ResponseEntity<String> requestPromotion(){
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        promotionService.requestPromotion(userId, Role.ADMIN);
+        return new ResponseEntity<>("Promotion request successfully", HttpStatus.CREATED);
+
     }
 
     public void addTeacher(Long id) {
