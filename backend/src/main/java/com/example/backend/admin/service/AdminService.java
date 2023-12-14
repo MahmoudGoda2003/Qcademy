@@ -36,6 +36,8 @@ public class AdminService {
     @Transactional
     public ResponseEntity<String> changePersonRole(Long userId){
         Promotion promotion = promotionService.getAndDeletePromotion(userId);
+        if(promotion == null)
+            throw new DataNotFoundException("No promotion with that userId");
         personService.setUserRole(userId, promotion.getRole());
         switch (promotion.getRole()) {
             case TEACHER -> {
