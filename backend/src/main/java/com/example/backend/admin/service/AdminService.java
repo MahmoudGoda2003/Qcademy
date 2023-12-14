@@ -43,6 +43,8 @@ public class AdminService {
         Promotion promotion = promotionService.getAndDeletePromotion(userId);
         if(promotion == null)
             throw new DataNotFoundException("No promotion with that userId");
+        if(!status)
+            return new ResponseEntity<>("Request refused successfully", HttpStatus.CREATED);
         personService.setUserRole(userId, promotion.getRole());
         switch (promotion.getRole()) {
             case TEACHER -> {

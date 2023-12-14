@@ -70,13 +70,12 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-          <Admin/>
           <Routes>
             <Route path="/" element={ <Navigate to={'/home'}/>} />
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                {getHome(globals.user.role)}
+                {getHome(globals.user?.role)}
               </ProtectedRoute>
             }/>
             <Route path="/profile" element={
