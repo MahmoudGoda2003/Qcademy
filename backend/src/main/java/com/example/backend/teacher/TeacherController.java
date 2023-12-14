@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/teacher")
+@RequestMapping("/teacher/")
 public class TeacherController {
 
     private final TeacherService teacherService;
@@ -22,23 +22,28 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @GetMapping("/test")
+    @GetMapping("test")
     public String test() throws Exception {
         return "hello world from " + Role.TEACHER.name();
     }
 
-    @PostMapping("/createCourse")
+    @PostMapping("createCourse")
     public ResponseEntity<String> createCourse(@RequestBody CourseMainInfoDTO course) {
-        return teacherService.createCourse(course);
+        return this.teacherService.createCourse(course);
     }
 
-    @PostMapping("/CreateLecture")
+    @PostMapping("CreateLecture")
     public ResponseEntity<String> createLecture(@RequestBody LectureDTO lectureDTO) {
         return  teacherService.createLecture(lectureDTO);
     }
 
-    @PostMapping("/CreateModule")
+    @PostMapping("CreateModule")
     public ResponseEntity<String> createModule(@RequestBody CourseModuleDTO courseModuleDTO) {
         return  teacherService.createModule(courseModuleDTO);
+    }
+
+    @PostMapping("requestPromotion")
+    public ResponseEntity<String> requestPromotion() throws Exception {
+        return teacherService.requestPromotion();
     }
 }

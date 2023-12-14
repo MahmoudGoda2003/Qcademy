@@ -21,16 +21,16 @@ public class SolvedAssigment {
     private short grade;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "assigment_module_course_id"),
             @JoinColumn(name = "assigment_module_week_number"),
             @JoinColumn(name = "assigment_number")
     })
-    private Assigment assigment;
+    private Assigment assignments;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private Student student;
 }

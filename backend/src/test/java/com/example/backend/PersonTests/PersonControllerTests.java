@@ -174,7 +174,7 @@ public class PersonControllerTests extends AbstractTest {
 
         MockHttpServletResponse response = mvcResult.getResponse();
         assertEquals(HttpStatus.ACCEPTED.value(), response.getStatus());
-        assertEquals("{\"firstName\":\"Yahya\",\"lastName\":\"Azzam\",\"email\":\"test1@gmail.com\",\"photoLink\":\"photo.jpg\"}", response.getContentAsString());
+        assertEquals("{\"firstName\":\"Yahya\",\"lastName\":\"Azzam\",\"email\":\"test1@gmail.com\",\"role\":\"STUDENT\",\"photoLink\":\"photo.jpg\"}", response.getContentAsString());
     }
 
     @Test

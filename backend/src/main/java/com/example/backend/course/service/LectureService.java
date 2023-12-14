@@ -35,18 +35,18 @@ public class LectureService {
     }
 
     public void addLectureToModule(LectureDTO lectureDTO) {
-        Lecture savedLecture = saveLecture(Lecture.convert(lectureDTO));
-        CourseModule module = courseModuleRepository.findCourseModuleByCourseAndWeekNumber
-                (lectureDTO.getModule().getCourse(),
-                        lectureDTO.getModule().getWeekNumber());
-        if(module == null)
-            throw new DataNotFoundException("CourseModule not found");
-
-        if(module.getLecture() == null)
-            module.setLecture(new ArrayList<>());
-
-        module.getLecture().add(savedLecture);
-        courseModuleRepository.save(module);
+//        Lecture savedLecture = saveLecture(Lecture.convert(lectureDTO));
+//        CourseModule module = courseModuleRepository.findCourseModuleByCourseAndWeekNumber
+//                (lectureDTO.getModule().getCourse(),
+//                        lectureDTO.getModule().getWeekNumber());
+//        if(module == null)
+//            throw new DataNotFoundException("CourseModule not found");
+//
+//        if(module.getLecture() == null)
+//            module.setLecture(new ArrayList<>());
+//
+//        module.getLecture().add(savedLecture);
+//        courseModuleRepository.save(module);
     }
 
     public List<Lecture> getAlLectures() {

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
+
 import java.util.List;
 
 @Entity
@@ -20,6 +21,8 @@ import java.util.List;
 public class CourseModule {
 
     @Id
+    @Setter(AccessLevel.NONE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "week_number")
     private int weekNumber;
 
@@ -31,18 +34,19 @@ public class CourseModule {
     private List<String> slidesURL;
 
     @Column(name = "quiz")
-    private String quizURL;
+    @ElementCollection
+    private List<String> quizURL;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "module")
-    private List<Lecture> lecture;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
+    private List<Lecture> lectures;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "module")
-    private List<Assigment> assignment;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
+    private List<Assigment> assignments;
 
     private static final ModelMapper modelMapper = new ModelMapper();
     public static CourseModule convert(CourseModuleDTO courseModuleDTO) {

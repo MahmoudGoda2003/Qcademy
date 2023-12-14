@@ -24,7 +24,7 @@ public class JwtService {
                 .setSubject(role.name())
                 .setId(id.toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(null)
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -32,8 +32,7 @@ public class JwtService {
     public boolean isTokenValid(String token, Role actualRole){
         final Claims claims = extractAllClaims(token);
         final Role role = Role.valueOf(claims.getSubject());
-        final Date expirationDate = claims.getExpiration();
-        return (role == actualRole) && !(expirationDate.before(new Date()));
+        return (role == actualRole);
     }
 
     private Claims extractAllClaims(String jwt){

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class SolvedAssigmentId implements Serializable {
 
-    private Assigment assigment;
+    private Assigment assignments;
 
     private Student student;
 }

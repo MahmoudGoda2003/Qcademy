@@ -48,13 +48,13 @@ public class Course {
     @Column(name = "teacherName")
     private String teacherName;
 
-    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "course")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
     private List<CourseModule> module;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "courses")
     private List<Student> students;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 

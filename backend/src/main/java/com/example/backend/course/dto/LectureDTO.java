@@ -19,9 +19,6 @@ public class LectureDTO {
     @NotBlank(message = "Lecture URL is mandatory")
     private String lectureURL;
 
-    @NotBlank(message = "Module is mandatory")
-    private CourseModule module;
-
     private static final ModelMapper modelMapper = new ModelMapper();
     public static LectureDTO convert(Lecture lecture) {
         return modelMapper.map(lecture, LectureDTO.class);

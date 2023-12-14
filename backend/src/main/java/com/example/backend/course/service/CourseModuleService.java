@@ -37,7 +37,7 @@ public class CourseModuleService  {
     // save a course module for a course with the given courseId
     public void createCourseModule(CourseModuleDTO courseModuleDTO) {
         CourseModule savedModule = saveCourseModule(CourseModule.convert(courseModuleDTO));
-        Course course = courseRepository.findById(courseModuleDTO.getCourse().getCourseId());
+        Course course = courseRepository.findById(courseModuleDTO.getCourseId());
         if(course == null)
             throw new DataNotFoundException("Course not found");
 

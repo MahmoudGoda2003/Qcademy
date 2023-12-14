@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 
-@RequestMapping("/person")
+@RequestMapping("/person/")
 @RestController
 public class PersonController {
 
@@ -22,28 +22,28 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("signup")
     public ResponseEntity<String> signUp(HttpServletResponse response, @RequestBody String email) throws Exception {
         return personService.sendValidationCode(response, email);
     }
 
-    @PostMapping("/signup/validate")
+    @PostMapping("signup/validate")
     public ResponseEntity<String> validateOTP(HttpServletRequest request, @Valid @RequestBody SignUpDTO signUpDTO) throws Exception {
         return personService.validateOTP(request, signUpDTO);
     }
 
     @Generated
-    @PostMapping("/google")
+    @PostMapping("google")
     public ResponseEntity<PersonMainInfoDTO> googleSignIn(HttpServletResponse response, @RequestBody String accessToken) throws Exception {
         return personService.signInUsingGoogle(response, accessToken);
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity<PersonMainInfoDTO> logIn(HttpServletResponse response, @Valid @RequestBody LoginDTO loginDTO) throws Exception {
         return personService.login(response, loginDTO.getEmail(), loginDTO.getPassword());
     }
 
-    @PostMapping("/update")
+    @PostMapping("update")
     public ResponseEntity<String> update(@Valid @RequestBody PersonInfoDTO personInfoDTO) {
         return personService.updatePerson(personInfoDTO);
     }

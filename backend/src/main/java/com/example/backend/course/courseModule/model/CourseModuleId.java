@@ -13,6 +13,5 @@ public class CourseModuleId implements Serializable {
 
     private Course course;
 
-
     private int weekNumber;
 }
