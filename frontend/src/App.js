@@ -71,7 +71,7 @@ export default function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
           <Admin/>
-          {/* <Routes>
+          <Routes>
             <Route path="/" element={ <Navigate to={'/home'}/>} />
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
@@ -133,7 +133,7 @@ export default function App() {
                 <CourseInfo />
               </ProtectedRoute>
             } />
-          </Routes> */}
+          </Routes>
       </ThemeProvider>
     </>
   );
