@@ -1,11 +1,13 @@
 package com.example.backend.course.courseModule.model;
 
 import com.example.backend.course.assigment.model.Assigment;
+import com.example.backend.course.dto.CourseModuleDTO;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.lecture.model.Lecture;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
 
@@ -18,7 +20,9 @@ public class CourseModule {
 
     @Id
     @Column(name = "week_number")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int weekNumber;
+
     @Column(name = "publish_date", nullable = false)
     private String publishDate;
 
@@ -39,4 +43,9 @@ public class CourseModule {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
     private ArrayList<Assigment> assigment;
+
+    private static final ModelMapper modelMapper = new ModelMapper();
+    public static CourseModule convert(CourseModuleDTO courseModuleDTO) {
+        return modelMapper.map(courseModuleDTO, CourseModule.class);
+    }
 }

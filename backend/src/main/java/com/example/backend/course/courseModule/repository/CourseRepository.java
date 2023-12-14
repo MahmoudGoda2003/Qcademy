@@ -12,4 +12,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
      * @return Course that was deleted
      */
     Course deleteById (int courseId);
+    /**
+     * find a course with the given courseId
+     *
+     * @return Course that has this id
+     */
+    Course findById (int courseId);
 }
