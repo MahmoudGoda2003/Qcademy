@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/")
-@CrossOrigin(allowCredentials = "true", origins = "http://localhost:3000")
+@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class AdminController {
     private final AdminService adminService;
 

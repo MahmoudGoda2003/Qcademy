@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/person/")
 @RestController
+@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class PersonController {
 
     private final PersonService personService;
