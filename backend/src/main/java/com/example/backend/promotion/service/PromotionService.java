@@ -58,12 +58,17 @@ public class PromotionService {
         List<Person> personList = this.personRepository.findAllById(userIds);
         Map<Long, Person> personMap = personList.stream()
                 .collect(Collectors.toMap(Person::getId, person -> person));
+        System.out.println(personMap);
+        System.out.println(promotionRequests);
+        System.out.println(promotionRequests.size());
         List<PromotionDTO> promotionDTOS = new ArrayList<>(promotionRequests.size());
-        for (int i = 0; i < promotionRequests.size(); i++) {
-            promotionDTOS.get(i).setUserId(promotionRequests.get(i).getUserId());
-            promotionDTOS.get(i).setRequestedRole(promotionRequests.get(i).getRole().name());
-            promotionDTOS.get(i).setUserName(personMap.get(promotionRequests.get(i).getUserId()).getFirstName() + personMap.get(promotionRequests.get(i).getUserId()).getLastName());
-            promotionDTOS.get(i).setUserImage(personMap.get(promotionRequests.get(i).getUserId()).getPhotoLink());
+        for (Promotion promotionRequest : promotionRequests) {
+            PromotionDTO promotionDTO = new PromotionDTO();
+            promotionDTO.setUserId(promotionRequest.getUserId());
+            promotionDTO.setRequestedRole(promotionRequest.getRole().name());
+            promotionDTO.setUserName(personMap.get(promotionRequest.getUserId()).getFirstName() + personMap.get(promotionRequest.getUserId()).getLastName());
+            promotionDTO.setUserImage(personMap.get(promotionRequest.getUserId()).getPhotoLink());
+            promotionDTOS.add(promotionDTO);
         }
         return promotionDTOS;
     }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper, Typography } from '@mui/material';
 import { Grid} from '@mui/material';
 import CourseCard from './CourseCard';
@@ -9,29 +9,52 @@ import globals from '../utils/globals';
 import { Box, width } from '@mui/system';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import axios from 'axios';
 
 
 export default function Admin() {
 
-    const [promotionRequests, setPromotionRequests] = useState([{
-        userId: 1,
-        personName: 'ciara',
-        requestRole: 'Teacher',
-        personImage: 'https://i.imgur.com/uVhlLC3.jpeg'
-    },{
-        userId: 3,
-        personName: 'eliza',
-        requestRole: 'Admin',
-        personImage: 'https://i.imgur.com/uVhlLC3.jpeg'
-    }]);
+    const [promotionRequests, setPromotionRequests] = useState([]);
+    
+    
 
-    const getPromotionRequests = async () => {
-        //send request to back
-    }
+    // setPromotionRequests(result)    
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            // Fetch data from your API or endpoint
+            const result = await axios.get(`${globals.baseURL}/admin/promotionRequests`, {withCredentials: true})
+            console.log(result);
+            const parsedResult = result.data.map((result) => ({
+                userId: result.userId,
+                personName: result.userName,
+                requestedRole: result.requestedRole,
+                personImage: result.userImage
+            }))
+
+            setPromotionRequests(parsedResult);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+    
+        fetchData();
+      }, []);
 
 
-    const handleReq = (userId, status) => {
+    const handleReq = async (userId, status) => {
         console.log('helloo from handler ' + userId + " " + status);
+        try {
+            // Fetch data from your API or endpoint
+            const response = await axios.get(`${globals.baseURL}/admin/promotionRequests`, {
+                withCredentials: true
+            })
+            console.log(response);
+            const newRequests = promotionRequests.filter((item) => item.userId != userId)
+            setPromotionRequests(newRequests);
+        } catch (error) {
+            console.log(error);
+        }
     }
     
 
@@ -52,6 +75,7 @@ export default function Admin() {
                             <Avatar
                                 alt={req.personName}
                                 src={req.personImage}
+                                referrerPolicy="no-referrer"
                             />
                         </ListItemAvatar>
                         <ListItemText id={req.userId} primary={`${req.personName} wants to be promoted to a ${req.requestRole}`} />

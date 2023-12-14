@@ -39,7 +39,8 @@ export default function Login({theme}) {
                     photoLink: result.data.photoLink,
                     phone: result.data.phone,
                     education: result.data.education,
-                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : null
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : null,
+                    role: response.data.role
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 closeModal();
@@ -56,11 +57,10 @@ export default function Login({theme}) {
         event.preventDefault();
         setModal(true);
         try {
-            const response = await axios.post(`${globals.baseURL}/person/login`, {}, {
-                params: {
-                    email: email,
-                    password: password
-                },
+            const response = await axios.post(`${globals.baseURL}/person/login`, {
+                email: email,
+                password: password
+            }, {
                 withCredentials: true
             })
             globals.user = {
@@ -70,7 +70,8 @@ export default function Login({theme}) {
                 email: response.data.email,
                 dateOfBirth: response.data.dateOfBirth,
                 phone: response.data.phone,
-                education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960'
+                education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960',
+                role: response.data.role
             }
             localStorage.setItem("user", JSON.stringify(globals.user));
             closeModal();

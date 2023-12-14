@@ -75,7 +75,7 @@ export default function App() {
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                {getHome(globals.user?.role)}
+                <Admin/>
               </ProtectedRoute>
             }/>
             <Route path="/profile" element={

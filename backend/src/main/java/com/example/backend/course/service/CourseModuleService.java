@@ -7,7 +7,6 @@ import com.example.backend.course.dto.LectureDTO;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.repository.CourseModuleRepository;
 import com.example.backend.exceptions.exception.DataNotFoundException;
-import com.example.backend.exceptions.exptionsHandler.OtherExceptionsHandler;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
