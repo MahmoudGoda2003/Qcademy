@@ -45,6 +45,7 @@ const darkMode = createTheme({
 });
 
 const getHome = (role) => {
+  console.log(role);
   switch(role){
     case "TEACHER":
       return<TeacherHome/>
@@ -75,7 +76,7 @@ export default function App() {
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                <Admin/>
+                {getHome(globals.user?.role)}
               </ProtectedRoute>
             }/>
             <Route path="/profile" element={
