@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,7 +19,7 @@ public class Teacher {
     private Long userId;
 
     @OneToMany(mappedBy = "teacher")
-    private ArrayList<Course> courses;
+    private List<Course> courses;
 
     public Teacher(Long userId) {
         this.userId = userId;

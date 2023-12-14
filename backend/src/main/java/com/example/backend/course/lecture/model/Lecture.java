@@ -2,9 +2,9 @@ package com.example.backend.course.lecture.model;
 
 
 import com.example.backend.course.courseModule.model.CourseModule;
-import com.example.backend.course.dto.CourseModuleDTO;
 import com.example.backend.course.dto.LectureDTO;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -18,6 +18,7 @@ public class Lecture {
 
     @Id
     @Column(name = "lecture_number")
+    @Setter(AccessLevel.NONE)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short number;
 

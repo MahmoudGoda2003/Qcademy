@@ -1,12 +1,8 @@
 package com.example.backend.person.service;
 
-import com.example.backend.exceptions.exception.DataNotFoundException;
-import com.example.backend.exceptions.exception.LoginDataNotValidException;
-import com.example.backend.exceptions.exception.WrongDataEnteredException;
-import com.example.backend.person.dto.PersonMainInfoDTO;
-import com.example.backend.person.dto.SignUpDTO;
-import com.example.backend.person.model.Person;
-import com.example.backend.person.model.Role;
+import com.example.backend.exceptions.exception.*;
+import com.example.backend.person.dto.*;
+import com.example.backend.person.model.*;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.services.CookiesService;
 import com.example.backend.services.JwtService;
@@ -19,6 +15,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -140,5 +137,12 @@ public class PersonService {
 
     public void setUserRole(Long userId, Role newRole) {
         personRepository.updateRoleById(userId, newRole);
+    }
+
+    public ResponseEntity<String> updatePerson(PersonInfoDTO personInfoDTO) {
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        personRepository.updatePerson(userId, personInfoDTO.getFirstName(), personInfoDTO.getLastName(),
+                personInfoDTO.getBio(), personInfoDTO.getPhotoLink(), personInfoDTO.getDateOfBirth());
+        return new ResponseEntity<>("Data Updated", HttpStatus.ACCEPTED);
     }
 }

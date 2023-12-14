@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TeacherService {
@@ -44,12 +45,21 @@ public class TeacherService {
     public ResponseEntity<String> createCourse(CourseMainInfoDTO courseMainInfoDTO) {
         Course course = Course.convert(courseMainInfoDTO);
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        Teacher teacher = teacherRepository.getByUserId(userId);
+        Teacher teacher;
+        if (teacherRepository.existsByUserId(userId)) teacher = teacherRepository.getByUserId(userId);
+        else  {
+            teacher = new Teacher(userId);
+            teacherRepository.save(teacher);
+        }
         course.setTeacher(teacher);
-        if (teacher.getCourses() == null) teacher.setCourses(new ArrayList<>());
-        teacher.getCourses().add(course);
-        teacherRepository.updateCoursesByUserId(teacher.getUserId(), teacher.getCourses());
+        List<Course> list;
+        if (teacher.getCourses() == null) list = new ArrayList<>();
+        else list = teacher.getCourses();
+        list.add(course);
+        teacher.setCourses(list);
+        teacherRepository.save(teacher);
         courseService.saveCourse(course);
+        System.out.println(course.getCourseId());
         return new ResponseEntity<>("CourseCreated", HttpStatus.CREATED);
     }
     public ResponseEntity<String> createLecture(LectureDTO lectureDTO) {

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
     /**
@@ -35,5 +37,10 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     @Modifying
     @Query("UPDATE Person u SET u.role = :newRole WHERE u.id = :userId")
     void updateRoleById(@Param("userId") Long userId, @Param("newRole") Role newRole);
+
+    @Transactional
+    @Modifying
+    @Query("Update Person p set p.firstName = ?2, p.lastName = ?3, p.bio = ?4, p.photoLink = ?5, p.photoLink = ?6 where p.id = ?1")
+    void updatePerson(Long id, String fn, String ln, String bio, String photo, String date);
 
 }

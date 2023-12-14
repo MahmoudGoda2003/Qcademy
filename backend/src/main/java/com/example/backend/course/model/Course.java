@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,7 +21,7 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Column(name = "course_id")
-    private int id;
+    private int courseId;
 
     @Column(name = "name")
     private String name;
@@ -31,7 +31,7 @@ public class Course {
 
     @Column(name = "tags")
     @ElementCollection
-    private ArrayList<String> tags;
+    private List<String> tags;
 
     @Column(name = "photo_link")
     private String photoLink;
@@ -48,11 +48,11 @@ public class Course {
     @Column(name = "teacherName")
     private String teacherName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private ArrayList<CourseModule> module;
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "course")
+    private List<CourseModule> module;
 
     @ManyToMany(mappedBy = "courses")
-    private ArrayList<Student> students;
+    private List<Student> students;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")

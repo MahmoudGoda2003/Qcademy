@@ -32,7 +32,7 @@ public class Person {
     private String photoLink;
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
-    private Role role = Role.STUDENT;
+    private Role role = Role.TEACHER;
 
     private static ModelMapper modelMapper = new ModelMapper();
 

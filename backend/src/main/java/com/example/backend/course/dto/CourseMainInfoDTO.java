@@ -2,8 +2,6 @@ package com.example.backend.course.dto;
 
 
 import com.example.backend.course.model.Course;
-import com.example.backend.person.dto.PersonMainInfoDTO;
-import com.example.backend.person.model.Person;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,7 +34,7 @@ public class CourseMainInfoDTO {
     private short estimatedTime;
 
     @NotBlank(message = "Course tags are mandatory")
-    private ArrayList<String> tags;
+    private List<String> tags;
 
     private String teacherName;
 

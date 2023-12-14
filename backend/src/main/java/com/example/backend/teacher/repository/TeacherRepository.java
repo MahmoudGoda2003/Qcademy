@@ -8,14 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.List;
+
 
 @Repository
 public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     @Transactional
     @Modifying
     @Query("update Teacher t set t.courses = ?2 where t.userId = ?1")
-    void updateCoursesByUserId(Long id, ArrayList<Course> courses);
+    void updateCoursesByUserId(Long id, List<Course> courses);
 
     boolean existsByUserId(Long id);
 

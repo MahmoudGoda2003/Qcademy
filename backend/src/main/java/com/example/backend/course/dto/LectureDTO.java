@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 @Getter
 @Setter
 public class LectureDTO {
-    @NotBlank(message = "Lecture number is mandatory")
+
     private short number;
 
     @NotBlank(message = "Lecture Name is mandatory")

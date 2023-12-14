@@ -66,6 +66,7 @@ export default function Signup({theme}) {
         onSuccess: async (response) => {
             setModal(true);
             try{
+                console.log(response.access_token);
                 const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain"}, withCredentials: true})
                 globals.user = {
                     firstName: result.data.firstName,

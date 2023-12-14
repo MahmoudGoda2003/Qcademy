@@ -1,17 +1,12 @@
 package com.example.backend.person;
 
-import com.example.backend.person.dto.LoginDTO;
-import com.example.backend.person.dto.PersonMainInfoDTO;
-import com.example.backend.person.dto.SignUpDTO;
-import com.example.backend.person.model.Role;
+import com.example.backend.person.dto.*;
 import com.example.backend.person.service.PersonService;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.Generated;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -46,5 +41,10 @@ public class PersonController {
     @PostMapping("/login")
     public ResponseEntity<PersonMainInfoDTO> logIn(HttpServletResponse response, @Valid @RequestBody LoginDTO loginDTO) throws Exception {
         return personService.login(response, loginDTO.getEmail(), loginDTO.getPassword());
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> update(@Valid @RequestBody PersonInfoDTO personInfoDTO) {
+        return personService.updatePerson(personInfoDTO);
     }
 }

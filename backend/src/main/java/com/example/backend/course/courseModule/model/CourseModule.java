@@ -5,11 +5,12 @@ import com.example.backend.course.dto.CourseModuleDTO;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.lecture.model.Lecture;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +21,6 @@ public class CourseModule {
 
     @Id
     @Column(name = "week_number")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int weekNumber;
 
     @Column(name = "publish_date", nullable = false)
@@ -28,7 +28,7 @@ public class CourseModule {
 
     @Column(name = "slides")
     @ElementCollection
-    private ArrayList<String> slidesURL;
+    private List<String> slidesURL;
 
     @Column(name = "quiz")
     private String quizURL;
@@ -38,11 +38,11 @@ public class CourseModule {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
-    private ArrayList<Lecture> lecture;
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "module")
+    private List<Lecture> lecture;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "module")
-    private ArrayList<Assigment> assigment;
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "module")
+    private List<Assigment> assignment;
 
     private static final ModelMapper modelMapper = new ModelMapper();
     public static CourseModule convert(CourseModuleDTO courseModuleDTO) {

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class CourseModuleDTO {
 
-    @NotBlank(message = "Course Module number is mandatory")
+    @NotBlank(message = "Course Module weekNumber is mandatory")
     private int weekNumber;
 
     @NotBlank(message = "Course Module date is mandatory")

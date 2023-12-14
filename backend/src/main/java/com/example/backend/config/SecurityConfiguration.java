@@ -31,11 +31,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/person/**").permitAll();
                     request.requestMatchers("/admin/**")
-                            .hasAnyAuthority(Role.ADMIN.name());
+                            .permitAll();
                     request.requestMatchers("/teacher/**")
-                            .hasAnyAuthority(Role.TEACHER.name());
+                            .permitAll();
                     request.requestMatchers("/student/**")
-                            .hasAnyAuthority(Role.STUDENT.name());
+                            .permitAll();
                     request.anyRequest().authenticated();
                 })
                 .exceptionHandling((exception)-> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedPage("/error/accedd-denied"))
