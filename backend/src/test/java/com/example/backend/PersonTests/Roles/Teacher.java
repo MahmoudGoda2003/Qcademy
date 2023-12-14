@@ -27,8 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class Student {
-
+public class Teacher {
     private final BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
     @Autowired
     private PersonService ps;
@@ -66,49 +65,13 @@ public class Student {
         studentRepository.deleteAll();
     }
 
-    @Test
-    void testStudentCreation() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
-        Long userId = ps.savePerson(p).getId();
-
-        assertTrue(personRepository.existsById(userId));
-        assertTrue(studentRepository.existsByUserId(userId));
-    }
-
 
     @Test
-    void testStudentPromotion() throws Exception {
+    void testPromotingTeacher() throws Exception {
         Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/student/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
-        assertTrue(promotionRepository.existsById(userId));
-    }
-
-    @Test
-    void testRequestPromotionAgain() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
-        Long userId = ps.savePerson(p).getId();
-        assertTrue(studentRepository.existsByUserId(userId));
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/student/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
-        assertTrue(promotionRepository.existsById(userId));
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/student/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId))))
-                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
-
-        assertTrue(promotionRepository.existsById(userId));
-    }
-
-
-    @Test
-    void testPromotingStudent() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
-        Long userId = ps.savePerson(p).getId();
-        assertTrue(studentRepository.existsByUserId(userId));
+        ps.setUserRole(userId, Role.TEACHER);
 
         Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
@@ -116,7 +79,7 @@ public class Student {
         ps.setUserRole(adminId, Role.ADMIN);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/student/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId))))
+        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
         assertTrue(promotionRepository.existsById(userId));
 
@@ -124,11 +87,25 @@ public class Student {
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").content(String.valueOf(userId)).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
-        assertSame(ps.getUserRole(userId), Role.TEACHER);
-        assertTrue(teacherRepository.existsByUserId(userId));
+        assertSame(ps.getUserRole(userId), Role.ADMIN);
+        assertTrue(adminRepository.existsByUserId(userId));
     }
 
 
+    @Test
+    void testRequestPromotionAgain() throws Exception {
+        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Long userId = ps.savePerson(p).getId();
+        assertTrue(studentRepository.existsByUserId(userId));
+        ps.setUserRole(userId, Role.TEACHER);
 
+        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+        assertTrue(promotionRepository.existsById(userId));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+
+        assertTrue(promotionRepository.existsById(userId));
+    }
 }
-

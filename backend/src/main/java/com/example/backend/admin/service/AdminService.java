@@ -3,6 +3,7 @@ package com.example.backend.admin.service;
 import com.example.backend.admin.dto.ChangeRoleDTO;
 import com.example.backend.admin.model.Admin;
 import com.example.backend.admin.repository.AdminRepository;
+import com.example.backend.exceptions.exception.DataNotFoundException;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.PersonService;
 import com.example.backend.promotion.model.Promotion;
@@ -55,7 +56,6 @@ public class AdminService {
                 Student student = new Student(userId);
                 studentRepository.save(student);
             }
-            default -> throw new RuntimeException("Role doesn't exist");
         }
         return new ResponseEntity<>("Role changing completed", HttpStatus.CREATED);
     }
