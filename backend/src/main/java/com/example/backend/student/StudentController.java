@@ -3,8 +3,6 @@ package com.example.backend.student;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.service.CourseService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/student/")
 public class StudentController {
     private final StudentService  studentService;
+    private final CourseService courseService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, CourseService courseService) {
         this.studentService = studentService;
+        this.courseService = courseService;
     }
 
     @PostMapping("requestPromotion")
@@ -33,8 +33,8 @@ public class StudentController {
         return "hello world from " + Role.STUDENT.name();
     }
 
-    @GetMapping("getCourses")
-    public ResponseEntity<List<Course>> getCourses() {
-        return new ResponseEntity<>(courseService.findAllCourses(), HttpStatus.OK);
-    }
+//    @GetMapping("getCourses")
+//    public ResponseEntity<List<Course>> getCourses() {
+//        return new ResponseEntity<>(this.courseService , HttpStatus.OK);
+//    }
 }

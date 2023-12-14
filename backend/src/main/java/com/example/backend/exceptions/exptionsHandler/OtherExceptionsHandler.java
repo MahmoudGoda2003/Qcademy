@@ -17,7 +17,7 @@ public class OtherExceptionsHandler {
     @ResponseBody
     Map<String, String> onOtherExceptions(Exception e) {
         Map<String, String> error = new HashMap<>();
-        error.put("error message",  e.getMessage());
+        error.put("error message",  "Internal Server Error");
         return error;
     }
 }

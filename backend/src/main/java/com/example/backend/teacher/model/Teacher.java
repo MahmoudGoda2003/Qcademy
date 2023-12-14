@@ -18,7 +18,7 @@ public class Teacher {
     @Column(name = "teacher_id")
     private Long userId;
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "teacher")
     private List<Course> courses;
 
     public Teacher(Long userId) {

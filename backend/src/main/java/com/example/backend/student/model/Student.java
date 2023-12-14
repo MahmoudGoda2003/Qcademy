@@ -18,7 +18,7 @@ public class Student {
     @Column(name = "student_id")
     private Long userId;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "student_course",
             joinColumns = @JoinColumn(name = "student_id"),

@@ -51,30 +51,13 @@ public class TeacherService {
 
     }
 
-    public void addTeacher(Long id) {
-        Teacher teacher = new Teacher(id);
-        teacherRepository.save(teacher);
-    }
-
     public ResponseEntity<String> createCourse(CourseMainInfoDTO courseMainInfoDTO) {
-        Course course = Course.convert(courseMainInfoDTO);
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        Teacher teacher;
-        if (teacherRepository.existsByUserId(userId)) teacher = teacherRepository.getByUserId(userId);
-        else  {
-            teacher = new Teacher(userId);
-            teacherRepository.save(teacher);
-        }
-        course.setTeacher(teacher);
-        List<Course> list;
-        if (teacher.getCourses() == null) list = new ArrayList<>();
-        else list = teacher.getCourses();
-        list.add(course);
-        teacher.setCourses(list);
+        Teacher teacher = teacherRepository.getByUserId(userId);
+        Course createdCourse = courseService.createCourse(courseMainInfoDTO, teacher);
+        teacher.getCourses().add(createdCourse);
         teacherRepository.save(teacher);
-        courseService.saveCourse(course);
-        System.out.println(course.getCourseId());
-        return new ResponseEntity<>("CourseCreated", HttpStatus.CREATED);
+        return new ResponseEntity<>(String.format("{'CourseCreated':%d}", createdCourse.getCourseId()), HttpStatus.CREATED);
     }
     public ResponseEntity<String> createLecture(LectureDTO lectureDTO) {
         lectureService.addLectureToModule(lectureDTO);

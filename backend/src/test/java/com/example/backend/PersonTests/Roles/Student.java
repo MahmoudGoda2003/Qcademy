@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class Student {
 
     private final BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
@@ -60,10 +62,6 @@ public class Student {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        personRepository.deleteAll();
-        teacherRepository.deleteAll();
-        promotionRepository.deleteAll();
-        studentRepository.deleteAll();
     }
 
     @Test
@@ -78,7 +76,7 @@ public class Student {
 
     @Test
     void testStudentPromotion() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest12@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
@@ -89,7 +87,7 @@ public class Student {
 
     @Test
     void testRequestPromotionAgain() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest13@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
@@ -106,7 +104,7 @@ public class Student {
 
     @Test
     void testPromotingStudent() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest14@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 

@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,6 +33,10 @@ public class CourseModuleDTO {
     private String quizURL;
 
     @NotBlank(message = "Course Module's Course is mandatory")
-    private Course course;
+    private int courseId;
+
+    private List<LectureDTO> lectures;
+
+    private List<AssigmentDTO> assignments;
 
 }

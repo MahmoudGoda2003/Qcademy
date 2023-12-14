@@ -19,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class Teacher {
     private final BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
     @Autowired
@@ -59,21 +61,17 @@ public class Teacher {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        personRepository.deleteAll();
-        teacherRepository.deleteAll();
-        promotionRepository.deleteAll();
-        studentRepository.deleteAll();
     }
 
 
     @Test
     void testPromotingTeacher() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest1132326@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
         ps.setUserRole(userId, Role.TEACHER);
 
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin65464564@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
@@ -94,7 +92,7 @@ public class Teacher {
 
     @Test
     void testRequestPromotionAgain() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest5645646545@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
         ps.setUserRole(userId, Role.TEACHER);

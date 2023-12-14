@@ -21,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -29,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class Admin {
     private final BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
     @Autowired
@@ -74,15 +76,11 @@ public class Admin {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        personRepository.deleteAll();
-        teacherRepository.deleteAll();
-        promotionRepository.deleteAll();
-        studentRepository.deleteAll();
     }
 
     @Test
     void testChangeRole() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest1122@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
@@ -100,7 +98,7 @@ public class Admin {
 
     @Test
     void testChangeRoleUserIdWrong() throws Exception {
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin1@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
@@ -118,11 +116,11 @@ public class Admin {
 
     @Test
     void testChangeRoleUserExistsButDidntRequestPromotion() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest12222@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin2@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
@@ -138,11 +136,11 @@ public class Admin {
 
     @Test
     void testChangingRoleFromTeacherToStudent() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest123@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin4@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
@@ -163,11 +161,11 @@ public class Admin {
 
     @Test
     void testChangingRoleFromAdminToTeacher() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest122@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin123@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
@@ -191,11 +189,11 @@ public class Admin {
 
     @Test
     void testChangingRoleFromAdminToTeacherAndToAdmin() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest112312@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin234234@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
@@ -226,11 +224,11 @@ public class Admin {
 
     @Test
     void testChangingRoleFromAdminToStudent() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest3123123@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin3123123@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
@@ -254,11 +252,11 @@ public class Admin {
 
     @Test
     void testChangingToStudentWithNoStudent() throws Exception {
-        Person p = new Person("Yahya", "Azzam", "sectest11@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person p = new Person("Yahya", "Azzam", "sectest2131231@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long userId = personRepository.save(p).getId();
         assertFalse(studentRepository.existsByUserId(userId));
 
-        Person adminMock = new Person("admin", "admin", "admin@gmail.com", "test", "1-2-1999", "photo.jpg");
+        Person adminMock = new Person("admin", "admin", "admin3213123123@gmail.com", "test", "1-2-1999", "photo.jpg");
         Long adminId = ps.savePerson(adminMock).getId();
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);

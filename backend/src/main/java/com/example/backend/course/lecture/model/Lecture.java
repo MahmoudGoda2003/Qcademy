@@ -29,7 +29,7 @@ public class Lecture {
     private String name;
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "module_course_id", referencedColumnName = "course_id"),
             @JoinColumn(name = "module_week_number", referencedColumnName = "week_number")

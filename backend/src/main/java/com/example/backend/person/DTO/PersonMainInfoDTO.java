@@ -25,6 +25,8 @@ public class PersonMainInfoDTO {
     @Email(message = "Invalid email format")
     private String email;
 
+    private String role;
+
     private String photoLink;
 
     public static PersonMainInfoDTO convert(Person person) {
