@@ -32,10 +32,7 @@ public class TeacherController {
         return this.teacherService.createCourse(course);
     }
 
-    @PostMapping("CreateLecture")
-    public ResponseEntity<String> createLecture(@RequestBody LectureDTO lectureDTO) {
-        return  teacherService.createLecture(lectureDTO);
-    }
+
 
     @PostMapping("CreateModule")
     public ResponseEntity<String> createModule(@RequestBody CourseModuleDTO courseModuleDTO) {
@@ -45,5 +42,10 @@ public class TeacherController {
     @PostMapping("requestPromotion")
     public ResponseEntity<String> requestPromotion() throws Exception {
         return teacherService.requestPromotion();
+    }
+
+    @GetMapping("createdCourses")
+    public ResponseEntity<String> getCreatedCourses(){
+        return teacherService.getCreatedCourses();
     }
 }

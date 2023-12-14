@@ -4,11 +4,13 @@ import com.example.backend.course.courseModule.model.CourseModule;
 import com.example.backend.course.lecture.model.Lecture;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class LectureDTO {
 
     private short number;
@@ -17,7 +19,7 @@ public class LectureDTO {
     private String name;
 
     @NotBlank(message = "Lecture URL is mandatory")
-    private String lectureURL;
+    private String videoURL;
 
     private static final ModelMapper modelMapper = new ModelMapper();
     public static LectureDTO convert(Lecture lecture) {

@@ -3,7 +3,6 @@ package com.example.backend.course.assigment.model;
 
 import com.example.backend.student.model.Student;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,6 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "SolvedAssigment_data")
-@IdClass(SolvedAssigmentId.class)
 public class SolvedAssigment {
 
     @Column(name = "solution_url", nullable = false)
@@ -20,14 +18,12 @@ public class SolvedAssigment {
     @Column(name = "grade")
     private short grade;
 
+
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumns({
-            @JoinColumn(name = "assigment_module_course_id"),
-            @JoinColumn(name = "assigment_module_week_number"),
-            @JoinColumn(name = "assigment_number")
-    })
-    private Assigment assignments;
+    @JoinColumn(name = "assignment_number")
+    private Assignment assignments;
+
 
     @Id
     @ManyToOne(cascade = CascadeType.ALL)

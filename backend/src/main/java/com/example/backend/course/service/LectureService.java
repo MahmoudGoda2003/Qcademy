@@ -22,35 +22,13 @@ import java.util.List;
 @Transactional
 public class LectureService {
     private final LectureRepository lectureRepository;
-    private final CourseModuleRepository courseModuleRepository;
     @Autowired
-    public LectureService(LectureRepository lectureRepository,
-                          CourseModuleRepository courseModuleRepository){
+    public LectureService(LectureRepository lectureRepository){
         this.lectureRepository = lectureRepository;
-        this.courseModuleRepository = courseModuleRepository;
     }
-
-    private Lecture saveLecture(Lecture lecture) {
+    public Lecture createLecture(LectureDTO lectureDTO, CourseModule courseModule) {
+        Lecture lecture = Lecture.convert(lectureDTO);
+        lecture.setModule(courseModule);
         return lectureRepository.save(lecture);
     }
-
-    public void addLectureToModule(LectureDTO lectureDTO) {
-//        Lecture savedLecture = saveLecture(Lecture.convert(lectureDTO));
-//        CourseModule module = courseModuleRepository.findCourseModuleByCourseAndWeekNumber
-//                (lectureDTO.getModule().getCourse(),
-//                        lectureDTO.getModule().getWeekNumber());
-//        if(module == null)
-//            throw new DataNotFoundException("CourseModule not found");
-//
-//        if(module.getLecture() == null)
-//            module.setLecture(new ArrayList<>());
-//
-//        module.getLecture().add(savedLecture);
-//        courseModuleRepository.save(module);
-    }
-
-    public List<Lecture> getAlLectures() {
-        return lectureRepository.findAll();
-    }
-
 }

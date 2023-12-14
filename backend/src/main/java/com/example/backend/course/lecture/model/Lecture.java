@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 @Getter
 @Setter
 @Table(name = "Lecture_data")
-@IdClass(LectureId.class)
 public class Lecture {
 
     @Id
@@ -28,12 +27,8 @@ public class Lecture {
     @Column(name = "lecture_name", nullable = false)
     private String name;
 
-    @Id
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumns({
-            @JoinColumn(name = "module_course_id", referencedColumnName = "course_id"),
-            @JoinColumn(name = "module_week_number", referencedColumnName = "week_number")
-    })
+    @JoinColumn(name = "week_number")
     private CourseModule module;
 
     private static final ModelMapper modelMapper = new ModelMapper();

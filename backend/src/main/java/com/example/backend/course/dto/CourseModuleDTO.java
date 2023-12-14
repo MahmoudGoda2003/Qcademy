@@ -1,14 +1,10 @@
 package com.example.backend.course.dto;
 
 
-import com.example.backend.course.assigment.model.Assigment;
+import com.example.backend.course.assigment.model.Assignment;
 import com.example.backend.course.courseModule.model.CourseModule;
 import com.example.backend.course.lecture.model.Lecture;
-import com.example.backend.course.model.Course;
-import com.example.backend.person.dto.PersonMainInfoDTO;
-import com.example.backend.person.model.Person;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,21 +18,41 @@ import java.util.List;
 @NoArgsConstructor
 public class CourseModuleDTO {
 
-    @NotBlank(message = "Course Module weekNumber is mandatory")
-    private int weekNumber;
 
     @NotBlank(message = "Course Module date is mandatory")
     private String publishDate;
 
-    private ArrayList<String> slidesURL;
+    private List<String> slidesSets;
 
-    private String quizURL;
+    private List<String> quizzes;
 
     @NotBlank(message = "Course Module's Course is mandatory")
     private int courseId;
 
     private List<LectureDTO> lectures;
 
-    private List<AssigmentDTO> assignments;
+    private List<AssignmentDTO> assignments;
+
+
+    private static final ModelMapper modelMapper = new ModelMapper();
+
+    public static CourseModuleDTO convert(CourseModule courseModule) {
+
+        CourseModuleDTO courseModuleDTO = modelMapper.map(courseModule, CourseModuleDTO.class);
+        List<LectureDTO> lectureDTOs = new ArrayList<>();
+        for (Lecture lecture : courseModule.getLectures()) {
+            LectureDTO lectureDTO = LectureDTO.convert(lecture);
+            lectureDTOs.add(lectureDTO);
+        }
+        courseModuleDTO.setLectures(lectureDTOs);
+
+        List<AssignmentDTO> assignmentDTOs = new ArrayList<>();
+        for (Assignment assignment : courseModule.getAssignments()) {
+            AssignmentDTO assignmentDTO = AssignmentDTO.convert(assignment);
+            assignmentDTOs.add(assignmentDTO);
+        }
+        courseModuleDTO.setAssignments(assignmentDTOs);
+        return courseModuleDTO;
+    }
 
 }

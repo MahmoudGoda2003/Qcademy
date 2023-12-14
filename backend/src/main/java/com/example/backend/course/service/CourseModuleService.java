@@ -1,51 +1,54 @@
 package com.example.backend.course.service;
 
+import com.example.backend.course.assigment.model.Assignment;
 import com.example.backend.course.courseModule.model.CourseModule;
-import com.example.backend.course.courseModule.repository.CourseRepository;
+import com.example.backend.course.dto.AssignmentDTO;
 import com.example.backend.course.dto.CourseModuleDTO;
 import com.example.backend.course.dto.LectureDTO;
+import com.example.backend.course.lecture.model.Lecture;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.repository.CourseModuleRepository;
-import com.example.backend.exceptions.exception.DataNotFoundException;
-import com.example.backend.exceptions.exptionsHandler.OtherExceptionsHandler;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @Transactional
-public class CourseModuleService  {
+public class CourseModuleService {
     private final CourseModuleRepository courseModuleRepository;
-    private final CourseRepository courseRepository;
+    private final LectureService lectureService;
+    private final AssigmentService assigmentService;
 
     @Autowired
-    public CourseModuleService(CourseModuleRepository courseModuleRepository,
-                               CourseRepository courseRepository){
+    public CourseModuleService(CourseModuleRepository courseModuleRepository, LectureService lectureService, AssigmentService assigmentService) {
         this.courseModuleRepository = courseModuleRepository;
-        this.courseRepository = courseRepository;
+        this.lectureService = lectureService;
+        this.assigmentService = assigmentService;
     }
 
-    private CourseModule saveCourseModule(CourseModule courseModule) {
-        return courseModuleRepository.save(courseModule);
-    }
 
-    // save a course module for a course with the given courseId
-    public void createCourseModule(CourseModuleDTO courseModuleDTO) {
-        CourseModule savedModule = saveCourseModule(CourseModule.convert(courseModuleDTO));
-        Course course = courseRepository.findById(courseModuleDTO.getCourseId());
-        if(course == null)
-            throw new DataNotFoundException("Course not found");
+    public CourseModule createCourseModule(CourseModuleDTO courseModuleDTO, Course course) {
+        CourseModule courseModule = CourseModule.convert(courseModuleDTO);
+        courseModule.setAssignments(null);
+        courseModule.setLectures(null);
+        courseModule = this.courseModuleRepository.save(courseModule);
+        List<Lecture> lectures = new ArrayList<>();
+        for (LectureDTO lectureDTO : courseModuleDTO.getLectures()) {
+            Lecture lecture = lectureService.createLecture(lectureDTO, courseModule);
+            lectures.add(lecture);
+        }
+        courseModule.setLectures(lectures);
 
-        if(course.getModule() == null)
-            course.setModule(new ArrayList<>());
-        course.getModule().add(savedModule);
-        courseRepository.save(course);
-        System.out.println(savedModule.getWeekNumber());
+        List<Assignment> assignments = new ArrayList<>();
+        for (AssignmentDTO assignmentDTO : courseModuleDTO.getAssignments()) {
+            Assignment assignment = this.assigmentService.createAssigment(assignmentDTO, courseModule);
+            assignments.add(assignment);
+        }
+        courseModule.setCourse(course);
+        return this.courseModuleRepository.save(courseModule);
     }
 
 }
