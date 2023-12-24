@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, CardMedia, Chip, Rating } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import globals from '../utils/globals';
 
 const DEFAULT_IMAGE = ""
 const RATING_PRECISION = 0.5
@@ -15,7 +16,11 @@ export default function CourseCard({course}) {
 
     const navTo = (courseid) => {
         console.log(course);
-        navigate(`/course/manage/${courseid}`, {state: { course:course }})
+        if (globals.user.role === "STUDENT")
+            navigate(`/course/${courseid}`, {state: { course:course }})
+        if (globals.user.role === "TEACHER")
+            navigate(`/course/manage/${courseid}`, {state: { course:course }})
+
     }
     
     return (

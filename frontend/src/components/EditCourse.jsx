@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from 'react';
 import CreateModule from './CreateModule';
+import globals from '../utils/globals';
 
 export default function EditCourse() {
 
@@ -57,7 +58,7 @@ export default function EditCourse() {
                 <Stack sx={{position: 'sticky', top: 5}}>
                     <CourseDetailsCard
                         course={course}
-                        role={"teacher"}
+                        role={globals.user.role}
                     >
                     </CourseDetailsCard>
                 </Stack>

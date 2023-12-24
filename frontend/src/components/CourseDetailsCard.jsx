@@ -2,8 +2,10 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import {Button, CardActionArea, CardMedia, Chip, Rating} from '@mui/material';
+import {Button, CardMedia, Rating} from '@mui/material';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
+import globals from '../utils/globals';
 
 
 const DEFAULT_IMAGE = ""
@@ -15,37 +17,38 @@ const gridElement = {
     width: '100%'
 }
 
-export default function CourseDetailsCard({course, role}) {
+export default function CourseDetailsCard({course, role, isEnrolled}) {
 
     const navigate = useNavigate();
 
-    const handleRedirect = (courseid) => {
-        navigate(`/course/learn/${courseid}`, {state: { modules:course.modules }})
+    const enrollCourse = async () => {
+        await axios.post(`${globals.baseURL}/student/enrollCourse`, null, {params: {courseId: Number(course.courseId)}, withCredentials: true})
+
     }
 
     return (
 
         <Card sx={{minWidth:'45vh', maxWidth:'45vh', margin: '2vh auto'}}>
-            <CardActionArea courseid={course.courseid} onClick={() => {handleRedirect(course.courseid)}}>
-                <CardMedia
-                    component="img"
-                    image={(course.photoLink===undefined)? DEFAULT_IMAGE: course.photoLink}
-                    alt="personal image"
-                    sx={{maxWidth:'45vh', maxHeight:'25vh', minHeight:'25Vh'}}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h3" component="div">
-                        {course.name}
-                    </Typography>
-                    <Rating name="half-rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
-                    <Typography 
-                        sx={gridElement}
-                        color="text.secondary">
-                        By: {course.teacherName}
-                    </Typography>
-                    {role == "student" ? <Button variant="contained" size="large" sx={gridElement} type="submit">Enroll Now</Button> :<></>}
-                </CardContent>
-            </CardActionArea>
+            <CardMedia
+                component="img"
+                image={(course.photoLink===undefined)? DEFAULT_IMAGE: course.photoLink}
+                alt="personal image"
+                sx={{maxWidth:'45vh', maxHeight:'25vh', minHeight:'25Vh'}}
+            />
+            <CardContent>
+                <Typography gutterBottom variant="h3" component="div">
+                    {course.name}
+                </Typography>
+                <Rating name="half-rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
+                <Typography 
+                    sx={gridElement}
+                    color="text.secondary">
+                    By: {course.teacherName}
+                </Typography>
+                {role === "STUDENT" && <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Enroll Now</Button>}
+                {role === "STUDENT" && isEnrolled && <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Continue Learning</Button>}
+                {role === "TEACHER" && <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Manage Course</Button>}
+            </CardContent>
         </Card>
     );
 }

@@ -44,7 +44,6 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
         globals.user = null;
         localStorage.removeItem("user")
         navigate(`/login`)
-        console.log(globals.user)
         break
       default:
     }

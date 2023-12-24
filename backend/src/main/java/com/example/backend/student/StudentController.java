@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/student/")
+@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class StudentController {
     private final StudentService  studentService;
     private final CourseService courseService;
@@ -46,7 +47,7 @@ public class StudentController {
     }
 
     @PostMapping("enrollCourse")
-    public ResponseEntity<String> enrollCourse(@RequestBody int courseId){
+    public ResponseEntity<String> enrollCourse(@RequestParam int courseId){
         return studentService.enrollCourse(courseId);
     }
 

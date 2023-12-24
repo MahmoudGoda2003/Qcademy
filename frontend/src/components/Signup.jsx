@@ -1,4 +1,4 @@
-import { Button, Grid, Paper, TextField, Typography, LinearProgress, Modal, Backdrop, Fade, Box, CircularProgress } from "@mui/material"
+import { Button, Grid, Paper, TextField, Typography, LinearProgress } from "@mui/material"
 import { Link, useNavigate } from "react-router-dom"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -54,7 +54,7 @@ export default function Signup({theme}) {
         // TODO: send info to backend
         setModal(true);
         try {
-            await axios.post(`${globals.baseURL}/person/signup`, user.email, {headers: {"Content-Type": "text/plain"}})
+            await axios.post(`${globals.baseURL}/person/signup`, user.email, {withCredentials: true})
             globals.user = user;
             closeModal();
             navigate('/confirmEmail');
@@ -76,7 +76,8 @@ export default function Signup({theme}) {
                     photoLink: result.data.photoLink,
                     phone: result.data.phone? result.data.phone : '',
                     education: result.data.education? result.data.education : '',
-                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960'
+                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960',
+                    role: result.data.role,
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 closeModal();

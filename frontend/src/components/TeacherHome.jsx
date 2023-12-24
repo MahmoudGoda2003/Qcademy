@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Typography } from '@mui/material';
 import { Grid} from '@mui/material';
 import CourseCard from './CourseCard';
@@ -7,80 +7,24 @@ import AddIcon from '@mui/icons-material/Add';
 import CreateCourses from './CreateCourse';
 import globals from '../utils/globals';
 import { Box } from '@mui/system';
+import axios from 'axios';
 
 
 export default function Teacher(props) {
-    globals.user.courses = [{
-        name: "Data Structures",
-        description: "How to structure data",
-        photoLink: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
-        tags: ['Trees', 'Graphs', 'Arrays'],
-        rating: 4,
-        courseid: '23',
-        teacherName: 'Ahmed Ayman', 
-        modules: [{
-            courseId: '23',
-            name: 'Algorithms',
-            lectures: [{lectureName: "Lecture 1", lectureUrl: 'b9eMGE7QtTk'}],
-            assignments: [{assignmentName: "Assignment 1", assignmentUrl: 'https://learnenglish.britishcouncil.org/sites/podcasts/files/LearnEnglish-Listening-A2-Instructions-for-an-assignment.pdf'}],
-            slideSets: [],
-            quizzes: ['https://learnenglishteens.britishcouncil.org/sites/teens/files/friendship_quiz_-_answers.pdf'],
-            moduleid: '12',
-        },
-        {
-            courseId: '23',
-            name: 'Algorithms',
-            lectures: [{lectureName: "Lecture 1", lectureUrl: 'b9eMGE7QtTk'}],
-            assignments: [{assignmentName: "Assignment 1", assignmentUrl: 'https://learnenglish.britishcouncil.org/sites/podcasts/files/LearnEnglish-Listening-A2-Instructions-for-an-assignment.pdf'}],
-            slideSets: [],
-            quizzes: ['https://learnenglishteens.britishcouncil.org/sites/teens/files/friendship_quiz_-_answers.pdf'],
-            moduleid: '12',
-        },
-        {
-            courseId: '23',
-            name: 'Algorithms',
-            lectures: ['b9eMGE7QtTk'],
-            assignments: ['https://learnenglish.britishcouncil.org/sites/podcasts/files/LearnEnglish-Listening-A2-Instructions-for-an-assignment.pdf'],
-            slideSets: [],
-            quizzes: ['https://learnenglishteens.britishcouncil.org/sites/teens/files/friendship_quiz_-_answers.pdf'],
-            moduleid: '12',
-        },],
-    }, {
-        name: "The Way Of C",
-        description: "Become superior, think like a computer ;^)",
-        photoLink: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg",
-        tags: ['Pointers', 'Memory leaks', 'File descriptors'],
-        rating: 5,
-        courseid: '15',
-        teacherName: 'Terry A. Davis'
-    }, {
-        name: "Algorithms",
-        description: "How to algorithm data and structures",
-        photoLink: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
-        tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
-        rating: 2.5,
-        courseid: '12',
-        teacherName: 'Michael Elsayed'
-    }, {
-        name: "Java Programming",
-        description: "In case you would nothing but bloatware and unnecessary overhead",
-        photoLink: "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/",
-        tags: ['Classes', 'Interfaces', 'More classes', 'More layers'],
-        rating: 0.5,
-        courseid: '19',
-        teacherName: 'Joseph Magdy'
-    }, {
-        name: "Algorithms",
-        description: "How to algorithm data and structures",
-        photoLink: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg",
-        tags: ['Binary search', 'Complexity', 'Greedy', 'DP'],
-        rating: 2.5,
-        courseid: '12',
-        teacherName: 'Michael Elsayed',
-    }]
 
     const [open, setOpen] = useState(false);
-    const [courses, setCourses] = useState(globals.user.courses);
+    const [courses, setCourses] = useState([]);
+
+    useEffect(() => {
+        axios.get(`${globals.baseURL}/teacher/createdCourses`, {withCredentials: true})
+        .then((response) => {
+            setCourses(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    }, []);
 
     const handleClickOpen = () => {
         setOpen(true);

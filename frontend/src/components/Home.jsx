@@ -1,109 +1,18 @@
-import CoursesList from './CoursesList';
-import { Typography, Box } from '@mui/material';
-
+import globals from '../utils/globals';
+import Student from './Student';
+import Teacher from './TeacherHome';
+import Admin from './AdminHome';
 
 export default function Home(props) {
-    const enrolledCourses = [{
-        name: "Data Structures", 
-        description: "How to structure data", 
-        photoLink: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png", 
-        tags: ['Trees', 'Graphs', 'Arrays'], 
-        rating: 4, 
-        courseid: '23',
-        teacherName: 'Ahmed Ayman'
-    },{
-        name: "The Way Of C", 
-        description: "Become superior, think like a computer ;^)", 
-        photoLink: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg", 
-        tags: ['Pointers', 'Memory leaks', 'File descriptors'], 
-        rating: 5, 
-        courseid: '15',
-        teacherName: 'Terry A. Davis'
-    },{
-        name: "Data Structures", 
-        description: "How to structure data", 
-        photoLink: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png", 
-        tags: ['Trees', 'Graphs', 'Arrays'], 
-        rating: 4, 
-        courseid: '23',
-        teacherName: 'Ahmed Ayman'
-    },{
-        name: "The Way Of C", 
-        description: "Become superior, think like a computer ;^)", 
-        photoLink: "https://hypnotherapycenter.co.za/wp-content/uploads/2021/05/Connect-with-Your-Higher-Self-During-Meditation-e1621063603562.jpg", 
-        tags: ['Pointers', 'Memory leaks', 'File descriptors'], 
-        rating: 5, 
-        courseid: '15',
-        teacherName: 'Terry A. Davis'
-    }]
-    
-    const recommendedCourses = [{
-        name: "Algorithms", 
-        description: "How to algorithm data and structures", 
-        photoLink: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg", 
-        tags: ['Binary search', 'Complexity', 'Greedy', 'DP'], 
-        rating: 2.5, 
-        courseid: '12',
-        teacherName: 'Michael Elsayed'
-    },{
-        name: "Java Programming", 
-        description: "In case you would nothing but bloatware and unnecessary overhead", 
-        photoLink: "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/", 
-        tags: ['Classes', 'Interfaces', 'More classes', 'More layers'], 
-        rating: 0.5, 
-        courseid: '19',
-        teacherName: 'Joseph Magdy'
-    },{
-        name: "Algorithms", 
-        description: "How to algorithm data and structures", 
-        photoLink: "https://miro.medium.com/v2/resize:fit:900/0*TDgnPm06sS0np--2.jpg", 
-        tags: ['Binary search', 'Complexity', 'Greedy', 'DP'], 
-        rating: 2.5, 
-        courseid: '12',
-        teacherName: 'Michael Elsayed'
-    },{
-        name: "Java Programming", 
-        description: "In case you would nothing but bloatware and unnecessary overhead", 
-        photoLink: "https://appmaster.io/api/_files/hRaLG2N4DVjRZJQzCpN2zJ/download/", 
-        tags: ['Classes', 'Interfaces', 'More classes', 'More layers'], 
-        rating: 0.5, 
-        courseid: '19',
-        teacherName: 'Joseph Magdy'
-    }]
 
+    console.log(globals.user);
 
-
-
-    const TextStyle = {fontFamily: 'sans-serif'}
-    const TextStyle2 = { color:'gray'};
     return (
-        <Box maxWidth='100%' width={'85%'} margin={'auto'}>
-            {(enrolledCourses.length === 0)?
-                <>
-                    <Typography variant='h4' marginTop='7vh' sx={TextStyle}>Pick Up Where You Left Off</Typography>
-                    <Typography variant='h7' sx={TextStyle}>These Are All The Courses You've Enrolled In</Typography>
-                    <Typography variant='h7' align='center' margin='8vh' sx={TextStyle2}>You Haven't Enrolled In Any Courses Yet ...</Typography>
-                </>:
-                <>
-                    <Typography variant='h4'  marginTop='7vh' sx={TextStyle}>Pick Up Where You Left Off</Typography>
-                    <Typography variant='h7' sx={TextStyle}>These Are All The Courses You've Enrolled In</Typography>
-                    <CoursesList courses={enrolledCourses}></CoursesList>
-                </>
-                
-            }
-            {(recommendedCourses.length === 0)?
-                <>
-                    <Typography variant='h4' marginTop='7vh' sx={TextStyle}>Recommended Courses</Typography>
-                    <Typography variant='h7' sx={TextStyle}>We Think You'll Like These Suggestions</Typography>
-                    <Typography variant='h7' align='center' margin='8vh' sx={TextStyle2}>There Are No Courses Yet ...</Typography>
-                </>:
-                <>
-                    <Typography variant='h4' marginTop='7vh' sx={TextStyle}>Recommended Courses</Typography>
-                    <Typography variant='h7' sx={TextStyle}>We Think You'll Like These Suggestions</Typography>
-                    <CoursesList courses={recommendedCourses}></CoursesList>    
-                </>
-                
-            }
-        </Box>
+        <>
+            {globals.user.role === "STUDENT" && <Student />}
+            {globals.user.role === "TEACHER" && <Teacher />}
+            {globals.user.role === "ADMIN" && <Admin />}
+        </>
     );
+
 }

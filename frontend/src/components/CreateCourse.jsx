@@ -72,8 +72,9 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
             photoLink: uploadedImage,
             tags: tags,
             startDate: startDate.$D + '-' + startDate.$M + "-" + startDate.$y,
-            estimatedTime: duration,
+            estimatedTime: Number(duration),
             teacherName: globals.user.firstName + " " + globals.user.lastName,
+            rating: 0.0,
         }
         try {
             const response = await axios.post(`${globals.baseURL}/teacher/createCourse`, course, {withCredentials: true})

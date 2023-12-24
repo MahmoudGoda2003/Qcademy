@@ -4,6 +4,8 @@ import CourseDetailsCard from "./CourseDetailsCard";
 import Divider from '@mui/material/Divider';
 import ModuleList from './ModuleList';
 import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import globals from '../utils/globals';
 
 export default function CourseDetails() {
 
@@ -19,6 +21,8 @@ export default function CourseDetails() {
 
     const course = location.state.course;
 
+    const [modules, setModules] = useState(course.modules);
+
     return (
         // overflow:'auto', maxWidth: '100%', padding: '2vh'
         <>
@@ -28,7 +32,7 @@ export default function CourseDetails() {
                 <Stack sx={{position: 'sticky', top: 5}}>
                     <CourseDetailsCard
                         course={course}
-                        role='student'
+                        role={globals.user.role}
                     >
                     </CourseDetailsCard>
                 </Stack>
@@ -59,12 +63,10 @@ export default function CourseDetails() {
                     }
                     </Typography>
                     <Divider sx={{margin: '3vh'}}/>
-                    {/*TODO: Add real module count*/}
                     <Typography sx={titleStyle} variant='h4' fontSize={26}>
-                        There are 13 modules in this course
+                        This course includes these modules
                     </Typography>
-                    {/*TODO: Add real module view*/}
-                    <ModuleList></ModuleList>
+                    {modules ? <ModuleList modules = {modules} /> : <></>}
                     <Divider sx={{margin: '3vh'}}/>
                 </Stack>
             </Stack>

@@ -44,20 +44,6 @@ const darkMode = createTheme({
   },
 });
 
-const getHome = (role) => {
-  console.log(role);
-  switch(role){
-    case "TEACHER":
-      return<TeacherHome/>
-    case "STUDENT":
-      return <Home />
-    case "ADMIN":
-      return <Admin />
-    default:
-      return <Home />
-  }
-}
-
 export default function App() {
 
   const [theme, setTheme] = useState(lightMode);
@@ -76,7 +62,7 @@ export default function App() {
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                {getHome(globals.user?.role)}
+                <Home />
               </ProtectedRoute>
             }/>
             <Route path="/profile" element={
@@ -113,12 +99,6 @@ export default function App() {
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
                 <CourseDetails />
-              </ProtectedRoute>
-            } />
-            <Route path="course/:courseId/content" element={
-              <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                <CourseInfo />
               </ProtectedRoute>
             } />
             <Route path="course/manage/:courseId/" element={

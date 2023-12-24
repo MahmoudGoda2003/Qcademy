@@ -40,7 +40,7 @@ export default function Login({theme}) {
                     phone: result.data.phone,
                     education: result.data.education,
                     dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : null,
-                    role: response.data.role
+                    role: result.data.role,
                 }
                 localStorage.setItem("user", JSON.stringify(globals.user));
                 closeModal();
@@ -56,13 +56,9 @@ export default function Login({theme}) {
     const handleSignIn = async (event) => {
         event.preventDefault();
         setModal(true);
+        const user = {email: email, password: password}
         try {
-            const response = await axios.post(`${globals.baseURL}/person/login`, {
-                email: email,
-                password: password
-            }, {
-                withCredentials: true
-            })
+            const response = await axios.post(`${globals.baseURL}/person/login`, user, {withCredentials: true})
             globals.user = {
                 firstName: response.data.firstName,
                 lastName: response.data.lastName,

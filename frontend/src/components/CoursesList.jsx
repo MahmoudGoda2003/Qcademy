@@ -9,8 +9,9 @@ export default function CoursesList({courses}) {
   return (
     <Box sx={{ minWidth: '10vw', maxWidth: '100%', margin: '2vh auto' }}>
       <Stack direction={'row'} spacing={7} sx={{overflow:'auto', maxWidth: '100%', padding: '2vh'}}>
-          {courses.map((course, index) => (
+          {courses.map((course) => (
                 <CourseCard 
+                  key={course.courseId}
                   course={course}
                 >
                 </CourseCard>
