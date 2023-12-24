@@ -7,6 +7,7 @@ import lombok.*;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ public class Assignment {
     @Column(name = "assignment_url", nullable = false)
     private String assignmentURL;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignments")
-    private ArrayList<SolvedAssigment> solvedAssignment;
+    private List<SolvedAssigment> solvedAssignment;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "week_number")

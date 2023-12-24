@@ -45,7 +45,7 @@ public class StudentService {
 
     public ResponseEntity<List<CourseMainInfoDTO>> getEnrolledCourses(){
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        Student student = this.studentRepository.findByUserId(userId);
+        Student student = this.studentRepository.getByUserId(userId);
         List<CourseMainInfoDTO> courses = new ArrayList<>();
         for (Course course : student.getCourses()) {
             courses.add(CourseMainInfoDTO.convert(course));
@@ -63,7 +63,7 @@ public class StudentService {
     }
     public ResponseEntity<String> enrollCourse(int courseId){
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        Student student = this.studentRepository.findByUserId(userId);
+        Student student = this.studentRepository.getByUserId(userId);
         Course course = this.coursesService.enrollInCourse(courseId, student);
         student.getCourses().add(course);
         this.studentRepository.save(student);
