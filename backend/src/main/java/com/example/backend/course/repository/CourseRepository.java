@@ -1,8 +1,13 @@
-package com.example.backend.course.courseModule.repository;
+package com.example.backend.course.repository;
 
 import com.example.backend.course.model.Course;
+import com.example.backend.student.model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Integer> {
@@ -17,5 +22,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
      *
      * @return Course that has this id
      */
-    Course findById (int courseId);
+    Course getByCourseId(int courseId);
+
+    @Query("SELECT c FROM Course c WHERE c NOT IN (SELECT s.courses FROM Student s WHERE s = :student)")
+    List<Course> findCoursesNotEnrolledByStudent(@Param("student") Student student);
 }

@@ -6,9 +6,11 @@ import com.example.backend.student.model.Student;
 import com.example.backend.teacher.model.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Immutable;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -48,8 +50,8 @@ public class Course {
     @Column(name = "teacherName")
     private String teacherName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private List<CourseModule> module;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CourseModule> modules;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "courses")
     private List<Student> students;

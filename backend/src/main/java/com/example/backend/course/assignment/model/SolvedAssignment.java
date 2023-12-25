@@ -1,4 +1,4 @@
-package com.example.backend.course.assigment.model;
+package com.example.backend.course.assignment.model;
 
 
 import com.example.backend.student.model.Student;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Table(name = "SolvedAssigment_data")
-public class SolvedAssigment {
+public class SolvedAssignment {
 
     @Column(name = "solution_url", nullable = false)
     private String solutionURL;

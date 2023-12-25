@@ -1,7 +1,7 @@
 package com.example.backend.course.dto;
 
 
-import com.example.backend.course.assigment.model.Assignment;
+import com.example.backend.course.assignment.model.Assignment;
 import com.example.backend.course.courseModule.model.CourseModule;
 import com.example.backend.course.lecture.model.Lecture;
 import jakarta.validation.constraints.NotBlank;

@@ -27,10 +27,6 @@ public class Lecture {
     @Column(name = "lecture_name", nullable = false)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "week_number")
-    private CourseModule module;
-
     private static final ModelMapper modelMapper = new ModelMapper();
     public static Lecture convert(LectureDTO lectureDTO) {
         return modelMapper.map(lectureDTO, Lecture.class);

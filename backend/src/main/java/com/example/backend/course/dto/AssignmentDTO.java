@@ -1,6 +1,6 @@
 package com.example.backend.course.dto;
 
-import com.example.backend.course.assigment.model.Assignment;
+import com.example.backend.course.assignment.model.Assignment;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
