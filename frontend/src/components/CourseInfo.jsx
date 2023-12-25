@@ -6,28 +6,33 @@ import { useLocation } from 'react-router-dom';
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import YouTube from 'react-youtube';
+import { useEffect } from 'react';
+import axios from 'axios';
+import globals from '../utils/globals';
 
 export default function CourseInfo() {
 
     const location = useLocation();
 
     const [selectedElement, setSelectedElement] = useState();
+    const [modules, setModules] = useState([]);
 
     const updateView = (item) => {
         setSelectedElement(item);
     }
 
-    const modules = location.state.modules;
+    const course = location.state.course;
 
-    const course = {
-        name: "Data Structures",
-        description: "How to structure data",
-        image: "https://media.geeksforgeeks.org/wp-content/cdn-uploads/20230706095706/intro-data-structure-%E2%80%93-1.png",
-        tags: ['Trees', 'Graphs', 'Arrays'],
-        rating: 4,
-        courseid: '23',
-        teacherName: 'Ahmed Ayman'
-    };
+    useEffect(() => {
+        axios.get(`${globals.baseURL}/student/courseModules`, {params: {courseId: course.courseId} , withCredentials: true})
+        .then((response) => {
+            setModules(response.data);
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     return (
         // overflow:'auto', maxWidth: '100%', padding: '2vh'
@@ -139,7 +144,7 @@ function Module({module, onUpdate}) {
             aria-labelledby="nested-list-subheader"
         >
             <ListItemButton onClick={() => {setOpen(!open);}}>
-                <ListItemText primary={module.name} sx={{ marginLeft: '1vw'}}/>
+                <ListItemText primary={module.publishDate} sx={{ marginLeft: '1vw'}}/>
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -151,7 +156,7 @@ function Module({module, onUpdate}) {
                         {module.lectures.map((lecture) =>(
                             <ListItemButton
                             selected={selectedIndex === 1}
-                            onClick={(event) => handleListItemClick(event, 1, lecture.lectureName, lecture.lectureUrl, 'lecture')}>
+                            onClick={(event) => handleListItemClick(event, 1, lecture.name, lecture.videoURL, 'lecture')}>
                             <ListItemText primary="Lecture Video" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         ))}
@@ -177,17 +182,17 @@ function Module({module, onUpdate}) {
                         {module.assignments.map((assignment) =>(
                             <ListItemButton
                             selected={selectedIndex === 3}
-                            onClick={(event) => handleListItemClick(event, 3, assignment.assignmentName, assignment.assignmentUrl, '')}>
+                            onClick={(event) => handleListItemClick(event, 3, assignment.name, assignment.assignmentURL, '')}>
                             <ListItemText primary="Lecture Assignment" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         ))}
                         </>
                     }
-                    {(module.slideSets.toString() === [].toString())?
+                    {(module.slidesSets.toString() === [].toString())?
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}
-                        {module.slideSets.map((slidesUrl) =>(
+                        {module.slidesSets.map((slidesUrl) =>(
                             <ListItemButton
                             selected={selectedIndex === 4}
                             onClick={(event) => handleListItemClick(event, 4, "slides", slidesUrl, '')}>

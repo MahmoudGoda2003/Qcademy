@@ -17,13 +17,18 @@ const gridElement = {
     width: '100%'
 }
 
-export default function CourseDetailsCard({course, role, isEnrolled}) {
+export default function CourseDetailsCard({course, role}) {
 
     const navigate = useNavigate();
 
     const enrollCourse = async () => {
         await axios.post(`${globals.baseURL}/student/enrollCourse`, null, {params: {courseId: Number(course.courseId)}, withCredentials: true})
+        course.enrolled =true;
+        navigate("/home");
+    }
 
+    const handleNavigate = () => {
+        if (role === "STUDENT") navigate(`/course/learn/${course.courseId}/`, {state: { course:course }})
     }
 
     return (
@@ -45,9 +50,9 @@ export default function CourseDetailsCard({course, role, isEnrolled}) {
                     color="text.secondary">
                     By: {course.teacherName}
                 </Typography>
-                {role === "STUDENT" && <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Enroll Now</Button>}
-                {role === "STUDENT" && isEnrolled && <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Continue Learning</Button>}
-                {role === "TEACHER" && <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Manage Course</Button>}
+                {role === "STUDENT" && course.enrolled ? <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Continue Learning</Button> :
+                role === "STUDENT" ? <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Enroll Now</Button> : <></>}
+                {role === "TEACHER" && <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Manage Course</Button>}
             </CardContent>
         </Card>
     );

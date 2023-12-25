@@ -42,30 +42,49 @@ export default function CreateModule({ open, handleClose, onCreateModule, course
     }
 
     const addModule = async (event) => {
-        const lectures = [{
-            lectureName: lectureName,
-            lectureUrl: lectureUrl
-        }];
+        let lectures = [];
+        let assignments = [];
+        let slidesSets = [];
+        let quizzes = [];
 
-        const assignments = [{
-            assignmentName: assignmentName,
-            assignmentUrl: assignmentUrl
-        }];
+        if (lectureName !== '' && lectureUrl !== '') {
+            lectures = [{
+                name: lectureName,
+                videoURL: lectureUrl
+            }];
+        }
+        
+        if (assignmentName !== '' && assignmentUrl !== '') {
+            assignments = [{
+                name: assignmentName,
+                assignmentURL: assignmentUrl
+            }];
+        }
 
-        const slideSets = [slidesUrl];
+        if (slidesUrl !== '') slidesSets = [slidesUrl];
 
-        const quizzes = [quizUrl];
+        if (quizUrl !== '') quizzes = [quizUrl];
+
+        const currentDate = new Date();
 
         const module = {
             courseId: courseId,
-            name: moduleName,
             lectures: lectures,
             assignments: assignments,
-            slideSets: slideSets,
-            quizzes: quizzes
+            slidesSets: slidesSets,
+            quizzes: quizzes,
+            publishDate: currentDate.getTime().toString(),
         }
 
-        onCreateModule(module);
+        try{
+            const response = await axios.post(`${globals.baseURL}/teacher/createModule`, module, {withCredentials: true})
+            onCreateModule(module);
+            console.log(response);
+        }
+        catch (error) {
+            console.log(error);
+        }
+
         handleClose();
     }
 

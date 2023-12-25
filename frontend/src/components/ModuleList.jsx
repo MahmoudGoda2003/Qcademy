@@ -29,7 +29,7 @@ function Module({module, index}) {
         <Card elevation={0}>
             <CardActionArea onClick={()=> {setOpen(!open)}} sx={{margin:'1vh', padding:'1vh'}}>
                 <Typography variant="h6" fontSize={20}>
-                    {module.name}
+                    {module.publishDate}
                 </Typography>
                 <Typography variant="body2" color={'gray'}>
                     Module {index}
@@ -44,7 +44,7 @@ function Module({module, index}) {
                         <PlayCircleOutlineOutlinedIcon fontSize="small" />
                         <Typography margin={'0 5vh 0 1vh'}> {module.lectures.length} Videos </Typography>
                         <LibraryBooksOutlinedIcon fontSize="small"/>
-                        <Typography margin={'0 5vh 0 1vh'}> {module.slideSets.length} Slide Sets </Typography>
+                        <Typography margin={'0 5vh 0 1vh'}> {module.slidesSets.length} Slide Sets </Typography>
                         <AssignmentOutlinedIcon fontSize="small"/>
                         <Typography margin={'0 5vh 0 1vh'}> {module.assignments.length} Assignments </Typography>
                         <QuizOutlinedIcon fontSize="small" />

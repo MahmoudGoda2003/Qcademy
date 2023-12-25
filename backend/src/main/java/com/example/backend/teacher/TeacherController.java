@@ -34,7 +34,7 @@ public class TeacherController {
         return this.teacherService.createCourse(course);
     }
 
-    @PostMapping("CreateModule")
+    @PostMapping("createModule")
     public ResponseEntity<String> createModule(@RequestBody CourseModuleDTO courseModuleDTO) {
         return  teacherService.createModule(courseModuleDTO);
     }

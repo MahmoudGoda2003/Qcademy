@@ -13,7 +13,11 @@ export default function Student(props) {
     useEffect(() => {
         axios.get(`${globals.baseURL}/student/enrolledCourses`, {withCredentials: true})
         .then((response) => {
-            setEnrolledCourses(response.data);
+            let courses = response.data;
+            courses.forEach(element => {
+                element.enrolled = true;
+            });
+            setEnrolledCourses(courses);
         })
         .catch((error) => {
             console.log(error);
@@ -21,7 +25,11 @@ export default function Student(props) {
 
         axios.get(`${globals.baseURL}/student/recommendedCourses`, {withCredentials: true})
         .then((response) => {
-            setRecommendedCourses(response.data);
+            let courses = response.data;
+            courses.forEach(element => {
+                element.enrolled = false;
+            });
+            setRecommendedCourses(courses);
         })
         .catch((error) => {
             console.log(error);

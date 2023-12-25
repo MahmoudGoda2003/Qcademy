@@ -8,6 +8,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from 'react';
 import CreateModule from './CreateModule';
 import globals from '../utils/globals';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 export default function EditCourse() {
 
@@ -42,7 +44,17 @@ export default function EditCourse() {
 
     const course = location.state.course;
 
-    const [modules, setModules] = useState(course.modules);
+    const [modules, setModules] = useState([]);
+
+    useEffect(() => {
+        axios.get(`${globals.baseURL}/teacher/courseModules`, {params: {courseId: course.courseId} , withCredentials: true})
+        .then((response) => {
+            setModules(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
 
     const createModule = (module) => {
@@ -101,7 +113,7 @@ export default function EditCourse() {
                     <Divider sx={{margin: '3vh'}}/>
                 </Stack>
             </Stack>
-            <CreateModule open={open} handleClose={handleClose} onCreateModule={createModule} courseId={course.courseid}></CreateModule>
+            <CreateModule open={open} handleClose={handleClose} onCreateModule={createModule} courseId={course.courseId}></CreateModule>
         </>
     );
 }

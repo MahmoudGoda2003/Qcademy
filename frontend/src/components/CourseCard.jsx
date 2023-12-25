@@ -14,18 +14,18 @@ const DEFAULT_RATING = 0
 export default function CourseCard({course}) {
     const navigate = useNavigate();
 
-    const navTo = (courseid) => {
+    const navTo = (courseId) => {
         console.log(course);
         if (globals.user.role === "STUDENT")
-            navigate(`/course/${courseid}`, {state: { course:course }})
+            navigate(`/course/${courseId}`, {state: { course:course }})
         if (globals.user.role === "TEACHER")
-            navigate(`/course/manage/${courseid}`, {state: { course:course }})
+            navigate(`/course/manage/${courseId}`, {state: { course:course }})
 
     }
     
     return (
         <Card sx={{minWidth:'45vh', maxWidth:'45vh'}}>
-            <CardActionArea courseid={course.courseid} onClick={() => {navTo(course.courseid)}}>
+            <CardActionArea courseId={course.courseId} onClick={() => {navTo(course.courseId)}}>
                 <CardMedia
                     component="img"
                     image={(course.photoLink===undefined)? DEFAULT_IMAGE: course.photoLink}

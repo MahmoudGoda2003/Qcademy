@@ -6,6 +6,8 @@ import ModuleList from './ModuleList';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import globals from '../utils/globals';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 export default function CourseDetails() {
 
@@ -21,7 +23,17 @@ export default function CourseDetails() {
 
     const course = location.state.course;
 
-    const [modules, setModules] = useState(course.modules);
+    const [modules, setModules] = useState([]);
+
+    useEffect(() => {
+        axios.get(`${globals.baseURL}/student/courseModules`, {params: {courseId: course.courseId} , withCredentials: true})
+        .then((response) => {
+            setModules(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     return (
         // overflow:'auto', maxWidth: '100%', padding: '2vh'
