@@ -14,13 +14,11 @@ export default function Admin() {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            // Fetch data from your API or endpoint
             const result = await axios.get(`${globals.baseURL}/admin/promotionRequests`, {withCredentials: true})
-            console.log(result);
             const parsedResult = result.data.map((result) => ({
                 userId: result.userId,
                 personName: result.userName,
-                requestedRole: result.requestedRole,
+                requestedRole: result.requestedRole.toLowerCase(),
                 personImage: result.userImage
             }))
 
@@ -38,9 +36,7 @@ export default function Admin() {
         console.log('helloo from handler ' + userId + " " + status);
         try {
             // Fetch data from your API or endpoint
-            const response = await axios.get(`${globals.baseURL}/admin/promotionRequests`, {
-                withCredentials: true
-            })
+            const response = await axios.post(`${globals.baseURL}/admin/changeRole`, {userId:userId, status:status}, {withCredentials: true})
             console.log(response);
             const newRequests = promotionRequests.filter((item) => item.userId !== userId)
             setPromotionRequests(newRequests);
@@ -52,12 +48,16 @@ export default function Admin() {
 
     return (
         <>
-            <Typography variant="h4" sx={{margin: '2vh 30vw'}}>
+            <Typography variant="h4" sx={{margin: '5vh 25vw'}}>
                 Promotion Requests
             </Typography>
-            <Paper elevation={5} sx={{width: '40vw', margin: 'auto'}}> 
+            <Paper elevation={5} sx={{width: '50vw', margin: 'auto'}}> 
             <List dense sx={{ width: '100%', bgcolor: 'background.paper', alignItems:'auto', margin:'auto' }}>
-            {
+            {(promotionRequests.toString() === "") ?
+                <ListItem>
+                    <ListItemText>You have no requests to review</ListItemText>
+                </ListItem>
+                :
                 promotionRequests.map((req) => 
                     <ListItem sx={{ width: '100%'}}
                         key={req.userId}
@@ -70,7 +70,7 @@ export default function Admin() {
                                 referrerPolicy="no-referrer"
                             />
                         </ListItemAvatar>
-                        <ListItemText id={req.userId} primary={`${req.personName} wants to be promoted to a ${req.requestRole}`} />
+                        <ListItemText id={req.userId} primary={`${req.personName} wants to be promoted to a ${req.requestedRole}`} />
                         </ListItemButton>
 
                         <IconButton onClick={() => handleReq(req.userId, true)}>

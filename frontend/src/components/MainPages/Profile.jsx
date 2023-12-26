@@ -1,4 +1,4 @@
-import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
+import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade, SpeedDial, SpeedDialIcon } from "@mui/material";
 import { useState, useEffect } from "react";
 import InfoField from "../Reusable/InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -6,6 +6,7 @@ import globals from '../../utils/globals';
 import styles from "../../utils/styles";
 import DateField from "../Reusable/DateField";
 import axios from "axios";
+import ErrorModal from "../Modals/ErrorModal";
 
 const getRank = (coursesCompleted) => {
 
@@ -34,6 +35,7 @@ export default function Profile () {
     const [completedCourses, setCompletedCourses] = useState(19);
     
     const [modal, setModal] = useState(false)
+    const [errorModal, setErrorModal] = useState(false);
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null)
 
@@ -51,6 +53,10 @@ export default function Profile () {
     const chooseImage = (e) => {
         setTempImageUrl(URL.createObjectURL(e.target.files[0]));
         setImageFile(e.target.files[0]);
+    }
+
+    const closeErrorModal = () => {
+        setErrorModal(false);
     }
 
     const uploadImage = async (event) => {
@@ -74,6 +80,16 @@ export default function Profile () {
         }
     }
     
+    const requestPromotion = async () => {
+        try {
+            await axios.post(`${globals.baseURL}/${globals.user.role.toLowerCase()}/requestPromotion`, null, {withCredentials: true});
+        }
+        catch(error) {
+            setErrorModal(true);
+            setTimeout(() => closeErrorModal(), 1000)
+        }
+    }
+    
     const openHandler = () => {
         setModal(true)
         setTempImageUrl(imageUrl)
@@ -85,6 +101,7 @@ export default function Profile () {
 
     return (
         <>
+            <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'You already applied for a promotion'} />
             <Modal
                 open={modal}
                 onClose={closeHandler}
@@ -166,6 +183,21 @@ export default function Profile () {
                     <InfoField field={'Phone Number'} value={phone} setValue={setPhone}></InfoField>
                     <DateField field={'Date Of Birth'} value={dateOfBirth} setValue={setDob}></DateField>
                 </Stack>
+                {globals.user.role !== "ADMIN" && 
+                    <Button
+                        variant="contained"
+                        sx={{
+                            display: "block",
+                            position: "fixed",
+                            bottom: '20px',
+                            right: "20px",
+                            borderRadius: "20px"
+                        }}
+                        onClick={requestPromotion}
+                    >
+                        {globals.user.role === "STUDENT" ? "Request Promotion" : globals.user.role === "TEACHER" ? "Become an Admin" : ""}
+                    </Button>
+                }
             </Stack>
         </>
     );

@@ -48,6 +48,7 @@ export default function Login({theme}) {
             }catch (error) {
                 setErrorModal(true);
                 closeModal();
+                setTimeout(() => closeErrorModal(), 1000)
             }
         },
         onError: error => console.log(error),
@@ -75,6 +76,7 @@ export default function Login({theme}) {
         } catch (error) {
             setErrorModal(true);
             closeModal();
+            setTimeout(() => closeErrorModal(), 1000)
         }
     }
 

@@ -27,7 +27,6 @@ export default function CourseInfo() {
         axios.get(`${globals.baseURL}/student/courseModules`, {params: {courseId: course.courseId} , withCredentials: true})
         .then((response) => {
             setModules(response.data);
-            console.log(response.data);
         })
         .catch((error) => {
             console.log(error);
@@ -162,7 +161,7 @@ function Module({module, onUpdate}) {
                         ))}
                         </>
                     }
-                    {(module.quizzes.toString() === [].toString())?
+                    {(module.quizzes.toString() === "")?
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}
@@ -175,7 +174,7 @@ function Module({module, onUpdate}) {
                         ))}
                         </>
                     }
-                    {(module.assignments.toString() === [].toString())?
+                    {(module.assignments.toString() === "")?
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}
@@ -188,7 +187,7 @@ function Module({module, onUpdate}) {
                         ))}
                         </>
                     }
-                    {(module.slidesSets.toString() === [].toString())?
+                    {(module.slidesSets.toString() === "")?
                         <></>:
                         <>
                             {/*navigae to page contain the link of lecture*/}

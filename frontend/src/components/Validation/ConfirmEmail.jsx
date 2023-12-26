@@ -29,11 +29,13 @@ export default function ConfirmEmail({theme}) {
             await axios.post(`${globals.baseURL}/person/signup/validate`, user, {withCredentials: true})
             globals.user = null
             navigate('/login')
+            closeModal();
         } catch (error) {
             setErrorModal(true);
-            console.log(error);    
+            closeModal();
+            console.log(error);
+            setTimeout(() => closeErrorModal(), 1000)  
         }
-        closeModal();
     }
 
     const closeErrorModal = () => {

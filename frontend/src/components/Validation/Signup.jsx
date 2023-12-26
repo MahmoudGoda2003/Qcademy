@@ -67,6 +67,7 @@ export default function Signup({theme}) {
         } catch (error) {
             setErrorModal(true);
             closeModal();
+            setTimeout(() => closeErrorModal(), 1000)
         }
     }
 
@@ -91,6 +92,7 @@ export default function Signup({theme}) {
             }catch (error) {
                 setErrorModal(true);
                 closeModal();
+                setTimeout(() => closeErrorModal(), 1000)
                 console.error(error);
             }
         },
