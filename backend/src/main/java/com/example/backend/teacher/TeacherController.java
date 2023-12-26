@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teacher/")
-@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
+//@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class TeacherController {
 
     private final TeacherService teacherService;

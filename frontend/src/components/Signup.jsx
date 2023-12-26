@@ -54,10 +54,16 @@ export default function Signup({theme}) {
         // TODO: send info to backend
         setModal(true);
         try {
-            await axios.post(`${globals.baseURL}/person/signup`, user.email, {withCredentials: true})
-            globals.user = user;
+            await axios.post(`${globals.baseURL}/person/signup`, user.email, {withCredentials: true, headers: {"Content-Type": "text/plain"}})
+            // globals.user = user;
+            // console.log(globals.user);
+
             closeModal();
-            navigate('/confirmEmail');
+            navigate('/confirmEmail', {
+                state: {
+                    user: user
+                }
+            });
         } catch (error) {
             setErrorModal(true);
             closeModal();

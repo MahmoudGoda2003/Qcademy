@@ -88,12 +88,12 @@ export default function App() {
               </UnProtectedRoute>
             } />
             <Route path="/confirmEmail" element={
-              <ProtectedRoute redirectPath={"/login"}>
+              <UnProtectedRoute redirectPath={"/login"}>
                 <IconButton onClick={toggleColorMode} color="inherit">
                       {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
                 </IconButton>
                 <ConfirmEmail theme = {theme} />
-              </ProtectedRoute>
+              </UnProtectedRoute>
             }/>
             <Route path="course/:courseId" element={
               <ProtectedRoute redirectPath={"/login"}>

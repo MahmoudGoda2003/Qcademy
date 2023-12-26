@@ -1,5 +1,5 @@
-import { Button, Grid, Paper, Typography, Modal, Backdrop, Fade, Box, CircularProgress } from "@mui/material"
-import { Link, useNavigate } from "react-router-dom"
+import { Button, Grid, Paper, Typography } from "@mui/material"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
 import globals from '../utils/globals';
@@ -12,6 +12,8 @@ import ErrorModal from "./ErrorModal";
 export default function ConfirmEmail({theme}) {
     const navigate = useNavigate();
 
+    const location = useLocation();
+    const user = location.state.user;
     const [code, setCode] = useState('');
     const [modal, setModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
@@ -20,8 +22,11 @@ export default function ConfirmEmail({theme}) {
         event.preventDefault();
         setModal(true);
         try {
-            globals.user.code = code;
-            await axios.post(`${globals.baseURL}/person/signup/validate`, globals.user)
+            console.log(globals.user);
+            console.log(user);
+            console.log(location);
+            user.code = code;
+            await axios.post(`${globals.baseURL}/person/signup/validate`, user, {withCredentials: true})
             globals.user = null
             navigate('/login')
         } catch (error) {

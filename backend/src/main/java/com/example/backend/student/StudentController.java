@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/student/")
-@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
+//@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class StudentController {
     private final StudentService  studentService;
     private final CourseService courseService;
