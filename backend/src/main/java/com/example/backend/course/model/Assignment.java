@@ -1,4 +1,4 @@
-package com.example.backend.course.assignment.model;
+package com.example.backend.course.model;
 
 import com.example.backend.course.dto.AssignmentDTO;
 import jakarta.persistence.*;

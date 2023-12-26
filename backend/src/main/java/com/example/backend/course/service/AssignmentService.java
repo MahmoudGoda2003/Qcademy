@@ -1,7 +1,7 @@
 package com.example.backend.course.service;
 
-import com.example.backend.course.assignment.model.Assignment;
-import com.example.backend.course.assignment.repository.AssignmentRepository;
+import com.example.backend.course.model.Assignment;
+import com.example.backend.course.repository.AssignmentRepository;
 import com.example.backend.course.dto.AssignmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

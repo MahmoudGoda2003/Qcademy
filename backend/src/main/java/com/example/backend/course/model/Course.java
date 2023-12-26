@@ -1,16 +1,13 @@
 package com.example.backend.course.model;
 
-import com.example.backend.course.courseModule.model.CourseModule;
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.student.model.Student;
 import com.example.backend.teacher.model.Teacher;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Immutable;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter

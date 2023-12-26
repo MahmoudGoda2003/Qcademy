@@ -1,9 +1,6 @@
-package com.example.backend.course.courseModule.model;
+package com.example.backend.course.model;
 
-import com.example.backend.course.assignment.model.Assignment;
 import com.example.backend.course.dto.CourseModuleDTO;
-import com.example.backend.course.model.Course;
-import com.example.backend.course.lecture.model.Lecture;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,6 +9,7 @@ import lombok.ToString;
 import org.modelmapper.ModelMapper;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,10 +37,10 @@ public class CourseModule {
     private List<String> quizzes;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Lecture> lectures;
+    private List<Lecture> lectures = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
+    private List<Assignment> assignments = new ArrayList<>();
 
     private static final ModelMapper modelMapper = new ModelMapper();
     public static CourseModule convert(CourseModuleDTO courseModuleDTO) {

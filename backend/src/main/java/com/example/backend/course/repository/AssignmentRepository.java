@@ -1,6 +1,6 @@
-package com.example.backend.course.assignment.repository;
+package com.example.backend.course.repository;
 
-import com.example.backend.course.assignment.model.Assignment;
+import com.example.backend.course.model.Assignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

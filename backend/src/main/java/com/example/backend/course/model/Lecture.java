@@ -1,7 +1,6 @@
-package com.example.backend.course.lecture.model;
+package com.example.backend.course.model;
 
 
-import com.example.backend.course.courseModule.model.CourseModule;
 import com.example.backend.course.dto.LectureDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,6 +1,7 @@
-package com.example.backend.course.assignment.model;
+package com.example.backend.course.model;
 
 
+import com.example.backend.course.model.Assignment;
 import com.example.backend.student.model.Student;
 import jakarta.persistence.*;
 import lombok.Getter;
