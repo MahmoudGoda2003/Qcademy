@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import CoursesList from './CoursesList';
+import CoursesList from '../Course/CoursesList';
 import { Typography, Box } from '@mui/material';
 import axios from 'axios';
-import globals from '../utils/globals';
+import globals from '../../utils/globals';
 
 
 export default function Student(props) {

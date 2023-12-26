@@ -1,10 +1,10 @@
 import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
 import { useState, useEffect } from "react";
-import InfoField from "./InfoField";
+import InfoField from "../Reusable/InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import globals from '../utils/globals';
-import styles from "../utils/styles";
-import DateField from "./DateField";
+import globals from '../../utils/globals';
+import styles from "../../utils/styles";
+import DateField from "../Reusable/DateField";
 import axios from "axios";
 
 const getRank = (coursesCompleted) => {

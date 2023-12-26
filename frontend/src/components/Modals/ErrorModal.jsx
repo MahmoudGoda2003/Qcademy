@@ -1,8 +1,9 @@
-import { Modal, Backdrop, Fade, CircularProgress, Box, Typography } from "@mui/material"
-import styles from "../utils/styles";
+import { Modal } from "@mui/base";
+import { Alert, Backdrop, Fade } from "@mui/material";
+import { Box } from "@mui/system";
+import styles from "../../utils/styles";
 
-export default function LoadingModal({ open, handleClose, message }) {
-
+export default function ErrorModal({ open, handleClose, message }) {
     return (
         <Modal
         open={open}
@@ -18,9 +19,8 @@ export default function LoadingModal({ open, handleClose, message }) {
         }}
         >
             <Fade in={open}>
-                <Box sx={styles.hiddenModalStyle}>
-                <Typography color={'white'} margin={'2vh'} fontSize={20}>{message}...</Typography>
-                <CircularProgress color="secondary" />
+                <Box sx={styles.hiddenModalStyleTop}>
+                    <Alert variant="filled" severity="error">{message}</Alert>
                 </Box>
             </Fade>
         </Modal>

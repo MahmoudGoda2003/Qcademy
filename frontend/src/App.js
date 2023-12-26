@@ -1,24 +1,22 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./components/Home";
-import Header from "./components/Header";
-import Profile from "./components/Profile";
-import TeacherHome from "./components/TeacherHome";
-import Signup from "./components/Signup";
-import ConfirmEmail from "./components/ConfirmEmail";
-import Login from "./components/Login";
+import Home from "./components/MainPages/Home";
+import Header from "./components/Reusable/Header";
+import Profile from "./components/MainPages/Profile";
+import Signup from "./components/Validation/Signup";
+import ConfirmEmail from "./components/Validation/ConfirmEmail";
+import Login from "./components/Validation/Login";
 import { useState } from "react";
-import ProtectedRoute from "./components/ProtectedRoute";
-import UnProtectedRoute from "./components/UnProtectedRoute";
+import ProtectedRoute from "./components/RouteGuards/ProtectedRoute";
+import UnProtectedRoute from "./components/RouteGuards/UnProtectedRoute";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import CourseDetails from "./components/CourseDetails";
+import CourseDetails from "./components/Course/CourseDetails";
 import globals from "./utils/globals";
-import CourseInfo from "./components/CourseInfo";
-import EditCourse from "./components/EditCourse";
-import Admin from "./components/AdminHome";
+import CourseInfo from "./components/Course/CourseInfo";
+import EditCourse from "./components/Course/EditCourse";
 
 
 const lightMode = createTheme({

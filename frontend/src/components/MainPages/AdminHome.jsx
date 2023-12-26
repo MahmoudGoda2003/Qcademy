@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper, Typography } from '@mui/material';
-import { Grid} from '@mui/material';
-import CourseCard from './CourseCard';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import CreateCourses from './CreateCourse';
-import globals from '../utils/globals';
-import { Box, width } from '@mui/system';
+import globals from '../../utils/globals';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import axios from 'axios';
@@ -16,8 +10,6 @@ export default function Admin() {
 
     const [promotionRequests, setPromotionRequests] = useState([]);
     
-    
-
     // setPromotionRequests(result)    
     useEffect(() => {
         const fetchData = async () => {
@@ -50,7 +42,7 @@ export default function Admin() {
                 withCredentials: true
             })
             console.log(response);
-            const newRequests = promotionRequests.filter((item) => item.userId != userId)
+            const newRequests = promotionRequests.filter((item) => item.userId !== userId)
             setPromotionRequests(newRequests);
         } catch (error) {
             console.log(error);

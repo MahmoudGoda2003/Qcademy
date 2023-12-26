@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import {Button, CardMedia, Rating} from '@mui/material';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-import globals from '../utils/globals';
+import globals from '../../utils/globals';
 
 
 const DEFAULT_IMAGE = ""

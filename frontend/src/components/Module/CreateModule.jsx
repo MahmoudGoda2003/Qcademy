@@ -2,24 +2,13 @@ import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { Backdrop, Button, Divider, Fade, InputLabel, Modal, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import styles from '../utils/styles';
-import globals from '../utils/globals';
+import styles from '../../utils/styles';
+import globals from '../../utils/globals';
 import axios from 'axios';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
-
-const VisuallyHiddenStyle = {
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-};
 
 export default function CreateModule({ open, handleClose, onCreateModule, courseId }) {
 

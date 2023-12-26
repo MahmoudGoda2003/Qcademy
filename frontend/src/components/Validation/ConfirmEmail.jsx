@@ -2,11 +2,11 @@ import { Button, Grid, Paper, Typography } from "@mui/material"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import globals from '../utils/globals';
+import globals from '../../utils/globals';
 import axios from "axios";
-import styles from "../utils/styles";
-import LoadingModal from "./LoadingModal";
-import ErrorModal from "./ErrorModal";
+import styles from "../../utils/styles";
+import LoadingModal from "../Modals/LoadingModal";
+import ErrorModal from "../Modals/ErrorModal";
 
 
 export default function ConfirmEmail({theme}) {
@@ -49,7 +49,7 @@ export default function ConfirmEmail({theme}) {
             <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'A problem has occurred, please check the code and try again'} />
             <LoadingModal open={modal} handleClose={closeModal} message={'Checking Code'} />
             <Grid sx={styles.gridStyle}>
-                <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
+                <img src={theme.palette.mode === 'light'? require("../../img/LogoFull.png") : require("../../img/LogoFullLight.png")}
                 style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}
                 alt="Logo"
                 ></img>

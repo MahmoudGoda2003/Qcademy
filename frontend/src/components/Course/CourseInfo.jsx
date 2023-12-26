@@ -1,4 +1,4 @@
-import Header from './Header';
+import Header from '../Reusable/Header';
 import Box from '@mui/material/Box';
 import { Collapse, ListItemButton, Stack, Typography, List, ListItemText, Link} from '@mui/material';
 import * as React from "react";
@@ -8,7 +8,7 @@ import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import YouTube from 'react-youtube';
 import { useEffect } from 'react';
 import axios from 'axios';
-import globals from '../utils/globals';
+import globals from '../../utils/globals';
 
 export default function CourseInfo() {
 

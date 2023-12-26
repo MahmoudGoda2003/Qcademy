@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {Typography } from '@mui/material';
 import { Grid} from '@mui/material';
-import CourseCard from './CourseCard';
+import CourseCard from '../Course/CourseCard';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import CreateCourses from './CreateCourse';
-import globals from '../utils/globals';
+import CreateCourses from '../Course/CreateCourse';
+import globals from '../../utils/globals';
 import { Box } from '@mui/system';
 import axios from 'axios';
 

@@ -1,4 +1,4 @@
-import globals from '../utils/globals';
+import globals from '../../utils/globals';
 import Student from './Student';
 import Teacher from './TeacherHome';
 import Admin from './AdminHome';

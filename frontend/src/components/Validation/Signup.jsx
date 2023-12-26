@@ -7,10 +7,10 @@ import { useState } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import GoogleIcon from '@mui/icons-material/Google';
 import axios from 'axios'
-import globals from '../utils/globals';
-import styles from "../utils/styles";
-import LoadingModal from "./LoadingModal";
-import ErrorModal from "./ErrorModal";
+import globals from '../../utils/globals';
+import styles from "../../utils/styles";
+import LoadingModal from "../Modals/LoadingModal";
+import ErrorModal from "../Modals/ErrorModal";
 
 
 export default function Signup({theme}) {
@@ -112,7 +112,7 @@ export default function Signup({theme}) {
             <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'An error occurred, please try again later :('} />
             <LoadingModal open={modal} handleClose={closeModal} message={'Proccessing your info'} />
             <Grid sx={styles.gridStyle}>
-                <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
+                <img src={theme.palette.mode === 'light'? require("../../img/LogoFull.png") : require("../../img/LogoFullLight.png")}
                 style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}
                 alt="Logo"
                 ></img>
