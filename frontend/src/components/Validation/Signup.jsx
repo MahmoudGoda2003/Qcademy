@@ -6,11 +6,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import GoogleIcon from '@mui/icons-material/Google';
-import axios from 'axios'
-import globals from '../../utils/globals';
 import styles from "../../utils/styles";
 import LoadingModal from "../Modals/LoadingModal";
 import ErrorModal from "../Modals/ErrorModal";
+import RegisterService from "../../service/RegisterService";
 
 
 export default function Signup({theme}) {
@@ -54,7 +53,7 @@ export default function Signup({theme}) {
         // TODO: send info to backend
         setModal(true);
         try {
-            await axios.post(`${globals.baseURL}/person/signup`, user.email, {withCredentials: true, headers: {"Content-Type": "text/plain"}})
+            await RegisterService.signUp(user.email);
             // globals.user = user;
             // console.log(globals.user);
 
@@ -75,24 +74,13 @@ export default function Signup({theme}) {
         onSuccess: async (response) => {
             setModal(true);
             try{
-                console.log(response.access_token);
-                const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain"}, withCredentials: true})
-                globals.user = {
-                    firstName: result.data.firstName,
-                    lastName: result.data.lastName,
-                    photoLink: result.data.photoLink,
-                    phone: result.data.phone? result.data.phone : '',
-                    education: result.data.education? result.data.education : '',
-                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : '1-1-1960',
-                    role: result.data.role,
-                }
-                localStorage.setItem("user", JSON.stringify(globals.user));
+                await RegisterService.google(response.access_token);
                 closeModal();
-                navigate("/home")
+                navigate("/home");
             }catch (error) {
                 setErrorModal(true);
                 closeModal();
-                setTimeout(() => closeErrorModal(), 1000)
+                setTimeout(() => closeErrorModal(), 1000);
                 console.error(error);
             }
         },

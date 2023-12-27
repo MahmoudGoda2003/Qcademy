@@ -3,7 +3,7 @@ import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
-import { Backdrop, Button, Chip, Fade, InputAdornment, Modal, Typography } from '@mui/material';
+import { Backdrop, Button, Fade, InputAdornment, Modal, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
 import styles from '../../utils/styles';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
@@ -12,6 +12,7 @@ import globals from '../../utils/globals';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
+import UploadServices from '../../service/UploadServices';
 
 const VisuallyHiddenStyle = {
     clip: 'rect(0 0 0 0)',
@@ -52,16 +53,7 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
     const addCourse = async (event) => {
         let uploadedImage = {};
         try {
-            const formData = new FormData ();
-            formData.append("file", imageFile);
-            formData.append("upload_preset", "xdmym8xv");
-            formData.append("api_key", "593319395186373");
-
-            const response = await axios.post(
-                "https://api.cloudinary.com/v1_1/dlcy5giof/image/upload",
-                formData
-            )            
-            uploadedImage = response.data.secure_url;
+            uploadedImage = await UploadServices.uploadImage(imageFile);
         } 
         catch (error) {
             console.log(error)

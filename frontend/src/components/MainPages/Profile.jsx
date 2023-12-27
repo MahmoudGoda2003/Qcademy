@@ -1,13 +1,14 @@
-import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade, SpeedDial, SpeedDialIcon } from "@mui/material";
+import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
 import { useState, useEffect } from "react";
 import InfoField from "../Reusable/InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import globals from '../../utils/globals';
 import styles from "../../utils/styles";
 import DateField from "../Reusable/DateField";
-import axios from "axios";
 import ErrorModal from "../Modals/ErrorModal";
 import SuccessModal from "../Modals/SuccessModal";
+import PromotionServices from "../../service/PromotionsServices";
+import UploadServices from "../../service/UploadServices";
 
 const getRank = (coursesCompleted) => {
 
@@ -66,20 +67,11 @@ export default function Profile () {
     }
 
     const uploadImage = async (event) => {
-        if(imageFile == null)
+        if(imageFile === null)
             return
-        let uploadedImage = {};
         try {
-            const formData = new FormData ();
-            formData.append("file", imageFile);
-            formData.append("upload_preset", "xdmym8xv");
-            formData.append("api_key", "593319395186373");
-
-            const response = await axios.post(
-                "https://api.cloudinary.com/v1_1/dlcy5giof/image/upload",
-                formData
-            )
-            uploadedImage = response.data.secure_url;
+            const uploadedImage = await UploadServices.uploadImage(imageFile);
+            setImageUrl(uploadedImage);
             closeHandler()
         } catch (error) {
             console.log(error)
@@ -88,7 +80,7 @@ export default function Profile () {
     
     const requestPromotion = async () => {
         try {
-            await axios.post(`${globals.baseURL}/${globals.user.role.toLowerCase()}/requestPromotion`, null, {withCredentials: true});
+            await PromotionServices.requestPromotion();
             setSuccessModal(true)
             setTimeout(() => closeSuccessModal(), 1000)
         }

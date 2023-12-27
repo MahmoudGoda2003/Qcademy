@@ -5,8 +5,6 @@ import Admin from './AdminHome';
 
 export default function Home(props) {
 
-    console.log(globals.user);
-
     return (
         <>
             {globals.user.role === "STUDENT" && <Student />}

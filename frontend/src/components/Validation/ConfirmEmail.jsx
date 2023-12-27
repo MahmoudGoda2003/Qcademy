@@ -2,11 +2,10 @@ import { Button, Grid, Paper, Typography } from "@mui/material"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import globals from '../../utils/globals';
-import axios from "axios";
 import styles from "../../utils/styles";
 import LoadingModal from "../Modals/LoadingModal";
 import ErrorModal from "../Modals/ErrorModal";
+import RegisterService from "../../service/RegisterService";
 
 
 export default function ConfirmEmail({theme}) {
@@ -14,6 +13,7 @@ export default function ConfirmEmail({theme}) {
 
     const location = useLocation();
     const user = location.state.user;
+
     const [code, setCode] = useState('');
     const [modal, setModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
@@ -22,19 +22,15 @@ export default function ConfirmEmail({theme}) {
         event.preventDefault();
         setModal(true);
         try {
-            console.log(globals.user);
-            console.log(user);
-            console.log(location);
             user.code = code;
-            await axios.post(`${globals.baseURL}/person/signup/validate`, user, {withCredentials: true})
-            globals.user = null
+            await RegisterService.confirmCode(user);
             navigate('/login')
             closeModal();
         } catch (error) {
             setErrorModal(true);
             closeModal();
-            console.log(error);
             setTimeout(() => closeErrorModal(), 1000)
+            console.log(error);
         }
     }
 
@@ -66,7 +62,9 @@ export default function ConfirmEmail({theme}) {
                             sx ={styles.gridElement}
                             value={code}
                             length={6}
-                            onChange={newValue => setCode(newValue)} />
+                            onChange={newValue => setCode(newValue)}
+                            inputMode="numeric"
+                        />
                         <Button variant="contained" size="large" sx={styles.gridElement} type="submit">Confirm code</Button>
                     </Grid>
                 </Paper>

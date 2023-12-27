@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import CoursesList from '../Course/CoursesList';
 import { Typography, Box } from '@mui/material';
-import axios from 'axios';
-import globals from '../../utils/globals';
-
+import CourseService from '../../service/CourseService';
 
 export default function Student(props) {
 
@@ -11,30 +9,18 @@ export default function Student(props) {
     const [recommendedCourses, setRecommendedCourses] = useState([]);
     
     useEffect(() => {
-        axios.get(`${globals.baseURL}/student/enrolledCourses`, {withCredentials: true})
-        .then((response) => {
-            let courses = response.data;
-            courses.forEach(element => {
-                element.enrolled = true;
-            });
-            setEnrolledCourses(courses);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        async function fetchEnrolledCourses () {
+            const res = await CourseService.getEnrolledCourses();
+            setEnrolledCourses(res);
+        }
 
-        axios.get(`${globals.baseURL}/student/recommendedCourses`, {withCredentials: true})
-        .then((response) => {
-            let courses = response.data;
-            courses.forEach(element => {
-                element.enrolled = false;
-            });
-            setRecommendedCourses(courses);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        async function fetchRecommendedCourses() {
+            const res = await CourseService.getRecommendedCourses();
+            setRecommendedCourses(res);
+        }
         
+        fetchEnrolledCourses();
+        fetchRecommendedCourses();
 
     }, []);
 

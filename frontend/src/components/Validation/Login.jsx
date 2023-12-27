@@ -3,11 +3,10 @@ import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useGoogleLogin } from '@react-oauth/google';
 import GoogleIcon from '@mui/icons-material/Google';
-import axios from "axios";
-import globals from '../../utils/globals';
 import styles from "../../utils/styles";
 import LoadingModal from "../Modals/LoadingModal";
 import ErrorModal from "../Modals/ErrorModal";
+import RegisterService from "../../service/RegisterService";
 
 export default function Login({theme}) {
 
@@ -32,26 +31,21 @@ export default function Login({theme}) {
         onSuccess: async (response) => {
             setModal(true);
             try{
-                const result = await axios.post(`${globals.baseURL}/person/google`, response.access_token, {headers: {"Content-Type": "text/plain"}, withCredentials: true})
-                globals.user = {
-                    firstName: result.data.firstName,
-                    lastName: result.data.lastName,
-                    photoLink: result.data.photoLink,
-                    phone: result.data.phone,
-                    education: result.data.education,
-                    dateOfBirth: result.data.dateOfBirth? result.data.dateOfBirth : null,
-                    role: result.data.role,
-                }
-                localStorage.setItem("user", JSON.stringify(globals.user));
+                await RegisterService.google(response.access_token);
                 closeModal();
                 navigate("/home");
             }catch (error) {
                 setErrorModal(true);
                 closeModal();
-                setTimeout(() => closeErrorModal(), 1000)
+                setTimeout(() => closeErrorModal(), 1000);
             }
         },
-        onError: error => console.log(error),
+        onError: error => {
+            console.log(error)
+            setErrorModal(true);
+            closeModal();
+            setTimeout(() => closeErrorModal(), 1000);
+        },
     });
     
     const handleSignIn = async (event) => {
@@ -59,18 +53,7 @@ export default function Login({theme}) {
         setModal(true);
         const user = {email: email, password: password}
         try {
-            const response = await axios.post(`${globals.baseURL}/person/login`, user, {withCredentials: true})
-            globals.user = {
-                firstName: response.data.firstName,
-                lastName: response.data.lastName,
-                photoLink: response.data.photoLink,
-                email: response.data.email,
-                dateOfBirth: response.data.dateOfBirth,
-                phone: response.data.phone,
-                education: response.data.dateOfBirth? response.data.dateOfBirth : '1-1-1960',
-                role: response.data.role
-            }
-            localStorage.setItem("user", JSON.stringify(globals.user));
+            await RegisterService.login(user);
             closeModal();
             navigate("/home");
         } catch (error) {

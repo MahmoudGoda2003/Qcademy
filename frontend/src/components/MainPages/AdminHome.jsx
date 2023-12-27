@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper, Typography } from '@mui/material';
-import globals from '../../utils/globals';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
-import axios from 'axios';
 import SuccessModal from '../Modals/SuccessModal';
+import PromotionServices from '../../service/PromotionsServices';
 
 
 export default function Admin() {
@@ -17,16 +16,10 @@ export default function Admin() {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const result = await axios.get(`${globals.baseURL}/admin/promotionRequests`, {withCredentials: true})
-            const parsedResult = result.data.map((result) => ({
-                userId: result.userId,
-                personName: result.userName,
-                requestedRole: result.requestedRole.toLowerCase(),
-                personImage: result.userImage
-            }))
-
+            const parsedResult = await PromotionServices.getPromotionRequests();
             setPromotionRequests(parsedResult);
-          } catch (error) {
+          }
+          catch (error) {
             console.log(error);
           }
         };
@@ -37,9 +30,8 @@ export default function Admin() {
 
     const handleReq = async (userId, status) => {
         try {
-            const response = await axios.post(`${globals.baseURL}/admin/changeRole`, {userId:userId, status:status}, {withCredentials: true});
-            if (status) setMessage("accepted");
-            else setMessage("rejected");
+            const response = await PromotionServices.changeRole(userId, status);
+            setMessage(response);
             setSuccessModal(true);
             const newRequests = promotionRequests.filter((item) => item.userId !== userId)
             setPromotionRequests(newRequests);
@@ -55,7 +47,7 @@ export default function Admin() {
 
     return (
         <>
-            <SuccessModal open={successModal} handleClose={closeSuccessModal} message={`Successully ${message} request`}></SuccessModal>
+            <SuccessModal open={successModal} handleClose={closeSuccessModal} message={`${message}`}></SuccessModal>
             <Typography variant="h4" sx={{margin: '5vh 25vw'}}>
                 Promotion Requests
             </Typography>
