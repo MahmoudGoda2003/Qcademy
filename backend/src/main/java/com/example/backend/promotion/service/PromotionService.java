@@ -32,7 +32,6 @@ public class PromotionService {
         return promotion;
     }
 
-
     public List<PromotionDTO> getPromotionRequests() {
         List<Promotion> promotionRequests = this.promotionRepository.findAll();
 

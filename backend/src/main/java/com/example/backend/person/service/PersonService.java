@@ -142,4 +142,10 @@ public class PersonService {
         personRepository.updatePerson(userId, personInfoDTO.getFirstName(), personInfoDTO.getLastName(), personInfoDTO.getBio(), personInfoDTO.getPhotoLink(), personInfoDTO.getDateOfBirth());
         return new ResponseEntity<>("Data Updated", HttpStatus.ACCEPTED);
     }
+
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        Cookie cookie = this.cookiesService.createCookie("qcademy", "", 0);
+        response.addCookie(cookie);
+        return new ResponseEntity<>("Logged out", HttpStatus.ACCEPTED);
+    }
 }

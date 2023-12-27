@@ -49,4 +49,9 @@ public class PersonController {
     public ResponseEntity<String> update(@Valid @RequestBody PersonInfoDTO personInfoDTO) {
         return personService.updatePerson(personInfoDTO);
     }
+
+    @PostMapping("logout")
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        return personService.logout(response);
+    }
 }
