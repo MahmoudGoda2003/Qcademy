@@ -42,7 +42,6 @@ public class PersonService {
     private final StudentService studentService;
 
 
-    @Transactional
     public Person savePerson(Person person) {
         String nonEncodedPass = person.getPassword();
         String encodedPass = this.encoder.encode(nonEncodedPass);

@@ -20,7 +20,7 @@ public class PromotionService {
 
     public void requestPromotion(Long userId, Role requestedRole) {
         if (this.promotionRepository.existsPromotionByUserId(userId))
-            throw new WrongDataEnteredException("There is already a request by that user");
+            throw new PromotionRequestExistException();
         Promotion promotion = new Promotion(userId, requestedRole);
         this.promotionRepository.save(promotion);
     }

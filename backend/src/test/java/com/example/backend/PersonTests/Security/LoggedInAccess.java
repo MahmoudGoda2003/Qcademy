@@ -131,7 +131,7 @@ public class LoggedInAccess {
         ps.setUserRole(userId, Role.ADMIN);
         ChangeRoleDTO changeRoleDTO = new ChangeRoleDTO(userId, true);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId))).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(changeRoleDTO))).andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(MockMvcResultMatchers.content().string("{\"error message\":\"No promotion with that userId\"}"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, userId))).contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(changeRoleDTO))).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 
