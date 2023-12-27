@@ -34,7 +34,7 @@ export default function ConfirmEmail({theme}) {
             setErrorModal(true);
             closeModal();
             console.log(error);
-            setTimeout(() => closeErrorModal(), 1000)  
+            setTimeout(() => closeErrorModal(), 1000)
         }
     }
 

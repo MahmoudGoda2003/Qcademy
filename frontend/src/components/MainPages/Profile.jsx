@@ -7,6 +7,7 @@ import styles from "../../utils/styles";
 import DateField from "../Reusable/DateField";
 import axios from "axios";
 import ErrorModal from "../Modals/ErrorModal";
+import SuccessModal from "../Modals/SuccessModal";
 
 const getRank = (coursesCompleted) => {
 
@@ -36,6 +37,7 @@ export default function Profile () {
     
     const [modal, setModal] = useState(false)
     const [errorModal, setErrorModal] = useState(false);
+    const [successModal, setSuccessModal] = useState(false);
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null)
 
@@ -53,6 +55,10 @@ export default function Profile () {
     const chooseImage = (e) => {
         setTempImageUrl(URL.createObjectURL(e.target.files[0]));
         setImageFile(e.target.files[0]);
+    }
+
+    const closeSuccessModal = () => {
+        setSuccessModal(false);
     }
 
     const closeErrorModal = () => {
@@ -83,6 +89,8 @@ export default function Profile () {
     const requestPromotion = async () => {
         try {
             await axios.post(`${globals.baseURL}/${globals.user.role.toLowerCase()}/requestPromotion`, null, {withCredentials: true});
+            setSuccessModal(true)
+            setTimeout(() => closeSuccessModal(), 1000)
         }
         catch(error) {
             setErrorModal(true);
@@ -102,6 +110,7 @@ export default function Profile () {
     return (
         <>
             <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'You already applied for a promotion'} />
+            <SuccessModal open={successModal} handleClose={closeSuccessModal} message={'Successfully applied for a promotion'} />
             <Modal
                 open={modal}
                 onClose={closeHandler}

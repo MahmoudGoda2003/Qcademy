@@ -4,11 +4,14 @@ import globals from '../../utils/globals';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import axios from 'axios';
+import SuccessModal from '../Modals/SuccessModal';
 
 
 export default function Admin() {
 
     const [promotionRequests, setPromotionRequests] = useState([]);
+    const [successModal, setSuccessModal] = useState();
+    const [message, setMessage] = useState("");
     
     // setPromotionRequests(result)    
     useEffect(() => {
@@ -33,21 +36,26 @@ export default function Admin() {
 
 
     const handleReq = async (userId, status) => {
-        console.log('helloo from handler ' + userId + " " + status);
         try {
-            // Fetch data from your API or endpoint
-            const response = await axios.post(`${globals.baseURL}/admin/changeRole`, {userId:userId, status:status}, {withCredentials: true})
-            console.log(response);
+            const response = await axios.post(`${globals.baseURL}/admin/changeRole`, {userId:userId, status:status}, {withCredentials: true});
+            if (status) setMessage("accepted");
+            else setMessage("rejected");
+            setSuccessModal(true);
             const newRequests = promotionRequests.filter((item) => item.userId !== userId)
             setPromotionRequests(newRequests);
+            setTimeout(() => closeSuccessModal(), 1000)
         } catch (error) {
             console.log(error);
         }
     }
     
+    const closeSuccessModal = () => {
+        setSuccessModal(false)
+    }
 
     return (
         <>
+            <SuccessModal open={successModal} handleClose={closeSuccessModal} message={`Successully ${message} request`}></SuccessModal>
             <Typography variant="h4" sx={{margin: '5vh 25vw'}}>
                 Promotion Requests
             </Typography>
