@@ -1,8 +1,6 @@
 package com.example.backend.person.service;
 
-import com.example.backend.exceptions.exception.DataNotFoundException;
-import com.example.backend.exceptions.exception.LoginDataNotValidException;
-import com.example.backend.exceptions.exception.WrongDataEnteredException;
+import com.example.backend.exceptions.exception.*;
 import com.example.backend.person.dto.PersonInfoDTO;
 import com.example.backend.person.dto.PersonMainInfoDTO;
 import com.example.backend.person.dto.SignUpDTO;
@@ -57,14 +55,13 @@ public class PersonService {
     public ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, String email, String password) throws Exception {
         Person person = this.personRepository.findByEmail(email);
         if (person == null) {
-            throw new LoginDataNotValidException("password or email isn't valid");
+            throw new LoginDataNotValidException();
         }
         return login(response, person, password, false);
     }
 
     private ResponseEntity<PersonMainInfoDTO> login(HttpServletResponse response, Person person, String password, boolean isGoogle) {
-        if (!isGoogle && !encoder.matches(password, person.getPassword()))
-            throw new LoginDataNotValidException("password or email isn't valid");
+        if (!isGoogle && !encoder.matches(password, person.getPassword())) throw new LoginDataNotValidException();
         String token = this.authenticator.createToken(person.getRole(), person.getId());
         Cookie sissionCookie = this.cookiesService.createCookie("qcademy", token, 24 * 60 * 60);
         response.addCookie(sissionCookie);
@@ -78,10 +75,10 @@ public class PersonService {
 
     public ResponseEntity<String> sendValidationCode(HttpServletResponse response, String email, String code) throws Exception {
         if (email == null || email.isEmpty()) {
-            throw new WrongDataEnteredException("Email is empty");
+            throw new EmailNotValidException();
         }
         if (personRepository.existsPersonByEmail(email)) {
-            throw new WrongDataEnteredException("Email already exists");
+            throw new EmailAlreadyExistsException();
         }
         String encodedValidationCode = this.cookiesService.hashCode(code + email + this.secretKey);
         Cookie validationCookie = this.cookiesService.createCookie("validationCode", encodedValidationCode, 60 * 30);
@@ -92,23 +89,23 @@ public class PersonService {
 
     public ResponseEntity<String> validateOTP(HttpServletRequest request, SignUpDTO signUpDTO) throws Exception {
         if (personRepository.existsPersonByEmail(signUpDTO.getEmail())) {
-            throw new WrongDataEnteredException("Email already exists");
+            throw new EmailAlreadyExistsException();
         }
 
         Cookie validationCookie = cookiesService.getCookie(request, "validationCode");
         if (validationCookie == null) {
-            throw new DataNotFoundException("Try to sign up again");
+            throw new ValidationCodeExpiredException();
         }
 
         if (!validationCookie.getValue().equals(this.cookiesService.hashCode(signUpDTO.getCode() + signUpDTO.getEmail() + this.secretKey))) {
-            throw new WrongDataEnteredException("Wrong code, please try again");
+            throw new WrongValidationCodeException();
         }
         savePerson(Person.convert(signUpDTO));
         return new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
     }
 
     @Generated
-    public Person getGoogleObject(String accessToken) throws Exception {
+    public Person getGoogleObject(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         headers.set("Accept", "application/json");

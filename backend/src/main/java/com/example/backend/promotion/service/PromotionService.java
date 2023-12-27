@@ -1,7 +1,8 @@
 package com.example.backend.promotion.service;
 
 
-import com.example.backend.exceptions.exception.WrongDataEnteredException;
+import com.example.backend.exceptions.exception.PromotionRequestExistException;
+import com.example.backend.person.model.Person;
 import com.example.backend.person.model.Role;
 import com.example.backend.promotion.dto.PromotionDTO;
 import com.example.backend.promotion.model.Promotion;
@@ -30,6 +31,7 @@ public class PromotionService {
         this.promotionRepository.deletePromotionByUserId(userId);
         return promotion;
     }
+
 
     public List<PromotionDTO> getPromotionRequests() {
         List<Promotion> promotionRequests = this.promotionRepository.findAll();

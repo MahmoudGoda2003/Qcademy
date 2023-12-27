@@ -93,7 +93,8 @@ public class Teacher {
         mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertTrue(promotionRepository.existsById(userId));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId)))).andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
+                .andExpect(MockMvcResultMatchers.status().isAlreadyReported());
 
         assertTrue(promotionRepository.existsById(userId));
     }
