@@ -14,6 +14,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
 import UploadServices from '../../service/UploadServices';
 import LoadingModal from '../Modals/LoadingModal';
+import ErrorModal from '../Modals/ErrorModal';
+
+const MAX_FILE_SIZE = 1024 * 1024;
 
 const VisuallyHiddenStyle = {
     clip: 'rect(0 0 0 0)',
@@ -36,10 +39,17 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
     const [duration, setDuration] = useState();
     const [tags, setTags] = useState([]);
     const [loadingModal, setLoadingModal] = useState();
+    const [errorModal, setErrorModal] = useState();
 
     const chooseImage = (e) => {
-        setImageUrl(URL.createObjectURL(e.target.files[0]));
-        setImageFile(e.target.files[0]);
+        const file = e.target.files[0];
+        if (file.size > MAX_FILE_SIZE) {
+            setErrorModal(true);
+            setTimeout(() => closeErrorModal(), 1000)
+            return;
+        }
+        setImageUrl(URL.createObjectURL(file));
+        setImageFile(file);
     }
 
     const handleInputImg = () => {
@@ -87,13 +97,18 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
     }
 
     const closeLoadingModal = () => {
-        setLoadingModal(false)
+        setLoadingModal(false);
+    }
+
+    const closeErrorModal = () => {
+        setErrorModal(false);
     }
 
 
     return (
         <>
             <LoadingModal open={loadingModal} handleClose={closeLoadingModal} message={'Uploading your course'}/>
+            <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'File Size is too large'}/>
             <Modal
             open={open}
             onClose={handleClose}
@@ -133,7 +148,13 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
                                 </CardMedia>
                             }
                         </CardActionArea>
-                        <Input sx={VisuallyHiddenStyle} type="file" onChange={chooseImage} id='fileInput' />
+                        <Input
+                            sx={VisuallyHiddenStyle}
+                            type="file"
+                            onChange={chooseImage}
+                            id='fileInput'
+                            inputProps={{ accept: "image/png, image/gif, image/jpeg" }}
+                        />
                         <TextField
                             margin="normal"
                             label="Title"
