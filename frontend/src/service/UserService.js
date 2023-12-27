@@ -44,8 +44,14 @@ const UserService = {
     },
 
     getInfo: async function() {
-        const res = await axios.get(`${globals.baseURL}/person/getInfo`, {withCredentials: true});
-        return res.data;
+        const response = await axios.get(`${globals.baseURL}/person/getInfo`, {withCredentials: true});
+        globals.user.firstName= response.data.firstName;
+        globals.user.lastName= response.data.lastName;
+        globals.user.photoLink= response.data.photoLink;
+        globals.user.email= response.data.email;
+        globals.user.dateOfBirth= response.data.dateOfBirth;
+        localStorage.setItem("user", JSON.stringify(globals.user));
+        return response.data;
     },
 };
 
