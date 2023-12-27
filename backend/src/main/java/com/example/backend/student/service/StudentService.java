@@ -1,6 +1,6 @@
 package com.example.backend.student.service;
 
-import com.example.backend.course.courseModule.repository.CourseRepository;
+import com.example.backend.course.repository.CourseRepository;
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.model.Course;
 import com.example.backend.course.service.CourseService;
@@ -45,7 +45,7 @@ public class StudentService {
 
     public ResponseEntity<List<CourseMainInfoDTO>> getEnrolledCourses(){
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        Student student = this.studentRepository.findByUserId(userId);
+        Student student = this.studentRepository.getByUserId(userId);
         List<CourseMainInfoDTO> courses = new ArrayList<>();
         for (Course course : student.getCourses()) {
             courses.add(CourseMainInfoDTO.convert(course));
@@ -54,7 +54,9 @@ public class StudentService {
     }
 
     public ResponseEntity<List<CourseMainInfoDTO>> getRecommendedCourses(){
-        List<Course> allCourses = this.coursesRepository.findAll();
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        Student student = this.studentRepository.getByUserId(userId);
+        List<Course> allCourses = this.coursesRepository.findCoursesNotEnrolledByStudent(student);
         List<CourseMainInfoDTO> courses = new ArrayList<>();
         for (Course course : allCourses) {
             courses.add(CourseMainInfoDTO.convert(course));
@@ -63,7 +65,7 @@ public class StudentService {
     }
     public ResponseEntity<String> enrollCourse(int courseId){
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        Student student = this.studentRepository.findByUserId(userId);
+        Student student = this.studentRepository.getByUserId(userId);
         Course course = this.coursesService.enrollInCourse(courseId, student);
         student.getCourses().add(course);
         this.studentRepository.save(student);

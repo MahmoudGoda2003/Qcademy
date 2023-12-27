@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teacher/")
-@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
+//@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class TeacherController {
 
     private final TeacherService teacherService;
@@ -34,7 +34,7 @@ public class TeacherController {
         return this.teacherService.createCourse(course);
     }
 
-    @PostMapping("CreateModule")
+    @PostMapping("createModule")
     public ResponseEntity<String> createModule(@RequestBody CourseModuleDTO courseModuleDTO) {
         return  teacherService.createModule(courseModuleDTO);
     }

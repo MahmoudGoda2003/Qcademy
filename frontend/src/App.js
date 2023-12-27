@@ -1,24 +1,22 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "./components/Home";
-import Header from "./components/Header";
-import Profile from "./components/Profile";
-import TeacherHome from "./components/TeacherHome";
-import Signup from "./components/Signup";
-import ConfirmEmail from "./components/ConfirmEmail";
-import Login from "./components/Login";
+import Home from "./components/MainPages/Home";
+import Header from "./components/Reusable/Header";
+import Profile from "./components/MainPages/Profile";
+import Signup from "./components/Validation/Signup";
+import ConfirmEmail from "./components/Validation/ConfirmEmail";
+import Login from "./components/Validation/Login";
 import { useState } from "react";
-import ProtectedRoute from "./components/ProtectedRoute";
-import UnProtectedRoute from "./components/UnProtectedRoute";
+import ProtectedRoute from "./components/RouteGuards/ProtectedRoute";
+import UnProtectedRoute from "./components/RouteGuards/UnProtectedRoute";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import CourseDetails from "./components/CourseDetails";
+import CourseDetails from "./components/Course/CourseDetails";
 import globals from "./utils/globals";
-import CourseInfo from "./components/CourseInfo";
-import EditCourse from "./components/EditCourse";
-import Admin from "./components/AdminHome";
+import CourseInfo from "./components/Course/CourseInfo";
+import EditCourse from "./components/Course/EditCourse";
 
 
 const lightMode = createTheme({
@@ -44,20 +42,6 @@ const darkMode = createTheme({
   },
 });
 
-const getHome = (role) => {
-  console.log(role);
-  switch(role){
-    case "TEACHER":
-      return<TeacherHome/>
-    case "STUDENT":
-      return <Home />
-    case "ADMIN":
-      return <Admin />
-    default:
-      return <Home />
-  }
-}
-
 export default function App() {
 
   const [theme, setTheme] = useState(lightMode);
@@ -76,7 +60,7 @@ export default function App() {
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                {getHome(globals.user?.role)}
+                <Home />
               </ProtectedRoute>
             }/>
             <Route path="/profile" element={
@@ -102,23 +86,17 @@ export default function App() {
               </UnProtectedRoute>
             } />
             <Route path="/confirmEmail" element={
-              <ProtectedRoute redirectPath={"/login"}>
+              <UnProtectedRoute redirectPath={"/login"}>
                 <IconButton onClick={toggleColorMode} color="inherit">
                       {theme.palette.mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
                 </IconButton>
                 <ConfirmEmail theme = {theme} />
-              </ProtectedRoute>
+              </UnProtectedRoute>
             }/>
             <Route path="course/:courseId" element={
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
                 <CourseDetails />
-              </ProtectedRoute>
-            } />
-            <Route path="course/:courseId/content" element={
-              <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
-                <CourseInfo />
               </ProtectedRoute>
             } />
             <Route path="course/manage/:courseId/" element={

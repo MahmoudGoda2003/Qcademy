@@ -1,6 +1,6 @@
 package com.example.backend.teacher.service;
 
-import com.example.backend.course.courseModule.model.CourseModule;
+import com.example.backend.course.model.CourseModule;
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.dto.CourseModuleDTO;
 import com.example.backend.course.model.Course;

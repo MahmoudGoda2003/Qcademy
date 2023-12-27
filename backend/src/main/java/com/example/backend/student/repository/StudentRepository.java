@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface StudentRepository extends JpaRepository<Student, Long> {
     boolean existsByUserId(Long id);
 
-    Student findByUserId(Long id);
+    Student getByUserId(Long id);
 }

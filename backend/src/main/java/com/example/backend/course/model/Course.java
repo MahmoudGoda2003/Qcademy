@@ -1,6 +1,5 @@
 package com.example.backend.course.model;
 
-import com.example.backend.course.courseModule.model.CourseModule;
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.student.model.Student;
 import com.example.backend.teacher.model.Teacher;
@@ -48,8 +47,8 @@ public class Course {
     @Column(name = "teacherName")
     private String teacherName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "course")
-    private List<CourseModule> module;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<CourseModule> modules;
 
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "courses")
     private List<Student> students;
