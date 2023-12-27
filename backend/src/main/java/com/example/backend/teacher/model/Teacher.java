@@ -2,6 +2,7 @@ package com.example.backend.teacher.model;
 
 import com.example.backend.course.model.Course;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Table(name = "teacher")
 public class Teacher {

@@ -1,8 +1,10 @@
 package com.example.backend.exceptions.exception;
 
-public class LoginDataNotValidException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public LoginDataNotValidException(String message) {
-        super(message);
+public class LoginDataNotValidException extends BaseException {
+
+    public LoginDataNotValidException() {
+        super("password or email isn't valid", HttpStatus.NOT_ACCEPTABLE);
     }
 }

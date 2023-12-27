@@ -2,14 +2,15 @@ package com.example.backend.course.model;
 
 import com.example.backend.course.dto.AssignmentDTO;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "Assignment_data")
 public class Assignment {
     private static final ModelMapper modelMapper = new ModelMapper();
