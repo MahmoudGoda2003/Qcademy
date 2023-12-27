@@ -10,10 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-@ToString
 public class PersonUserDetails implements UserDetails {
     private Long id;
     private Role role;

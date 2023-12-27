@@ -4,12 +4,10 @@ package com.example.backend.course.model;
 import com.example.backend.course.model.Assignment;
 import com.example.backend.student.model.Student;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
-@Setter
-@Getter
+@Data
 @Table(name = "SolvedAssigment_data")
 public class SolvedAssignment {
 

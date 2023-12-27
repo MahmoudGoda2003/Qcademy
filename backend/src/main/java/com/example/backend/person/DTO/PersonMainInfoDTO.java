@@ -3,14 +3,12 @@ package com.example.backend.person.dto;
 import com.example.backend.person.model.Person;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PersonMainInfoDTO {
 

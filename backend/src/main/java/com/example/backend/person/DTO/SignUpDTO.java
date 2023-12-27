@@ -6,8 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignUpDTO {

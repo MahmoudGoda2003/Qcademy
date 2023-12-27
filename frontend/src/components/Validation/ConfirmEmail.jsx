@@ -13,7 +13,6 @@ export default function ConfirmEmail({theme}) {
 
     const location = useLocation();
     const user = location.state.user;
-
     const [code, setCode] = useState('');
     const [modal, setModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
