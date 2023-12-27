@@ -11,6 +11,7 @@ import PromotionServices from "../../service/PromotionsServices";
 import UploadServices from "../../service/UploadServices";
 import SaveIcon from '@mui/icons-material/Save';
 import UserService from "../../service/UserService";
+import LoadingModal from "../Modals/LoadingModal";
 
 export default function Profile () {
 
@@ -44,6 +45,8 @@ export default function Profile () {
     const [modal, setModal] = useState(false)
     const [errorModal, setErrorModal] = useState(false);
     const [successModal, setSuccessModal] = useState(false);
+    const [loadingModal, setLoadingModal] = useState(false);
+    const [message, setMessage] = useState('');
 
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null);
@@ -63,6 +66,10 @@ export default function Profile () {
         setErrorModal(false);
     }
 
+    const closeLoadingModal = () => {
+        setLoadingModal(false);
+    }
+
     const updateInfo = async () => {
         const user = {
             firstName: firstName,
@@ -73,23 +80,32 @@ export default function Profile () {
             dateOfBirth: dateOfBirth.$D ?dateOfBirth.$D + "-" + dateOfBirth.$M + "-" + dateOfBirth.$y : dateOfBirth,
         }
         await UserService.updateInfo(user);
+        setMessage('Successfully updated your info');
+        setSuccessModal(true);
+        setTimeout(() => closeSuccessModal(), 1000);
     }
 
     const uploadImage = async (event) => {
         if(imageFile === null)
             return
         try {
+            setLoadingModal(true);
             const uploadedImage = await UploadServices.uploadImage(imageFile);
             setImageUrl(uploadedImage);
-            closeHandler()
+            closeLoadingModal();
+            closeHandler();
         } catch (error) {
             console.log(error)
         }
+        setMessage('Successfully uploaded your image');
+        setSuccessModal(true);
+        setTimeout(() => closeSuccessModal(), 1000);
     }
     
     const requestPromotion = async () => {
         try {
             await PromotionServices.requestPromotion();
+            setMessage('Successfully applied for a promotion')
             setSuccessModal(true)
             setTimeout(() => closeSuccessModal(), 1000)
         }
@@ -119,7 +135,8 @@ export default function Profile () {
     return (
         <>
             <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'You already applied for a promotion'} />
-            <SuccessModal open={successModal} handleClose={closeSuccessModal} message={'Successfully applied for a promotion'} />
+            <SuccessModal open={successModal} handleClose={closeSuccessModal} message={message} />
+            <LoadingModal open={loadingModal} handleClose={closeLoadingModal} message={'Uploading Your Image'} />
             <Modal
                 open={modal}
                 onClose={closeHandler}
