@@ -23,7 +23,7 @@ public class Lecture {
     private String videoURL;
     @Column(name = "lecture_name", nullable = false)
     private String name;
-
+  
     public static Lecture convert(LectureDTO lectureDTO) {
         return modelMapper.map(lectureDTO, Lecture.class);
     }
