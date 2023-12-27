@@ -32,7 +32,6 @@ public class CookiesService {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hashBytes = digest.digest(input.getBytes());
 
-        String hash = Base64.getEncoder().encodeToString(hashBytes);
-        return hash;
+        return Base64.getEncoder().encodeToString(hashBytes);
     }
 }

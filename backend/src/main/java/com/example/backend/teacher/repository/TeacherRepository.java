@@ -22,5 +22,4 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
 
     Teacher getByUserId(Long id);
 
-
 }
