@@ -1,11 +1,12 @@
 package com.example.backend.services;
 
-import com.example.backend.person.model.Person;
 import com.example.backend.person.model.Role;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.NoArgsConstructor;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.stereotype.Service;
 
@@ -13,35 +14,23 @@ import java.security.Key;
 import java.util.Date;
 
 @Service
+@NoArgsConstructor
 public class JwtService {
-    private final String JWT_SECRET = new StandardEnvironment().getProperty("QcademyAuthKey");;
+    private final String JWT_SECRET = new StandardEnvironment().getProperty("QcademyAuthKey");
 
-    public JwtService() { }
 
     public String createToken(Role role, Long id) {
-        return Jwts
-                .builder()
-                .setSubject(role.name())
-                .setId(id.toString())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(null)
-                .signWith(getSecretKey(), SignatureAlgorithm.HS256)
-                .compact();
+        return Jwts.builder().setSubject(role.name()).setId(id.toString()).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(null).signWith(getSecretKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    public boolean isTokenValid(String token, Role actualRole){
+    public boolean isTokenValid(String token, Role actualRole) {
         final Claims claims = extractAllClaims(token);
         final Role role = Role.valueOf(claims.getSubject());
         return (role == actualRole);
     }
 
-    private Claims extractAllClaims(String jwt){
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(this.getSecretKey())
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
+    private Claims extractAllClaims(String jwt) {
+        return Jwts.parserBuilder().setSigningKey(this.getSecretKey()).build().parseClaimsJws(jwt).getBody();
     }
 
     private Key getSecretKey() {
@@ -49,7 +38,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Long extractUserId(String jwt){
+    public Long extractUserId(String jwt) {
         final Claims claims = extractAllClaims(jwt);
         return Long.parseLong(claims.getId());
     }

@@ -4,13 +4,10 @@ import com.example.backend.admin.dto.ChangeRoleDTO;
 import com.example.backend.admin.repository.AdminRepository;
 import com.example.backend.person.model.Person;
 import com.example.backend.person.model.Role;
-import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.PersonService;
 import com.example.backend.promotion.repository.PromotionRepository;
 import com.example.backend.services.JwtService;
 import com.example.backend.student.repository.StudentRepository;
-import com.example.backend.student.service.StudentService;
-import com.example.backend.teacher.repository.TeacherRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
@@ -20,9 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -34,20 +29,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class Teacher {
-    private final BCryptPasswordEncoder encode = new BCryptPasswordEncoder();
     @Autowired
     private PersonService ps;
-    @Autowired
-    private PersonRepository personRepository;
 
-    @Autowired
-    private StudentService studentService;
 
     @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
-    private TeacherRepository teacherRepository;
 
     @Autowired
     private AdminRepository adminRepository;
@@ -57,7 +45,6 @@ public class Teacher {
 
     @Autowired
     private JwtService jwtService;
-    private String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
 
     @Autowired
     private MockMvc mockMvc;
@@ -85,16 +72,11 @@ public class Teacher {
         ps.setUserRole(adminId, Role.ADMIN);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertTrue(promotionRepository.existsById(userId));
 
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
         assertSame(ps.getUserRole(userId), Role.ADMIN);
         assertTrue(adminRepository.existsByUserId(userId));
@@ -108,12 +90,10 @@ public class Teacher {
         assertTrue(studentRepository.existsByUserId(userId));
         ps.setUserRole(userId, Role.TEACHER);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertTrue(promotionRepository.existsById(userId));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
-                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+        mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId)))).andExpect(MockMvcResultMatchers.status().isNotAcceptable());
 
         assertTrue(promotionRepository.existsById(userId));
     }

@@ -1,20 +1,24 @@
 package com.example.backend.person.service;
 
-import com.example.backend.exceptions.exception.*;
-import com.example.backend.person.dto.*;
-import com.example.backend.person.model.*;
+import com.example.backend.exceptions.exception.DataNotFoundException;
+import com.example.backend.exceptions.exception.LoginDataNotValidException;
+import com.example.backend.exceptions.exception.WrongDataEnteredException;
+import com.example.backend.person.dto.PersonInfoDTO;
+import com.example.backend.person.dto.PersonMainInfoDTO;
+import com.example.backend.person.dto.SignUpDTO;
+import com.example.backend.person.model.Person;
+import com.example.backend.person.model.Role;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.services.CookiesService;
 import com.example.backend.services.JwtService;
 import com.example.backend.services.MailSenderService;
-import com.example.backend.student.repository.StudentRepository;
 import com.example.backend.student.service.StudentService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import lombok.Generated;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,29 +32,16 @@ import java.util.Random;
 
 
 @Service
+@AllArgsConstructor
 public class PersonService {
     private final MailSenderService mailSenderService;
     private final JwtService authenticator;
     private final PersonRepository personRepository;
     private final CookiesService cookiesService;
-    private final PasswordEncoder encoder;
-    private final Random random;
-    private final String secretKey;
-    private final StudentRepository studentRepository;
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final Random random = new Random();
+    private final String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
     private final StudentService studentService;
-
-    @Autowired
-    public PersonService(PersonRepository personRepository, MailSenderService mailSenderService, StudentRepository studentRepository, StudentService studentService) {
-        this.personRepository = personRepository;
-        this.mailSenderService = mailSenderService;
-        this.studentRepository = studentRepository;
-        this.studentService = studentService;
-        this.authenticator = new JwtService();
-        this.encoder = new BCryptPasswordEncoder();
-        this.random = new Random();
-        this.cookiesService = new CookiesService();
-        this.secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
-    }
 
 
     @Transactional
@@ -115,6 +106,7 @@ public class PersonService {
         savePerson(Person.convert(signUpDTO));
         return new ResponseEntity<>("SignUp completed", HttpStatus.CREATED);
     }
+
     @Generated
     public Person getGoogleObject(String accessToken) throws Exception {
         HttpHeaders headers = new HttpHeaders();
@@ -135,7 +127,7 @@ public class PersonService {
         Person temp = this.personRepository.findByEmail(person.getEmail());
         if (temp == null) {
             person = savePerson(person);
-        }else{
+        } else {
             person = temp;
         }
         return login(response, person, person.getPassword(), true);
@@ -151,8 +143,7 @@ public class PersonService {
 
     public ResponseEntity<String> updatePerson(PersonInfoDTO personInfoDTO) {
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        personRepository.updatePerson(userId, personInfoDTO.getFirstName(), personInfoDTO.getLastName(),
-                personInfoDTO.getBio(), personInfoDTO.getPhotoLink(), personInfoDTO.getDateOfBirth());
+        personRepository.updatePerson(userId, personInfoDTO.getFirstName(), personInfoDTO.getLastName(), personInfoDTO.getBio(), personInfoDTO.getPhotoLink(), personInfoDTO.getDateOfBirth());
         return new ResponseEntity<>("Data Updated", HttpStatus.ACCEPTED);
     }
 }

@@ -1,15 +1,15 @@
 package com.example.backend.teacher.service;
 
-import com.example.backend.course.model.CourseModule;
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.dto.CourseModuleDTO;
 import com.example.backend.course.model.Course;
+import com.example.backend.course.model.CourseModule;
 import com.example.backend.course.service.CourseService;
 import com.example.backend.person.model.Role;
 import com.example.backend.promotion.service.PromotionService;
 import com.example.backend.teacher.model.Teacher;
 import com.example.backend.teacher.repository.TeacherRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,20 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TeacherService {
 
     private final CourseService courseService;
     private final TeacherRepository teacherRepository;
-
     private final PromotionService promotionService;
-
-
-    @Autowired
-    public TeacherService(CourseService courseService, TeacherRepository teacherRepository, PromotionService promotionService) {
-        this.promotionService = promotionService;
-        this.courseService = courseService;
-        this.teacherRepository = teacherRepository;
-    }
 
     public ResponseEntity<String> requestPromotion() {
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -51,11 +43,11 @@ public class TeacherService {
     }
 
     public ResponseEntity<String> createModule(CourseModuleDTO courseModuleDTO) {
-        CourseModule courseModule= this.courseService.addModule(courseModuleDTO);
+        CourseModule courseModule = this.courseService.addModule(courseModuleDTO);
         return new ResponseEntity<>(String.format("{'ModuleCreated':%d}", courseModule.getWeekNumber()), HttpStatus.CREATED);
     }
 
-    public ResponseEntity<List<CourseMainInfoDTO>> getCreatedCourses(){
+    public ResponseEntity<List<CourseMainInfoDTO>> getCreatedCourses() {
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
         Teacher teacher = teacherRepository.getByUserId(userId);
         List<CourseMainInfoDTO> courses = new ArrayList<>();

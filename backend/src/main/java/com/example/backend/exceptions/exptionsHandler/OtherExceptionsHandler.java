@@ -12,12 +12,12 @@ import java.util.Map;
 @ControllerAdvice
 public class OtherExceptionsHandler {
 
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ResponseBody
-//    Map<String, String> onOtherExceptions(Exception e) {
-//        Map<String, String> error = new HashMap<>();
-//        error.put("error message",  "Internal Server Error");
-//        return error;
-//    }
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    Map<String, String> onOtherExceptions(Exception e) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error message",  "Internal Server Error");
+        return error;
+    }
 }

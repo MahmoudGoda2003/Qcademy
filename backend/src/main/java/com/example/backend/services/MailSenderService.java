@@ -42,7 +42,7 @@ public class MailSenderService {
     }
 
     @SneakyThrows
-    public void sendNewMail(String to, String code) throws Exception {
+    public void sendNewMail(String to, String code) {
         String replacedHtmlBody = replacePlaceholders(htmlBody, to.substring(0, to.indexOf('@')), code);
 
         MimeMessage message = mailSender.createMimeMessage();
