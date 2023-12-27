@@ -13,6 +13,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import axios from 'axios';
 import UploadServices from '../../service/UploadServices';
+import LoadingModal from '../Modals/LoadingModal';
 
 const VisuallyHiddenStyle = {
     clip: 'rect(0 0 0 0)',
@@ -34,6 +35,7 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
     const [startDate, setStartDate] = useState();
     const [duration, setDuration] = useState();
     const [tags, setTags] = useState([]);
+    const [loadingModal, setLoadingModal] = useState();
 
     const chooseImage = (e) => {
         setImageUrl(URL.createObjectURL(e.target.files[0]));
@@ -51,6 +53,7 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
     }
 
     const addCourse = async (event) => {
+        setLoadingModal(true);
         let uploadedImage = {};
         try {
             uploadedImage = await UploadServices.uploadImage(imageFile);
@@ -76,107 +79,116 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
         catch (error) {
             console.log(error);
         }
+        closeLoadingModal();
+        setTags([]);
         setImageUrl(null);
         setImageFile(null);
         handleClose();
     }
 
+    const closeLoadingModal = () => {
+        setLoadingModal(false)
+    }
+
 
     return (
-        <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-            backdrop: {
-            timeout: 250,
-            },
-        }}
-        >
-            <Fade in={open}>
-                <Stack sx={styles.modalStyle2} alignItems={'left'}>
-                    <Typography variant='h5' marginBottom={'1vh'}>Add new Course</Typography>
-                    <CardActionArea onClick={handleInputImg} >
-                        { imageUrl ?
-                            <CardMedia
-                                component="img"
-                                image={imageUrl}
-                                alt="Course image"
-                                sx={{ maxHeight: '25vh', minHeight: '25Vh' }}
-                            /> 
-                            :
-                            <CardMedia
-                                alt="Course image"
-                                sx={{
-                                    maxHeight: '25vh',
-                                    minHeight: '25Vh',
-                                    display:'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }}
-                            >
-                                <AddPhotoAlternateIcon sx={{ fontSize: 100 }}/>
-                            </CardMedia>
-                        }
-                    </CardActionArea>
-                    <Input sx={VisuallyHiddenStyle} type="file" onChange={chooseImage} id='fileInput' />
-                    <TextField
-                        margin="normal"
-                        label="Title"
-                        name="Title"
-                        variant="outlined"
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        margin="normal"
-                        label="Description"
-                        name="Description"
-                        variant="outlined"
-                        multiline
-                        rows={5}
-                        onChange={handleChange}
-                    />
-                    <InputTags tags={tags} setTags={setTags} />
-                    <Stack direction={'row'}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker
-                                sx={{margin: '2vh 0.5vh'}}
-                                required
-                                disablePast
-                                label="Start Date"
-                                value={startDate}
-                                slotProps={{
-                                    textField: {
-                                    },
-                                }}
-                                onChange={(newValue) => setStartDate(newValue)} />
-                        </LocalizationProvider>
+        <>
+            <LoadingModal open={loadingModal} handleClose={closeLoadingModal} message={'Uploading your course'}/>
+            <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+            closeAfterTransition
+            slots={{ backdrop: Backdrop }}
+            slotProps={{
+                backdrop: {
+                timeout: 250,
+                },
+            }}
+            >
+                <Fade in={open}>
+                    <Stack sx={styles.modalStyle2} alignItems={'left'}>
+                        <Typography variant='h5' marginBottom={'1vh'}>Add new Course</Typography>
+                        <CardActionArea onClick={handleInputImg} >
+                            { imageUrl ?
+                                <CardMedia
+                                    component="img"
+                                    image={imageUrl}
+                                    alt="Course image"
+                                    sx={{ maxHeight: '25vh', minHeight: '25Vh' }}
+                                /> 
+                                :
+                                <CardMedia
+                                    alt="Course image"
+                                    sx={{
+                                        maxHeight: '25vh',
+                                        minHeight: '25Vh',
+                                        display:'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <AddPhotoAlternateIcon sx={{ fontSize: 100 }}/>
+                                </CardMedia>
+                            }
+                        </CardActionArea>
+                        <Input sx={VisuallyHiddenStyle} type="file" onChange={chooseImage} id='fileInput' />
                         <TextField
-                            sx={{margin: '2vh 0.5vh'}}
-                            label="Estimated Duration"
-                            name="Duration"
+                            margin="normal"
+                            label="Title"
+                            name="Title"
                             variant="outlined"
                             onChange={handleChange}
-                            InputProps={{
-                                pattern: '[0-9]*',
-                                endAdornment: <InputAdornment position="end">Weeks</InputAdornment>,
-                            }}
                         />
+                        <TextField
+                            margin="normal"
+                            label="Description"
+                            name="Description"
+                            variant="outlined"
+                            multiline
+                            rows={5}
+                            onChange={handleChange}
+                        />
+                        <InputTags tags={tags} setTags={setTags} />
+                        <Stack direction={'row'}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                    sx={{margin: '2vh 0.5vh'}}
+                                    required
+                                    disablePast
+                                    label="Start Date"
+                                    value={startDate}
+                                    slotProps={{
+                                        textField: {
+                                        },
+                                    }}
+                                    onChange={(newValue) => setStartDate(newValue)} />
+                            </LocalizationProvider>
+                            <TextField
+                                sx={{margin: '2vh 0.5vh'}}
+                                label="Estimated Duration"
+                                name="Duration"
+                                variant="outlined"
+                                onChange={handleChange}
+                                InputProps={{
+                                    pattern: '[0-9]*',
+                                    endAdornment: <InputAdornment position="end">Weeks</InputAdornment>,
+                                }}
+                            />
+                        </Stack>
+                        <Button
+                            variant='contained'
+                            sx={{
+                                margin: '2vh 0 0',
+                            }}
+                            onClick={addCourse}
+                        >
+                            Create New Course
+                        </Button>
                     </Stack>
-                    <Button
-                        variant='contained'
-                        sx={{
-                            margin: '2vh 0 0',
-                        }}
-                        onClick={addCourse}
-                    >
-                        Create New Course
-                    </Button>
-                </Stack>
-            </Fade>
-        </Modal>
+                </Fade>
+            </Modal>
+        </>
     );
 }
