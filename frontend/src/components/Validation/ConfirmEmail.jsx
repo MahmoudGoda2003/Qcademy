@@ -5,7 +5,7 @@ import { MuiOtpInput } from "mui-one-time-password-input";
 import styles from "../../utils/styles";
 import LoadingModal from "../Modals/LoadingModal";
 import ErrorModal from "../Modals/ErrorModal";
-import RegisterService from "../../service/RegisterService";
+import UserService from "../../service/UserService";
 
 
 export default function ConfirmEmail({theme}) {
@@ -23,7 +23,7 @@ export default function ConfirmEmail({theme}) {
         setModal(true);
         try {
             user.code = code;
-            await RegisterService.confirmCode(user);
+            await UserService.confirmCode(user);
             navigate('/login')
             closeModal();
         } catch (error) {

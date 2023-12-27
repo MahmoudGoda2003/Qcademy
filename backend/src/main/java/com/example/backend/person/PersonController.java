@@ -48,4 +48,9 @@ public class PersonController {
     public ResponseEntity<String> update(@Valid @RequestBody PersonInfoDTO personInfoDTO) {
         return personService.updatePerson(personInfoDTO);
     }
+
+    @GetMapping("getInfo")
+    public ResponseEntity<PersonInfoDTO> getInfo() {
+        return personService.getPersonInfo();
+    }
 }

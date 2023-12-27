@@ -155,4 +155,13 @@ public class PersonService {
                 personInfoDTO.getBio(), personInfoDTO.getPhotoLink(), personInfoDTO.getDateOfBirth());
         return new ResponseEntity<>("Data Updated", HttpStatus.ACCEPTED);
     }
+
+    public ResponseEntity<PersonInfoDTO> getPersonInfo() {
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        Person person = personRepository.getReferenceById(userId);
+        if (person == null) {
+            throw new DataNotFoundException("Couldn't find user");
+        }
+        return new ResponseEntity<>(PersonInfoDTO.convert(person), HttpStatus.OK);
+    }
 }

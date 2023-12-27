@@ -40,7 +40,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     @Transactional
     @Modifying
-    @Query("Update Person p set p.firstName = ?2, p.lastName = ?3, p.bio = ?4, p.photoLink = ?5, p.photoLink = ?6 where p.id = ?1")
+    @Query("Update Person p set p.firstName = ?2, p.lastName = ?3, p.bio = ?4, p.photoLink = ?5, p.dateOfBirth = ?6 where p.id = ?1")
     void updatePerson(Long id, String fn, String ln, String bio, String photo, String date);
 
 }

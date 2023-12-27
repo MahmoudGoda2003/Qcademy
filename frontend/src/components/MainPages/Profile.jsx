@@ -1,4 +1,4 @@
-import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
+import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade, TextField } from "@mui/material";
 import { useState, useEffect } from "react";
 import InfoField from "../Reusable/InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -9,49 +9,46 @@ import ErrorModal from "../Modals/ErrorModal";
 import SuccessModal from "../Modals/SuccessModal";
 import PromotionServices from "../../service/PromotionsServices";
 import UploadServices from "../../service/UploadServices";
-
-const getRank = (coursesCompleted) => {
-
-    switch(parseInt(coursesCompleted/5)){
-        case 0:
-            return "👶  newbie 👶"
-        case 1:
-            return "🔥  Seasoned 🔥" 
-        default:
-            return "Unranked"
-    }
-}
-
+import SaveIcon from '@mui/icons-material/Save';
+import UserService from "../../service/UserService";
 
 export default function Profile () {
 
-    const [firstName, setFirstName] = useState(globals.user.firstName);
-    const [lastName, setLastName] = useState(globals.user.lastName);
-    const [education, setEducation] = useState((globals.user.education));
-    const [phone, setPhone] = useState((globals.user.phone));
-    const [dateOfBirth, setDob] = useState((globals.user.dateOfBirth));
-    const [imageUrl, setImageUrl] = useState((globals.user.photoLink));
+    const [user, setUser] = useState();
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [dateOfBirth, setDob] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [bio, setBio] = useState('');
 
-    //To be changed upon handling in the backend
-    const [enrolledCourses, setEnrolledCourses] = useState(11);
-    const [completedCourses, setCompletedCourses] = useState(19);
+    useEffect(() => {
+        const getInfo = async () => {
+            try {
+                const res = await UserService.getInfo();
+                setUser(res);
+                setFirstName(res.firstName);
+                setLastName(res.lastName);
+                setEmail(res.email);
+                setDob(res.dateOfBirth);
+                setImageUrl(res.photoLink);
+                setBio(res.bio);
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
+        getInfo();
+    }, [])
     
     const [modal, setModal] = useState(false)
     const [errorModal, setErrorModal] = useState(false);
     const [successModal, setSuccessModal] = useState(false);
-    const [tempImageUrl, setTempImageUrl] = useState('');
-    const [imageFile, setImageFile] = useState(null)
 
-    useEffect(() => {
-        globals.user.firstName = firstName
-        globals.user.lastName = lastName
-        globals.user.education = education
-        globals.user.dateOfBirth = dateOfBirth
-        globals.user.photoLink = imageUrl
-        globals.user.phone = phone
-        localStorage.setItem("user", JSON.stringify(globals.user));
-        //axios.post(`${globals.baseURL}/person/test`, globals.user)       modify when routine is added in backend
-    })
+    const [tempImageUrl, setTempImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+
+    const [editBio, setEditBio] = useState(false);
 
     const chooseImage = (e) => {
         setTempImageUrl(URL.createObjectURL(e.target.files[0]));
@@ -64,6 +61,18 @@ export default function Profile () {
 
     const closeErrorModal = () => {
         setErrorModal(false);
+    }
+
+    const updateInfo = async () => {
+        const user = {
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            photoLink: imageUrl,
+            bio: bio,
+            dateOfBirth: dateOfBirth.$D ?dateOfBirth.$D + "-" + dateOfBirth.$M + "-" + dateOfBirth.$y : dateOfBirth,
+        }
+        await UserService.updateInfo(user);
     }
 
     const uploadImage = async (event) => {
@@ -97,6 +106,14 @@ export default function Profile () {
 
     const closeHandler = () => {
         setModal(false)
+    }
+
+    const saveBio = (e) => {
+        if (e.key == "Enter") {
+            setBio(e.target.value);
+            setEditBio(false);
+            console.log(bio);
+        }
     }
 
     return (
@@ -162,27 +179,33 @@ export default function Profile () {
                     </IconButton>
 
                     <Typography fontSize={35} marginBottom={'1vh'}> {firstName + " " + lastName} </Typography>
-                    <Typography fontSize={20} color='gray' marginBottom={'5vh'}> {getRank(6)} </Typography>
 
                     <Stack direction={'row'}>
-                        <Stack width={'50%'}>
-                            <Typography color={'gray'} fontSize={16}>Courses Enrolled</Typography>
-                            <Typography fontSize={24}>{enrolledCourses}</Typography>
-                        </Stack>
-                        <Stack width={'50%'}>
-                            <Typography color={'gray'} fontSize={16}>Courses Completed</Typography>
-                            <Typography fontSize={24}>{completedCourses}</Typography>
+                        <Stack width={'100%'}>
+                            <Typography color={'gray'} fontSize={16} gutterBottom>About Me</Typography>
+                            {(bio !== undefined && bio !== "" && editBio === false) ?
+                                <>
+                                    <Box margin={'2vh auto 0'} sx={{display: "flex", flexDirection: "row"}}>
+                                        <Typography fontSize={20} width={'200px'} sx={{wordWrap: 'break-word'}}>{bio}</Typography>
+                                    </Box>
+                                    <Button variant="text" onClick={() => {setEditBio(true)}}>Edit your bio</Button>
+                                </>
+                                :
+                                !editBio ? <Button variant="text" onClick={() => {setEditBio(true)}}>Add a bio</Button> :
+                                <TextField size="small" onKeyDown={saveBio} placeholder='bio' multiline rows={'3'} defaultValue={bio} />
+                                
+                            }
                         </Stack>
                     </Stack>
                 </Paper>
                 <Stack padding={'1vh'} margin={'1vh'}>
                     <Stack direction={'row'}>
-                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName} onChange={() => {globals.user.firstName = firstName}}></InfoField>
+                        <InfoField field={'First Name'} value={firstName} setValue={setFirstName}></InfoField>
                         <InfoField field={'Last Name'} value={lastName} setValue={setLastName}></InfoField>
                     </Stack>
-                    <InfoField field={'Education'} value={education} setValue={setEducation}></InfoField>
-                    <InfoField field={'Phone Number'} value={phone} setValue={setPhone}></InfoField>
+                    <InfoField field={'E-mail'} value={email} setValue={setEmail}></InfoField>
                     <DateField field={'Date Of Birth'} value={dateOfBirth} setValue={setDob}></DateField>
+                    <Button variant="contained" onClick={updateInfo} startIcon={<SaveIcon />}>Save Changes</Button>
                 </Stack>
                 {globals.user.role !== "ADMIN" && 
                     <Button
