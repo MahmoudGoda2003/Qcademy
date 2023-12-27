@@ -79,15 +79,13 @@ export default {
         border: 'none',
     },
 
-    hiddenModalStyleTop : {
+    hiddenModalStyleBottom : {
         display: 'flex',
         flexDirection: 'column',
         position: 'absolute',
         alignItems: 'center',
-        top: '5%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
+        left: '2vw',
+        bottom: '5vh',
         bgcolor: 'transparent',
         border: 'none',
     },

@@ -1,11 +1,14 @@
 import { IconButton, Typography, Paper, Box, Stack, Avatar, Modal, Input, Button, Backdrop, Fade } from "@mui/material";
 import { useState, useEffect } from "react";
-import InfoField from "./InfoField";
+import InfoField from "../Reusable/InfoField";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import globals from '../utils/globals';
-import styles from "../utils/styles";
-import DateField from "./DateField";
-import axios from "axios";
+import globals from '../../utils/globals';
+import styles from "../../utils/styles";
+import DateField from "../Reusable/DateField";
+import ErrorModal from "../Modals/ErrorModal";
+import SuccessModal from "../Modals/SuccessModal";
+import PromotionServices from "../../service/PromotionsServices";
+import UploadServices from "../../service/UploadServices";
 
 const getRank = (coursesCompleted) => {
 
@@ -34,6 +37,8 @@ export default function Profile () {
     const [completedCourses, setCompletedCourses] = useState(19);
     
     const [modal, setModal] = useState(false)
+    const [errorModal, setErrorModal] = useState(false);
+    const [successModal, setSuccessModal] = useState(false);
     const [tempImageUrl, setTempImageUrl] = useState('');
     const [imageFile, setImageFile] = useState(null)
 
@@ -53,24 +58,35 @@ export default function Profile () {
         setImageFile(e.target.files[0]);
     }
 
-    const uploadImage = async (event) => {
-        if(imageFile == null)
-            return
-        let uploadedImage = {};
-        try {
-            const formData = new FormData ();
-            formData.append("file", imageFile);
-            formData.append("upload_preset", "xdmym8xv");
-            formData.append("api_key", "593319395186373");
+    const closeSuccessModal = () => {
+        setSuccessModal(false);
+    }
 
-            const response = await axios.post(
-                "https://api.cloudinary.com/v1_1/dlcy5giof/image/upload",
-                formData
-            )
-            uploadedImage = response.data.secure_url;
+    const closeErrorModal = () => {
+        setErrorModal(false);
+    }
+
+    const uploadImage = async (event) => {
+        if(imageFile === null)
+            return
+        try {
+            const uploadedImage = await UploadServices.uploadImage(imageFile);
+            setImageUrl(uploadedImage);
             closeHandler()
         } catch (error) {
             console.log(error)
+        }
+    }
+    
+    const requestPromotion = async () => {
+        try {
+            await PromotionServices.requestPromotion();
+            setSuccessModal(true)
+            setTimeout(() => closeSuccessModal(), 1000)
+        }
+        catch(error) {
+            setErrorModal(true);
+            setTimeout(() => closeErrorModal(), 1000)
         }
     }
     
@@ -85,6 +101,8 @@ export default function Profile () {
 
     return (
         <>
+            <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'You already applied for a promotion'} />
+            <SuccessModal open={successModal} handleClose={closeSuccessModal} message={'Successfully applied for a promotion'} />
             <Modal
                 open={modal}
                 onClose={closeHandler}
@@ -166,6 +184,21 @@ export default function Profile () {
                     <InfoField field={'Phone Number'} value={phone} setValue={setPhone}></InfoField>
                     <DateField field={'Date Of Birth'} value={dateOfBirth} setValue={setDob}></DateField>
                 </Stack>
+                {globals.user.role !== "ADMIN" && 
+                    <Button
+                        variant="contained"
+                        sx={{
+                            display: "block",
+                            position: "fixed",
+                            bottom: '20px',
+                            right: "20px",
+                            borderRadius: "20px"
+                        }}
+                        onClick={requestPromotion}
+                    >
+                        {globals.user.role === "STUDENT" ? "Request Promotion" : globals.user.role === "TEACHER" ? "Become an Admin" : ""}
+                    </Button>
+                }
             </Stack>
         </>
     );

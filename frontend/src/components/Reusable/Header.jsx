@@ -15,7 +15,7 @@ import Stack from '@mui/material/Stack';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useNavigate } from "react-router-dom";
-import globals from '../utils/globals';
+import globals from '../../utils/globals';
 
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
@@ -53,7 +53,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
     <AppBar position="relative" width={'100%'}>
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
           <Link to="/home">
-            <img src={require("../img/LogoFullLight.png")}
+            <img src={require("../../img/LogoFullLight.png")}
               style={{  maxHeight: '10vh', maxWidth: '20vh' }}
               alt="Logo"
             ></img>

@@ -3,7 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import styles from "../utils/styles";
+import styles from "../../utils/styles";
 import dayjs from "dayjs";
 import { useState } from "react";
 

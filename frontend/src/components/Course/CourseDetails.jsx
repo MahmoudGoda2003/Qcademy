@@ -2,10 +2,10 @@ import {Chip, Stack, Typography} from '@mui/material';
 import * as React from "react";
 import CourseDetailsCard from "./CourseDetailsCard";
 import Divider from '@mui/material/Divider';
-import ModuleList from './ModuleList';
+import ModuleList from '../Module/ModuleList';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import globals from '../utils/globals';
+import globals from '../../utils/globals';
 import axios from 'axios';
 import { useEffect } from 'react';
 

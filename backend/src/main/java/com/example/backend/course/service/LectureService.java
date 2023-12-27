@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class LectureService {
     private final LectureRepository lectureRepository;
-
     public Lecture createLecture(LectureDTO lectureDTO) {
         Lecture lecture = Lecture.convert(lectureDTO);
         return lectureRepository.save(lecture);

@@ -2,11 +2,10 @@ import { Button, Grid, Paper, Typography } from "@mui/material"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useState } from "react";
 import { MuiOtpInput } from "mui-one-time-password-input";
-import globals from '../utils/globals';
-import axios from "axios";
-import styles from "../utils/styles";
-import LoadingModal from "./LoadingModal";
-import ErrorModal from "./ErrorModal";
+import styles from "../../utils/styles";
+import LoadingModal from "../Modals/LoadingModal";
+import ErrorModal from "../Modals/ErrorModal";
+import RegisterService from "../../service/RegisterService";
 
 
 export default function ConfirmEmail({theme}) {
@@ -22,18 +21,16 @@ export default function ConfirmEmail({theme}) {
         event.preventDefault();
         setModal(true);
         try {
-            console.log(globals.user);
-            console.log(user);
-            console.log(location);
             user.code = code;
-            await axios.post(`${globals.baseURL}/person/signup/validate`, user, {withCredentials: true})
-            globals.user = null
+            await RegisterService.confirmCode(user);
             navigate('/login')
+            closeModal();
         } catch (error) {
             setErrorModal(true);
-            console.log(error);    
+            closeModal();
+            setTimeout(() => closeErrorModal(), 1000)
+            console.log(error);
         }
-        closeModal();
     }
 
     const closeErrorModal = () => {
@@ -49,7 +46,7 @@ export default function ConfirmEmail({theme}) {
             <ErrorModal open={errorModal} handleClose={closeErrorModal} message={'A problem has occurred, please check the code and try again'} />
             <LoadingModal open={modal} handleClose={closeModal} message={'Checking Code'} />
             <Grid sx={styles.gridStyle}>
-                <img src={theme.palette.mode === 'light'? require("../img/LogoFull.png") : require("../img/LogoFullLight.png")}
+                <img src={theme.palette.mode === 'light'? require("../../img/LogoFull.png") : require("../../img/LogoFullLight.png")}
                 style={{display: 'block', margin: 'auto', maxHeight: '10vh', maxWidth: '45vh'}}
                 alt="Logo"
                 ></img>
@@ -64,7 +61,9 @@ export default function ConfirmEmail({theme}) {
                             sx ={styles.gridElement}
                             value={code}
                             length={6}
-                            onChange={newValue => setCode(newValue)} />
+                            onChange={newValue => setCode(newValue)}
+                            inputMode="numeric"
+                        />
                         <Button variant="contained" size="large" sx={styles.gridElement} type="submit">Confirm code</Button>
                     </Grid>
                 </Paper>

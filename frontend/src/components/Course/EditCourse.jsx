@@ -2,25 +2,16 @@ import {Chip, IconButton, Stack, Typography} from '@mui/material';
 import * as React from "react";
 import CourseDetailsCard from "./CourseDetailsCard";
 import Divider from '@mui/material/Divider';
-import ModuleList from './ModuleList';
+import ModuleList from '../Module/ModuleList';
 import { useLocation } from 'react-router-dom';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from 'react';
-import CreateModule from './CreateModule';
-import globals from '../utils/globals';
+import CreateModule from '../Module/CreateModule';
+import globals from '../../utils/globals';
 import { useEffect } from 'react';
 import axios from 'axios';
 
 export default function EditCourse() {
-
-    const fakeModule = {
-        courseId: 1,
-        name: "moduleName",
-        lectures: ['lectures', 'lectures', 'lectures'],
-        assignments: ['assignments'],
-        slideSets: ['slideSets'],
-        quizzes: ['quizzes']
-    }
 
     const [open, setOpen] = useState(false);
 

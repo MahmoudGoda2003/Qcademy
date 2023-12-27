@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {Typography } from '@mui/material';
 import { Grid} from '@mui/material';
-import CourseCard from './CourseCard';
+import CourseCard from '../Course/CourseCard';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import CreateCourses from './CreateCourse';
-import globals from '../utils/globals';
+import CreateCourses from '../Course/CreateCourse';
 import { Box } from '@mui/system';
-import axios from 'axios';
+import CourseService from '../../service/CourseService';
 
 
 export default function Teacher(props) {
@@ -16,14 +15,11 @@ export default function Teacher(props) {
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        axios.get(`${globals.baseURL}/teacher/createdCourses`, {withCredentials: true})
-        .then((response) => {
-            setCourses(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-
+        async function fetchCourses() {
+            const response = await CourseService.getCreatedCourses();
+            setCourses(response);
+        }
+        fetchCourses();
     }, []);
 
     const handleClickOpen = () => {
@@ -64,8 +60,8 @@ export default function Teacher(props) {
                         margin={'2vh auto'}
                         padding={'2vh 2vw'}
                     >
-                        {courses.map((course, index) => (
-                            <CourseCard
+                        {courses.map((course) => (
+                            <CourseCard key={course.courseId}
                                 course={course}>
                             </CourseCard>
                         ))}
