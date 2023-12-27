@@ -1,13 +1,9 @@
 package com.example.backend.admin.service;
 
-import com.example.backend.person.model.Role;
+import com.example.backend.exceptions.exception.NoPromotionRequestedException;
 import com.example.backend.promotion.dto.PromotionDTO;
-import com.example.backend.teacher.service.TeacherService;
-import com.example.backend.admin.dto.ChangeRoleDTO;
 import com.example.backend.admin.model.Admin;
 import com.example.backend.admin.repository.AdminRepository;
-import com.example.backend.exceptions.exception.DataNotFoundException;
-import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.person.service.PersonService;
 import com.example.backend.promotion.model.Promotion;
 import com.example.backend.promotion.service.PromotionService;
@@ -45,7 +41,7 @@ public class AdminService {
     public ResponseEntity<String> changePersonRole(Long userId, boolean status){
         Promotion promotion = promotionService.getAndDeletePromotion(userId);
         if(promotion == null)
-            throw new DataNotFoundException("No promotion with that userId");
+            throw new NoPromotionRequestedException();
         if(!status)
             return new ResponseEntity<>("Request refused successfully", HttpStatus.CREATED);
         personService.setUserRole(userId, promotion.getRole());

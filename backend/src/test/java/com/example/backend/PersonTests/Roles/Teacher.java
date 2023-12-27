@@ -113,7 +113,7 @@ public class Teacher {
         assertTrue(promotionRepository.existsById(userId));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/teacher/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.TEACHER, userId))))
-                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
+                .andExpect(MockMvcResultMatchers.status().isAlreadyReported());
 
         assertTrue(promotionRepository.existsById(userId));
     }

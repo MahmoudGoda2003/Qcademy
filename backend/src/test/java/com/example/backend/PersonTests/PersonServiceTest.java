@@ -1,9 +1,6 @@
 package com.example.backend.PersonTests;
 
-import static org.mockito.Mockito.*;
-import com.example.backend.exceptions.exception.DataNotFoundException;
-import com.example.backend.exceptions.exception.LoginDataNotValidException;
-import com.example.backend.exceptions.exception.WrongDataEnteredException;
+import com.example.backend.exceptions.exception.*;
 import com.example.backend.person.dto.SignUpDTO;
 import com.example.backend.person.model.Person;
 import com.example.backend.person.model.Role;
@@ -24,8 +21,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,19 +91,19 @@ class PersonServiceTest {
         Person p = new Person("Yahya", "Azzam", "test1@gmail.com", "123456", "1-2-1999", "photo.jpg");
         pr.save(p);
         MockHttpServletResponse httpResponse = new MockHttpServletResponse();
-        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.sendValidationCode(httpResponse, "test1@gmail.com", "123456"));
+        assertThrowsExactly(EmailAlreadyExistsException.class, () -> ps.sendValidationCode(httpResponse, "test1@gmail.com", "123456"));
     }
 
     @Test
     void SendValidationCodeToNullEmail() throws MessagingException {
         MockHttpServletResponse httpResponse = new MockHttpServletResponse();
-        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.sendValidationCode(httpResponse, null, "123456"));
+        assertThrowsExactly(EmailNotValidException.class, () -> ps.sendValidationCode(httpResponse, null, "123456"));
     }
 
     @Test
     void SendValidationCodeToEmptyEmail() throws MessagingException {
         MockHttpServletResponse httpResponse = new MockHttpServletResponse();
-        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.sendValidationCode(httpResponse, "", "123456"));
+        assertThrowsExactly(EmailNotValidException.class, () -> ps.sendValidationCode(httpResponse, "", "123456"));
     }
 
     @Test
@@ -136,14 +131,14 @@ class PersonServiceTest {
         String encodedValidationCode = this.cookiesService.hashCode(signUpDTO.getCode() + signUpDTO.getEmail() + this.secretKey);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("validationCode", encodedValidationCode));
-        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.validateOTP(request, signUpDTO));
+        assertThrowsExactly(EmailAlreadyExistsException.class, () -> ps.validateOTP(request, signUpDTO));
     }
 
     @Test
     void ValidateOTPWithNullCookie() {
         SignUpDTO signUpDTO = new SignUpDTO("Yahya", "Azzam", "test1@gmail.com", "test", "1-2-1999", "201356");
         MockHttpServletRequest request = new MockHttpServletRequest();
-        assertThrowsExactly(DataNotFoundException.class, () -> ps.validateOTP(request, signUpDTO));
+        assertThrowsExactly(ValidationCodeExpiredException.class, () -> ps.validateOTP(request, signUpDTO));
     }
 
     @Test
@@ -152,7 +147,7 @@ class PersonServiceTest {
         String encodedValidationCode = this.cookiesService.hashCode("21341235" + signUpDTO.getEmail() + this.secretKey);
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("validationCode", encodedValidationCode));
-        assertThrowsExactly(WrongDataEnteredException.class, () -> ps.validateOTP(request, signUpDTO));
+        assertThrowsExactly(WrongValidationCodeException.class, () -> ps.validateOTP(request, signUpDTO));
     }
 
     @Test
