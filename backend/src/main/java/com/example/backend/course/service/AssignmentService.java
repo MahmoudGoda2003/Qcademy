@@ -35,8 +35,8 @@ public class AssignmentService {
     }
 
     public ResponseEntity<String> submitAssignment(SolvedAssignmentDTO solvedAssignmentDTO) {
-        //Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-        Student student = studentRepository.getByUserId(solvedAssignmentDTO.getStudentId());
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        Student student = studentRepository.getByUserId(userId);
         Assignment assignment = assignmentRepository.getById(solvedAssignmentDTO.getAssignmentNumber());
         SolvedAssignment solvedAssignment = SolvedAssignment.convert(solvedAssignmentDTO);
         solvedAssignment.setStudent(student);
@@ -47,7 +47,6 @@ public class AssignmentService {
         return new ResponseEntity<>(String.format("solution submitted"), HttpStatus.CREATED);
     }
 
-    // Teacher
     public ResponseEntity<List<SolvedAssignmentDTO>> getSubmissions(Short assignmentNumber) {
         Assignment assignment = assignmentRepository.getById(assignmentNumber);
         List<SolvedAssignment> solvedAssignments = assignment.getSolvedAssignment();
@@ -68,11 +67,9 @@ public class AssignmentService {
         return new ResponseEntity<>("submitted grades", HttpStatus.CREATED);
     }
 
-    // Student
-    public ResponseEntity<List<SolvedAssignmentDTO>> getGrades(Long StudentId) {
-        //Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        Student student = studentRepository.getByUserId(StudentId);
+    public ResponseEntity<List<SolvedAssignmentDTO>> getGrades() {
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        Student student = studentRepository.getByUserId(userId);
         List<SolvedAssignment> solvedAssignments =  solvedAssignmentRepository.findByStudent(student);
         List<SolvedAssignmentDTO> submittedSolutions = new ArrayList<>();
         for (SolvedAssignment solvedAssignment : solvedAssignments) {
