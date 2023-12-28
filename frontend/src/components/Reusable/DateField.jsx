@@ -26,11 +26,12 @@ export default function DateField ({field, value, setValue}) {
                 </Stack>
                 <Stack width="15vw" margin='1vh'>
                     {!edit ? 
-                        <Typography fontSize={18} color="gray" margin={'1vh 0 1.4vh 2.5vh'} overflow={'hidden'}>{value? value.$D + "-" + value.$M + "-" + value.$y : "You didn't tell us :^("}</Typography>
+                        <Typography fontSize={18} color="gray" margin={'1vh 0 1.4vh 2.5vh'} overflow={'hidden'}>{value ? typeof(value) == "string" ? value : (value.$D + "-" + (value.$M<9 ? "0" + (value.$M+1) : value.$M+1) + "-" + value.$y) : "You didn't tell us :^("}</Typography>
                         :
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DatePicker
                                         sx={styles.gridElement}
+                                        format="DD-MM-YYYY"
                                         disableFuture
                                         defaultValue={dayjs(value)}
                                         value={dayjs(value)}
