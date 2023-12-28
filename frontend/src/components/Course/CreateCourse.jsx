@@ -41,6 +41,10 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
     const [loadingModal, setLoadingModal] = useState();
     const [errorModal, setErrorModal] = useState();
 
+    const refresh = () => {
+        window.location.reload(false);
+    }
+
     const chooseImage = (e) => {
         const file = e.target.files[0];
         if (file.size > MAX_FILE_SIZE) {
@@ -94,6 +98,7 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
         setImageUrl(null);
         setImageFile(null);
         handleClose();
+        refresh();
     }
 
     const closeLoadingModal = () => {
@@ -188,7 +193,7 @@ export default function CreateCourse({ open, handleClose, onCreateCourse }) {
                             </LocalizationProvider>
                             <TextField
                                 sx={{margin: '2vh 0.5vh'}}
-                                label="Estimated Duration"
+                                label="Estimated Time"
                                 name="Duration"
                                 variant="outlined"
                                 onChange={handleChange}

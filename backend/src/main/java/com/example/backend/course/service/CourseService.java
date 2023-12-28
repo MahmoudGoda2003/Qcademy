@@ -60,7 +60,7 @@ public class CourseService {
     }
 
     public ResponseEntity<String> removeModule(int courseId,int weekNumber) {
-        Course course = this.courseRepository.getByCourseId(courseId);
+        Course course = this.courseRepository.getById(courseId);
         CourseModule courseModule = course.getModules().stream().filter(module -> module.getWeekNumber() == weekNumber).findFirst().orElse(null);
         this.courseModuleService.removeModule(courseModule);
         course.getModules().remove(courseModule);

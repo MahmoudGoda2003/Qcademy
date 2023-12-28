@@ -59,7 +59,7 @@ export default {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: "35vw",
+        width: "480px",
         bgcolor: 'background.paper',
         borderRadius: '2%',
         boxShadow: 24,

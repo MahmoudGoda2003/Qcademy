@@ -18,6 +18,8 @@ public class CourseModuleDTO {
 
 
     private static final ModelMapper modelMapper = new ModelMapper();
+
+    private int weekNumber;
     @NotBlank(message = "Course Module name is mandatory")
     private String name;
     private List<String> slidesSets;

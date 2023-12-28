@@ -14,10 +14,9 @@ import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import CourseDetails from "./components/Course/CourseDetails";
-import globals from "./utils/globals";
 import CourseInfo from "./components/Course/CourseInfo";
 import EditCourse from "./components/Course/EditCourse";
-
+import ManageModules from "./components/Course/ManageModules";
 
 const lightMode = createTheme({
   palette: {
@@ -109,6 +108,12 @@ export default function App() {
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
                 <CourseInfo />
+              </ProtectedRoute>
+            } />
+            <Route path="course/:courseId/manageModules" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <ManageModules />
               </ProtectedRoute>
             } />
           </Routes>

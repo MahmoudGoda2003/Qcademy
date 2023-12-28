@@ -29,6 +29,7 @@ export default function CourseDetailsCard({course, role}) {
 
     const handleNavigate = () => {
         if (role === "STUDENT") navigate(`/course/learn/${course.courseId}/`, {state: { course:course }})
+        if (role === "TEACHER") navigate(`/course/${course.courseId}/manageModules`, {state: { course:course }})
     }
 
     return (
