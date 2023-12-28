@@ -42,7 +42,9 @@ public class StudentService {
         Student student = this.studentRepository.getByUserId(userId);
         List<CourseMainInfoDTO> courses = new ArrayList<>();
         for (Course course : student.getCourses()) {
-            courses.add(CourseMainInfoDTO.convert(course));
+            CourseMainInfoDTO courseMainInfoDTO = CourseMainInfoDTO.convert(course);
+            courseMainInfoDTO.setEnrolled(true);
+            courses.add(courseMainInfoDTO);
         }
         return new ResponseEntity<>(courses, HttpStatus.OK);
     }

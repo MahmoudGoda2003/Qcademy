@@ -20,16 +20,12 @@ const CourseService = {
         await axios.get(`${globals.baseURL}/student/enrolledCourses`, {withCredentials: true})
         .then((response) => {
             let courses = response.data;
-            courses.forEach(element => {
-                element.enrolled = true;
-            });
             result = courses;
         })
         .catch((error) => {
             result = [];
             console.log(error);
         });
-
         return result;
     },
 

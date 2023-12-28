@@ -35,11 +35,21 @@ export default function Header({ onThemeChange, theme }) {
   useEffect(() => {
     const getCourseNames = async () => {
       if (globals.user !== undefined) {
-        let courses = await CourseService.getRecommendedCourses();
-        let enrolled = await CourseService.getEnrolledCourses();
-        courses.concat(enrolled);
-        const names = courses.map((course) => course.name)
-        setCourses(courses)
+        let results = [];
+        if (globals.user.role === "STUDENT") {
+          let recommended = await CourseService.getRecommendedCourses();
+          let enrolled = await CourseService.getEnrolledCourses();
+          results = results.concat(recommended)
+          results = results.concat(enrolled)
+        }
+        else if (globals.user.role === "TEACHER") {
+          let created = await CourseService.getCreatedCourses();
+          results = results.concat(created)
+          console.log(results)
+        }
+        else return;
+        const names = results.map((course) => course.name)
+        setCourses(results)
         setCourseNames(names)
       }
     }
@@ -75,7 +85,7 @@ export default function Header({ onThemeChange, theme }) {
   const search = (e) => {
     if (e.key === "Enter"){
       const results = courses.filter((course) => {
-        return course.name.includes(e.target.value);
+        return course.name.toLowerCase().includes(e.target.value.toLowerCase());
       })
       navigate('/search', {state: {results: results}})
     }

@@ -23,6 +23,8 @@ export default function CourseDetailsCard({course, role}) {
 
     const [courseRating, setCourseRating] = useState();
 
+    console.log(course)
+
     const navigate = useNavigate();
 
     const enrollCourse = async () => {

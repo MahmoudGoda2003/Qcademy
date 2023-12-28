@@ -32,6 +32,7 @@ public class CourseMainInfoDTO {
     @NotBlank(message = "start date is mandatory")
     @Pattern(regexp = "\\d{1,2}-\\d{1,2}-\\d{4}", message = "Invalid date format. Use DD-MM-YYYY")
     private String startDate;
+    private boolean enrolled;
 
     public static CourseMainInfoDTO convert(Course course) {
         CourseMainInfoDTO courseMainInfoDTO= modelMapper.map(course, CourseMainInfoDTO.class);
