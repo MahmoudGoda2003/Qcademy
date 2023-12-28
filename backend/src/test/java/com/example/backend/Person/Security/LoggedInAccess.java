@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests.Security;
+package com.example.backend.Person.Security;
 
 import com.example.backend.admin.dto.ChangeRoleDTO;
 import com.example.backend.person.model.Person;

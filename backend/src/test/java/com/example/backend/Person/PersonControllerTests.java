@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests;
+package com.example.backend.Person;
 
 import com.example.backend.AbstractTest;
 import com.example.backend.person.PersonController;
@@ -8,6 +8,7 @@ import com.example.backend.person.dto.SignUpDTO;
 import com.example.backend.person.model.Person;
 import com.example.backend.person.repository.PersonRepository;
 import com.example.backend.services.CookiesService;
+import com.example.backend.services.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.Before;
@@ -38,6 +39,9 @@ public class PersonControllerTests extends AbstractTest {
     private PersonController pc;
     @Autowired
     private PersonRepository pr;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Autowired
     private CookiesService cookiesService;
@@ -226,43 +230,25 @@ public class PersonControllerTests extends AbstractTest {
         assertEquals("photo.jpg", response.getBody().getPhotoLink());
     }
 
-    //TODO: need to test GoogleSignIn
-//    @Test need to know how to test this
-//    public void testGoogleSignIn() throws Exception {
-//        String accessToken = "your_dummy_access_token";
-//
-//        // Mock the behavior of the personService.signInUsingGoogle method
-//        PersonInfoDTO personInfoDTO = new PersonInfoDTO();
-//        personInfoDTO.setFirstName("Yahya");
-//        personInfoDTO.setLastName("Azzam");
-//        personInfoDTO.setEmail("test@gmail.com");
-//        personInfoDTO.setPhotoLink("photo.jpg");
-//        personInfoDTO.setBio("Some bio");
-//        personInfoDTO.setDateOfBirth("1-2-1999");
-//
-//        Mockito.when(pc.googleSignIn(Mockito.any(), Mockito.eq(accessToken)))
-//                .thenReturn(ResponseEntity.ok(personInfoDTO));
-//
-//        // Create a MockHttpServletRequest
-//        MockHttpServletRequest request = new MockHttpServletRequest();
-//        request.setContentType(MediaType.APPLICATION_JSON_VALUE);
-//        request.setContent(accessToken.getBytes());
-//
-//        // Perform the mock request
-//        MockHttpServletResponse response = new MockHttpServletResponse();
-//        ResponseEntity<PersonInfoDTO> responseEntity = pc.googleSignIn(response, accessToken);
-//
-//        // Assertions on the responseEntity
-//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-//        assertEquals("Yahya", responseEntity.getBody().getFirstName());
-//        assertEquals("Azzam", responseEntity.getBody().getLastName());
-//        assertEquals("test@gmail.com", responseEntity.getBody().getEmail());
-//        assertEquals("photo.jpg", responseEntity.getBody().getPhotoLink());
-//        assertEquals("Some bio", responseEntity.getBody().getBio());
-//        assertEquals("1-2-1999", responseEntity.getBody().getDateOfBirth());
-//
-//        // Assertions on the HttpServletResponse
-//        assertEquals(HttpStatus.OK.value(), response.getStatus());
-//        assertEquals("{\"firstName\":\"Yahya\",\"lastName\":\"Azzam\",\"email\":\"test@gmail.com\",\"photoLink\":\"photo.jpg\",\"bio\":\"Some bio\",\"dateOfBirth\":\"1-2-1999\"}", response.getContentAsString());
-//    }
+    @Test
+    public void logout_method() {
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        ResponseEntity<String> response = pc.logout(httpResponse);
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        assertEquals("Logged out", response.getBody());
+    }
+
+    @Test
+    public void logoutApi() throws Exception {
+        String pass = this.encode.encode("test");
+        Person p = new Person("Yahya", "Azzam", "test1@gmail.com", pass, "01-02-1999", "photo.jpg");
+        pr.save(p);
+        LoginDTO loginDTO = new LoginDTO("test1@gmail.com", "test");
+        MockHttpServletResponse httpResponse = new MockHttpServletResponse();
+        ResponseEntity<PersonMainInfoDTO> response = pc.logIn(httpResponse, loginDTO);
+        String uri = "/person/logout";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        assertEquals(HttpStatus.ACCEPTED.value(), mvcResult.getResponse().getStatus());
+        assertEquals("Logged out", mvcResult.getResponse().getContentAsString());
+    }
 }
