@@ -11,10 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Generated;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -48,6 +45,12 @@ public class PersonController {
     @PostMapping("update")
     public ResponseEntity<String> update(@Valid @RequestBody PersonInfoDTO personInfoDTO) {
         return personService.updatePerson(personInfoDTO);
+    }
+
+
+    @GetMapping("getInfo")
+    public ResponseEntity<PersonInfoDTO> getInfo() {
+        return personService.getPersonInfo();
     }
 
     @PostMapping("logout")

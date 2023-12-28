@@ -143,6 +143,15 @@ public class PersonService {
         return new ResponseEntity<>("Data Updated", HttpStatus.ACCEPTED);
     }
 
+    public ResponseEntity<PersonInfoDTO> getPersonInfo() {
+        Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
+        Person person = personRepository.getReferenceById(userId);
+        if (person == null) {
+            throw new UserNotFoundException();
+        }
+        return new ResponseEntity<>(PersonInfoDTO.convert(person), HttpStatus.OK);
+    }
+
     public ResponseEntity<String> logout(HttpServletResponse response) {
         Cookie cookie = this.cookiesService.createCookie("qcademy", "", 0);
         response.addCookie(cookie);

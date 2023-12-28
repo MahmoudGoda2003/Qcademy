@@ -1,7 +1,7 @@
 import axios from "axios";
 import globals from "../utils/globals";
 
-const RegisterService = {
+const UserService = {
     google: async function(access_token) {
         const result = await axios.post(`${globals.baseURL}/person/google`, access_token, {headers: {"Content-Type": "text/plain"}, withCredentials: true})
         globals.user = {
@@ -38,6 +38,21 @@ const RegisterService = {
     confirmCode: async function(user) {
         await axios.post(`${globals.baseURL}/person/signup/validate`, user, {withCredentials: true});
     },
+
+    updateInfo: async function(user) {
+        const res = await axios.post(`${globals.baseURL}/person/update`, user, {withCredentials: true});
+    },
+
+    getInfo: async function() {
+        const response = await axios.get(`${globals.baseURL}/person/getInfo`, {withCredentials: true});
+        globals.user.firstName= response.data.firstName;
+        globals.user.lastName= response.data.lastName;
+        globals.user.photoLink= response.data.photoLink;
+        globals.user.email= response.data.email;
+        globals.user.dateOfBirth= response.data.dateOfBirth;
+        localStorage.setItem("user", JSON.stringify(globals.user));
+        return response.data;
+    },
 };
 
-export default RegisterService;
+export default UserService;

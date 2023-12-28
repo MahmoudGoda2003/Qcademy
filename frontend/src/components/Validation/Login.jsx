@@ -6,7 +6,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import styles from "../../utils/styles";
 import LoadingModal from "../Modals/LoadingModal";
 import ErrorModal from "../Modals/ErrorModal";
-import RegisterService from "../../service/RegisterService";
+import UserService from "../../service/UserService";
 
 export default function Login({theme}) {
 
@@ -31,7 +31,7 @@ export default function Login({theme}) {
         onSuccess: async (response) => {
             setModal(true);
             try{
-                await RegisterService.google(response.access_token);
+                await UserService.google(response.access_token);
                 closeModal();
                 navigate("/home");
             }catch (error) {
@@ -53,7 +53,7 @@ export default function Login({theme}) {
         setModal(true);
         const user = {email: email, password: password}
         try {
-            await RegisterService.login(user);
+            await UserService.login(user);
             closeModal();
             navigate("/home");
         } catch (error) {
