@@ -19,6 +19,7 @@ import globals from '../../utils/globals';
 import UserService from '../../service/UserService';
 import { useEffect } from 'react';
 import CourseService from '../../service/CourseService';
+import { useState } from 'react';
 
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
@@ -26,8 +27,10 @@ const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
 export default function Header({ onThemeChange, theme }) {
 
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [courseNames, setCourseNames] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [courseNames, setCourseNames] = useState([]);
+  const [courses, setCourses] = useState([])
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getCourseNames = async () => {
@@ -36,6 +39,7 @@ export default function Header({ onThemeChange, theme }) {
         let enrolled = await CourseService.getEnrolledCourses();
         courses.concat(enrolled);
         const names = courses.map((course) => course.name)
+        setCourses(courses)
         setCourseNames(names)
       }
     }
@@ -47,7 +51,6 @@ export default function Header({ onThemeChange, theme }) {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const navigate = useNavigate();
 
  
   const handleCloseUserMenu = async (setting) => {
@@ -69,6 +72,15 @@ export default function Header({ onThemeChange, theme }) {
     }
   };
 
+  const search = (e) => {
+    if (e.key === "Enter"){
+      const results = courses.filter((course) => {
+        return course.name.includes(e.target.value);
+      })
+      navigate('/search', {state: {results: results}})
+    }
+  }
+
   return (
     <AppBar position="relative" width={'100%'}>
       <Stack direction={'row'} padding='1vh' margin='1vh' color='white' alignItems={"center"}>
@@ -87,7 +99,7 @@ export default function Header({ onThemeChange, theme }) {
             renderInput={(params) => (
               <Stack direction="row" alignItems={"center"} spacing={1}>
                 <SearchIcon />
-                <TextField {...params} placeholder="Search…" variant="standard" sx={{ input: { color: 'white' } }} />
+                <TextField {...params} placeholder="Search…" variant="standard" sx={{ input: { color: 'white' } }} onKeyUp={search} />
               </Stack>
             )}
           />

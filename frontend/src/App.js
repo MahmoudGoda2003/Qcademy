@@ -19,6 +19,7 @@ import EditCourse from "./components/Course/EditCourse";
 import ManageModules from "./components/Course/ManageModules";
 import globals from "./utils/globals";
 import CourseService from "./service/CourseService";
+import Search from "./components/MainPages/Search";
 
 const lightMode = createTheme({
   palette: {
@@ -112,6 +113,12 @@ export default function App() {
               <ProtectedRoute redirectPath={"/login"}>
                 <Header onThemeChange={toggleColorMode} theme={theme} />
                 <ManageModules />
+              </ProtectedRoute>
+            } />
+            <Route path="/search" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} />
+                <Search />
               </ProtectedRoute>
             } />
           </Routes>
