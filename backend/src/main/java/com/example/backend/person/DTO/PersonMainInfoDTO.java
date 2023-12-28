@@ -3,6 +3,7 @@ package com.example.backend.person.dto;
 import com.example.backend.person.model.Person;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PersonMainInfoDTO {
 
     private static final ModelMapper modelMapper = new ModelMapper();

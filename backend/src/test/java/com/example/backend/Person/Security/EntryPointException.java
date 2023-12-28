@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests.Security;
+package com.example.backend.Person.Security;
 
 import com.example.backend.config.JwtAuthenticationEntryPoint;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 @SpringBootTest

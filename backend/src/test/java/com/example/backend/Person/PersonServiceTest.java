@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests;
+package com.example.backend.Person;
 
 import com.example.backend.exceptions.exception.*;
 import com.example.backend.person.dto.SignUpDTO;

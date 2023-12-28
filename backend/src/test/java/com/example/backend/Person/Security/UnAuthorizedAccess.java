@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests.Security;
+package com.example.backend.Person.Security;
 
 import com.example.backend.person.dto.LoginDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;

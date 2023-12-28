@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests.DTO;
+package com.example.backend.Person.DTO;
 
 import com.example.backend.AbstractTest;
 import com.example.backend.person.dto.SignUpDTO;
