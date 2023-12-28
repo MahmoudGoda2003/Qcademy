@@ -30,8 +30,10 @@ public class Course {
     private List<String> tags;
     @Column(name = "photo_link")
     private String photoLink;
-    @Column(name = "rating")
-    private float rating;
+    @Column(name = "total_rate")
+    private int totalRate = 0;
+    @Column(name = "number_of_rates")
+    private int numberOfRates = 0;
     @Column(name = "estimated_time")
     private short estimatedTime;
     @Column(name = "Start_date")

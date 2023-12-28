@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests.DTO;
+package com.example.backend.Person.DTO;
 import com.example.backend.person.dto.PersonUserDetails;
 import com.example.backend.person.model.Role;
 import org.junit.jupiter.api.Test;

@@ -54,7 +54,17 @@ public class TeacherController {
     }
 
     @PostMapping("setGrade")
-    public ResponseEntity<String> setGrade(@RequestBody SolvedAssignmentDTO solvedAssignmentDTO){
+    public ResponseEntity<String> setGrade(@RequestBody SolvedAssignmentDTO solvedAssignmentDTO) {
         return assignmentService.setGrade(solvedAssignmentDTO);
+    }
+
+    @DeleteMapping("removeCourse")
+    public ResponseEntity<String> removeCourse(@RequestParam int courseId) {
+        return this.courseService.removeCourse(courseId);
+    }
+
+    @DeleteMapping("removeModule")
+    public ResponseEntity<String> removeModule(@RequestParam int courseId, @RequestParam int weekNumber) {
+        return this.courseService.removeModule(courseId, weekNumber);
     }
 }

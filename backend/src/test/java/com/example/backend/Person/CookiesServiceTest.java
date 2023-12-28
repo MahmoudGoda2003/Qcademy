@@ -1,11 +1,9 @@
-package com.example.backend.PersonTests;
+package com.example.backend.Person;
 
 import com.example.backend.services.CookiesService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.Test;
-
-import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

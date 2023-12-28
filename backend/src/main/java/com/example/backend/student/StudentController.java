@@ -53,8 +53,13 @@ public class StudentController {
     }
 
     @PostMapping("submitAssignment")
-    public ResponseEntity<String> submitAssignment(@RequestBody SolvedAssignmentDTO solvedAssignmentDTO){
+    public ResponseEntity<String> submitAssignment(@RequestBody SolvedAssignmentDTO solvedAssignmentDTO) {
         System.out.println(solvedAssignmentDTO.toString());
         return assignmentService.submitAssignment(solvedAssignmentDTO);
+    }
+
+    @PostMapping("rateCourse")
+    public ResponseEntity<String> rateCourse(@RequestParam int courseId, @RequestParam int rating) {
+        return this.courseService.changeRate(courseId, rating);
     }
 }

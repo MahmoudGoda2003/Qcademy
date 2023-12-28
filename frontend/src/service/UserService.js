@@ -35,6 +35,10 @@ const UserService = {
         await axios.post(`${globals.baseURL}/person/signup`, email, {withCredentials: true, headers: {"Content-Type": "text/plain"}});
     },
 
+    logOut: async function() {
+        await axios.post(`${globals.baseURL}/person/logout`, null, {withCredentials: true});
+    },
+
     confirmCode: async function(user) {
         await axios.post(`${globals.baseURL}/person/signup/validate`, user, {withCredentials: true});
     },

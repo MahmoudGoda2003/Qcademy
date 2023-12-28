@@ -5,7 +5,7 @@ import Profile from "./components/MainPages/Profile";
 import Signup from "./components/Validation/Signup";
 import ConfirmEmail from "./components/Validation/ConfirmEmail";
 import Login from "./components/Validation/Login";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProtectedRoute from "./components/RouteGuards/ProtectedRoute";
 import UnProtectedRoute from "./components/RouteGuards/UnProtectedRoute";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -14,10 +14,12 @@ import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import CourseDetails from "./components/Course/CourseDetails";
-import globals from "./utils/globals";
 import CourseInfo from "./components/Course/CourseInfo";
 import EditCourse from "./components/Course/EditCourse";
-
+import ManageModules from "./components/Course/ManageModules";
+import globals from "./utils/globals";
+import CourseService from "./service/CourseService";
+import Search from "./components/MainPages/Search";
 
 const lightMode = createTheme({
   palette: {
@@ -47,10 +49,6 @@ export default function App() {
   const [theme, setTheme] = useState(lightMode);
   const toggleColorMode = () => setTheme(((theme === lightMode)? darkMode : lightMode));
 
-  //TODO: get user info from backend here again if null
-
-  
-
   return (
     <>
       <ThemeProvider theme={theme}>
@@ -59,13 +57,13 @@ export default function App() {
             <Route path="/" element={ <Navigate to={'/home'}/>} />
             <Route path="/home" element={
               <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <Header onThemeChange={toggleColorMode} theme={theme} />
                 <Home />
               </ProtectedRoute>
             }/>
             <Route path="/profile" element={
               <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <Header onThemeChange={toggleColorMode} theme={theme} />
                 <Profile />
               </ProtectedRoute>
             }/>
@@ -95,20 +93,32 @@ export default function App() {
             }/>
             <Route path="course/:courseId" element={
               <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <Header onThemeChange={toggleColorMode} theme={theme} />
                 <CourseDetails />
               </ProtectedRoute>
             } />
             <Route path="course/manage/:courseId/" element={
               <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <Header onThemeChange={toggleColorMode} theme={theme} />
                 <EditCourse />
               </ProtectedRoute>
             } />
             <Route path="course/learn/:courseId/" element={
               <ProtectedRoute redirectPath={"/login"}>
-                <Header onThemeChange={toggleColorMode} theme={theme} searchOptions={['1', '2', '3', '4']} />
+                <Header onThemeChange={toggleColorMode} theme={theme} />
                 <CourseInfo />
+              </ProtectedRoute>
+            } />
+            <Route path="course/:courseId/manageModules" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} />
+                <ManageModules />
+              </ProtectedRoute>
+            } />
+            <Route path="/search" element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Header onThemeChange={toggleColorMode} theme={theme} />
+                <Search />
               </ProtectedRoute>
             } />
           </Routes>

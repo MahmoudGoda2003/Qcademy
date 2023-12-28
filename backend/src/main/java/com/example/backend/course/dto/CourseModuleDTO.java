@@ -18,7 +18,9 @@ public class CourseModuleDTO {
 
 
     private static final ModelMapper modelMapper = new ModelMapper();
-    @NotBlank(message = "Course Module date is mandatory")
+
+    private int weekNumber;
+    @NotBlank(message = "Course Module name is mandatory")
     private String name;
     private List<String> slidesSets;
     private List<String> quizzes;

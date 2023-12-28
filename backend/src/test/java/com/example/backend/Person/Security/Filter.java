@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests.Security;
+package com.example.backend.Person.Security;
 
 import com.example.backend.config.JwtAuthenticationFilter;
 import com.example.backend.person.dto.PersonUserDetails;
@@ -14,20 +14,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class Filter {
     @Mock
     private JwtService jwtService;

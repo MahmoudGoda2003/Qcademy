@@ -25,7 +25,7 @@ public class SignUpDTO {
     private String password;
 
     @NotBlank(message = "Date of birth cannot be Empty")
-    @Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}", message = "Invalid date of birth format. Use DD-MM-YYYY")
+    @Pattern(regexp = "^\\d{1,2}-\\d{1,2}-\\d{4}$", message = "Invalid date of birth format. Use DD-MM-YYYY")
     private String dateOfBirth;
 
     private String code;

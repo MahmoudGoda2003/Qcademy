@@ -1,7 +1,6 @@
-package com.example.backend.PersonTests.DTO;
+package com.example.backend.Person.DTO;
 
 import com.example.backend.person.dto.PersonInfoDTO;
-import com.example.backend.person.dto.PersonMainInfoDTO;
 import com.example.backend.person.model.Person;
 import org.junit.Test;
 

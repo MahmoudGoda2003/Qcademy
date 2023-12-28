@@ -1,4 +1,4 @@
-package com.example.backend.PersonTests.Security;
+package com.example.backend.Person.Security;
 
 import com.example.backend.config.JwtAuthenticationEntryPoint;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,12 +10,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.AuthenticationException;
-
-import java.io.IOException;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.Mockito.*;
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class EntryPointException {
 
     @InjectMocks

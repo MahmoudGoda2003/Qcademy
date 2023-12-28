@@ -1,13 +1,14 @@
 import * as React from "react";
-import { Collapse, ListItemButton, Stack, Typography, List, ListItemText, Box } from '@mui/material';
+import { Collapse, ListItemButton, Stack, Typography, List, ListItemText, Box, IconButton, ListItem } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import YouTube from 'react-youtube';
 import { useEffect } from 'react';
 import CourseService from "../../service/CourseService";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function CourseInfo() {
+export default function ManageModules() {
 
     const location = useLocation();
 
@@ -22,8 +23,8 @@ export default function CourseInfo() {
 
     useEffect(() => {
         const fetchModules = async () => {
-            const res = await CourseService.getCourseModules(course.courseId, "student");
-            setModules(res);
+            const modules = await CourseService.getCourseModules(course.courseId, "teacher");
+            setModules(modules);
         }
 
         fetchModules();
@@ -40,7 +41,7 @@ export default function CourseInfo() {
                     <Typography variant="h5" component="div" sx={{margin: '2vh 0'}}>
                         {course.name}
                     </Typography>
-                    {modules ? <CourseMaterials modules={modules} onUpdate={updateView} /> : <></>}
+                    {modules ? <CourseMaterials modules={modules} setModules={setModules} onUpdate={updateView} courseId={course.courseId}/> : <></>}
 
                 </Stack>
                 <ViewElement selectedElement={selectedElement} />
@@ -51,7 +52,14 @@ export default function CourseInfo() {
 
 
 
-function CourseMaterials({modules, onUpdate}) {
+function CourseMaterials({modules, setModules, onUpdate, courseId}) {
+
+    const deleteFromList = (module) => {
+        setModules(modules => modules.filter(function(item) {
+            return item !== module
+        }));
+    }
+
     return (
         <List
             sx={{ width: '100%' }}
@@ -66,6 +74,8 @@ function CourseMaterials({modules, onUpdate}) {
                         key={index}
                         module={module}
                         onUpdate={onUpdate}
+                        courseId={courseId}
+                        deleteFromList={deleteFromList}
                     >
                     </Module>
                 ))}
@@ -74,7 +84,7 @@ function CourseMaterials({modules, onUpdate}) {
     );
 }
 
-function Module({module, onUpdate}) {
+function Module({module, onUpdate, courseId, deleteFromList}) {
 
     const [open, setOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -86,15 +96,26 @@ function Module({module, onUpdate}) {
         });
         setSelectedIndex(index);
     };
+
+    const deleteModule = async () => {
+        await CourseService.deleteModule(courseId, module.weekNumber);
+        deleteFromList(module);
+    }
+
     return (
         <List
             sx={{ width: '100%' }}
             aria-labelledby="nested-list-subheader"
         >
-            <ListItemButton onClick={() => {setOpen(!open);}}>
-                <ListItemText primary={module.name} sx={{ marginLeft: '1vw'}}/>
-                {open ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
+            <ListItem>
+                <ListItemButton onClick={() => {setOpen(!open);}}>
+                    <ListItemText primary={module.publishDate} sx={{ marginLeft: '1vw'}}>{module.name}</ListItemText>
+                    {open ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <IconButton onClick={deleteModule}>
+                    <DeleteIcon style={{color: 'red'}} />
+                </IconButton>
+            </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     {(module.lectures.toString() === "")?
@@ -169,7 +190,7 @@ function ViewElement({selectedElement}) {
             sx={{width: '70%', height: '90%', overflow:'auto'}}
         >
             <Typography variant='h5' margin={'2vh 0'}>
-                {selectedElement.name}
+                    {selectedElement.name}
             </Typography>
             {selectedElement.type === 'lecture' ?
                 <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
