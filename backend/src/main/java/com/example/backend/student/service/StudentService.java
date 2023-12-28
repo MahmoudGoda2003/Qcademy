@@ -22,8 +22,8 @@ public class StudentService {
     private final PromotionService promotionService;
     private final StudentRepository studentRepository;
     private final CourseRepository coursesRepository;
-
     private final CourseService coursesService;
+    private final
 
     @Autowired
     public StudentService(PromotionService promotionService, StudentRepository studentRepository, CourseRepository coursesRepository, CourseService coursesService) {
@@ -69,6 +69,11 @@ public class StudentService {
         Course course = this.coursesService.enrollInCourse(courseId, student);
         student.getCourses().add(course);
         this.studentRepository.save(student);
+        return new ResponseEntity<>("Course enrolled successfully", HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> submitAssignment(int courseId){
+
         return new ResponseEntity<>("Course enrolled successfully", HttpStatus.OK);
     }
 

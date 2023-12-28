@@ -6,11 +6,19 @@ import com.example.backend.student.model.Student;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Entity
 @Setter
 @Getter
 @Table(name = "SolvedAssigment_data")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SolvedAssignment {
 
     @Column(name = "solution_url", nullable = false)

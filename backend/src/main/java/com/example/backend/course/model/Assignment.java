@@ -17,7 +17,7 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "assignment_number")
     @Setter(AccessLevel.NONE)
-    private short number;
+    private Integer number;
 
     @Column(name = "assignment_name", nullable = false)
     private String name;
