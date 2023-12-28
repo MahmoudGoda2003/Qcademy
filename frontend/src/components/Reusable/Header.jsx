@@ -16,6 +16,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useNavigate } from "react-router-dom";
 import globals from '../../utils/globals';
+import UserService from '../../service/UserService';
 
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
@@ -31,7 +32,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
   const navigate = useNavigate();
 
  
-  const handleCloseUserMenu = (setting) => {
+  const handleCloseUserMenu = async (setting) => {
     setAnchorElUser(null);
     switch(setting){
       case "Home":
@@ -43,6 +44,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
       case "Logout":
         globals.user = null;
         localStorage.removeItem("user")
+        await UserService.logOut();
         navigate(`/login`)
         break
       default:
@@ -79,7 +81,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
           <Box justifyContent={'flex-end'}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="userPhoto" src={globals.user.photoLink} referrerPolicy="no-referrer" />
+                {globals.user && <Avatar alt="userPhoto" src={globals.user.photoLink} referrerPolicy="no-referrer" />}
               </IconButton>
             </Tooltip>
             <Menu

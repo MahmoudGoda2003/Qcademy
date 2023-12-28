@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 import globals from '../../utils/globals';
 import CourseService from '../../service/CourseService';
+import { useState } from 'react';
 
 
 const DEFAULT_IMAGE = ""
@@ -19,6 +20,8 @@ const gridElement = {
 }
 
 export default function CourseDetailsCard({course, role}) {
+
+    const [courseRating, setCourseRating] = useState();
 
     const navigate = useNavigate();
 
@@ -38,6 +41,11 @@ export default function CourseDetailsCard({course, role}) {
         navigate('/home');
     }
 
+    const rateCourse = async (newValue) => {
+        console.log(newValue);
+        await CourseService.rateCourse(course.courseId, newValue);
+    }
+
     return (
 
         <Card sx={{minWidth:'45vh', maxWidth:'45vh', margin: '2vh auto'}}>
@@ -51,7 +59,17 @@ export default function CourseDetailsCard({course, role}) {
                 <Typography gutterBottom variant="h3" component="div">
                     {course.name}
                 </Typography>
-                <Rating name="half-rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
+                {role === "TEACHER" ?
+                    <Rating name="rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
+                :
+                    <Rating
+                        name="rating"
+                        defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating}
+                        precision={RATING_PRECISION}
+                        value={courseRating}
+                        onChange={(event, newValue) => {rateCourse(newValue)}}
+                    />
+                }
                 <Typography 
                     sx={gridElement}
                     color="text.secondary">

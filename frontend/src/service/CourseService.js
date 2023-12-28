@@ -75,6 +75,12 @@ const CourseService = {
             withCredentials: true});
     },
 
+    rateCourse: async function(courseId, rating) {
+        await axios.post(`${globals.baseURL}/student/rateCourse`, null,
+            {params: {courseId: courseId, rating: rating},
+            withCredentials: true});
+    },
+
 };
 
 export default CourseService;
