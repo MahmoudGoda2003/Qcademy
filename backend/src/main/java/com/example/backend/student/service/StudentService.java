@@ -8,6 +8,7 @@ import com.example.backend.person.model.Role;
 import com.example.backend.promotion.service.PromotionService;
 import com.example.backend.student.model.Student;
 import com.example.backend.student.repository.StudentRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class StudentService {
     private final PromotionService promotionService;
     private final StudentRepository studentRepository;
     private final CourseRepository coursesRepository;
 
     private final CourseService coursesService;
-
-    @Autowired
-    public StudentService(PromotionService promotionService, StudentRepository studentRepository, CourseRepository coursesRepository, CourseService coursesService) {
-        this.promotionService = promotionService;
-        this.studentRepository = studentRepository;
-        this.coursesRepository = coursesRepository;
-        this.coursesService = coursesService;
-    }
 
     public void saveStudent(Long userId){
         Student student = new Student(userId);

@@ -9,7 +9,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import styles from "../../utils/styles";
 import LoadingModal from "../Modals/LoadingModal";
 import ErrorModal from "../Modals/ErrorModal";
-import RegisterService from "../../service/RegisterService";
+import UserService from "../../service/UserService";
 
 
 export default function Signup({theme}) {
@@ -53,10 +53,10 @@ export default function Signup({theme}) {
         // TODO: send info to backend
         setModal(true);
         try {
-            await RegisterService.signUp(user.email);
+            await UserService.signUp(user.email);
             // globals.user = user;
             // console.log(globals.user);
-
+            console.log(user);
             closeModal();
             navigate('/confirmEmail', {
                 state: {
@@ -74,7 +74,7 @@ export default function Signup({theme}) {
         onSuccess: async (response) => {
             setModal(true);
             try{
-                await RegisterService.google(response.access_token);
+                await UserService.google(response.access_token);
                 closeModal();
                 navigate("/home");
             }catch (error) {

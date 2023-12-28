@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/teacher/")
-//@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class TeacherController {
 
     private final TeacherService teacherService;
@@ -31,16 +30,16 @@ public class TeacherController {
 
     @PostMapping("createModule")
     public ResponseEntity<String> createModule(@RequestBody CourseModuleDTO courseModuleDTO) {
-        return  teacherService.createModule(courseModuleDTO);
+        return teacherService.createModule(courseModuleDTO);
     }
 
     @PostMapping("requestPromotion")
-    public ResponseEntity<String> requestPromotion() throws Exception {
+    public ResponseEntity<String> requestPromotion() {
         return teacherService.requestPromotion();
     }
 
     @GetMapping("createdCourses")
-    public ResponseEntity<List<CourseMainInfoDTO>> getCreatedCourses(){
+    public ResponseEntity<List<CourseMainInfoDTO>> getCreatedCourses() {
         return teacherService.getCreatedCourses();
     }
 

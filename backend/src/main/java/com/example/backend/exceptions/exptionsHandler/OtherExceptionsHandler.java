@@ -1,23 +1,26 @@
 package com.example.backend.exceptions.exptionsHandler;
 
+import com.example.backend.exceptions.exception.Error;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Objects;
 
 @ControllerAdvice
-public class OtherExceptionsHandler extends Throwable {
-
-//    @ExceptionHandler(Exception.class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    @ResponseBody
-//    Map<String, String> onOtherExceptions(Exception e) {
-//        Map<String, String> error = new HashMap<>();
-//        error.put("error message",  "Internal Server Error");
-//        return error;
-//    }
+public class OtherExceptionsHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Error> handelOtherExceptions(Exception e) {
+        Error error = Error.builder()
+                .message("Internal Server Error")
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .path(String.valueOf(e.getStackTrace()[0]))
+                .timestamp(LocalDate.now())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

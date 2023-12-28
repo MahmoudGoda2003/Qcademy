@@ -22,7 +22,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -62,7 +61,6 @@ public class Admin {
 
     @Autowired
     private JwtService jwtService;
-    private String secretKey = new StandardEnvironment().getProperty("QcademyAuthKey");
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,15 +71,10 @@ public class Admin {
     }
 
     private void promoteUser(Long adminId, Long userId, Role role, String uri) throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(uri).cookie(new Cookie("qcademy", jwtService.createToken(role, userId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post(uri).cookie(new Cookie("qcademy", jwtService.createToken(role, userId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertTrue(promotionRepository.existsById(userId));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
     }
 
@@ -96,8 +89,7 @@ public class Admin {
         Long userId = ps.savePerson(p).getId();
         assertTrue(studentRepository.existsByUserId(userId));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/student/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/student/requestPromotion").cookie(new Cookie("qcademy", jwtService.createToken(Role.STUDENT, userId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertTrue(promotionRepository.existsById(userId));
 
         adminService.changePersonRole(userId, true);
@@ -115,11 +107,7 @@ public class Admin {
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
         Long userId = 123L;
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))
-                ).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isNotFound());
 
         assertFalse(promotionRepository.existsById(userId));
         assertFalse(adminRepository.existsByUserId(userId));
@@ -139,11 +127,7 @@ public class Admin {
         assertTrue(studentRepository.existsByUserId(adminId));
         ps.setUserRole(adminId, Role.ADMIN);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isNotFound());
 
         assertFalse(promotionRepository.existsById(userId));
         assertFalse(adminRepository.existsByUserId(userId));
@@ -168,11 +152,7 @@ public class Admin {
 
         Promotion promotion = new Promotion(userId, Role.STUDENT);
         promotionRepository.save(promotion);
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
         assertSame(ps.getUserRole(userId), Role.STUDENT);
         assertTrue(teacherRepository.existsByUserId(userId));
@@ -197,11 +177,7 @@ public class Admin {
 
         Promotion promotion = new Promotion(userId, Role.TEACHER);
         promotionRepository.save(promotion);
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
         assertSame(ps.getUserRole(userId), Role.TEACHER);
         assertTrue(teacherRepository.existsByUserId(userId));
@@ -223,29 +199,17 @@ public class Admin {
 
         Promotion promotion = new Promotion(userId, Role.ADMIN);
         promotionRepository.save(promotion);
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertSame(ps.getUserRole(userId), Role.ADMIN);
 
         promotion = new Promotion(userId, Role.STUDENT);
         promotionRepository.save(promotion);
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertSame(ps.getUserRole(userId), Role.STUDENT);
 
         promotion = new Promotion(userId, Role.ADMIN);
         promotionRepository.save(promotion);
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
 
         assertFalse(promotionRepository.existsById(userId));
         assertSame(ps.getUserRole(userId), Role.ADMIN);
@@ -272,11 +236,7 @@ public class Admin {
 
         Promotion promotion = new Promotion(userId, Role.STUDENT);
         promotionRepository.save(promotion);
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
         assertSame(ps.getUserRole(userId), Role.STUDENT);
         assertTrue(teacherRepository.existsByUserId(userId));
@@ -301,11 +261,7 @@ public class Admin {
 
         Promotion promotion = new Promotion(userId, Role.STUDENT);
         promotionRepository.save(promotion);
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole")
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(mapToJson(new ChangeRoleDTO(userId, true)))
-                        .cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId))))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/changeRole").contentType(MediaType.APPLICATION_JSON_VALUE).content(mapToJson(new ChangeRoleDTO(userId, true))).cookie(new Cookie("qcademy", jwtService.createToken(Role.ADMIN, adminId)))).andExpect(MockMvcResultMatchers.status().isCreated());
         assertFalse(promotionRepository.existsById(userId));
         assertSame(ps.getUserRole(userId), Role.STUDENT);
         assertTrue(teacherRepository.existsByUserId(userId));

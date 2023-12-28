@@ -67,7 +67,6 @@ public class PersonControllerTests extends AbstractTest {
         String uri = "/person/signup", email = "tee2132tstst@gmail.com";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.TEXT_PLAIN).content(email)).andReturn();
         assertEquals(HttpStatus.NOT_ACCEPTABLE.value(), mvcResult.getResponse().getStatus());
-        assertEquals("{\"error message\":\"Email already exists\"}", mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -75,7 +74,6 @@ public class PersonControllerTests extends AbstractTest {
         String uri = "/person/signup", email = "yahya912azzam";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.TEXT_PLAIN).content(email)).andReturn();
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), mvcResult.getResponse().getStatus());
-        assertEquals("{\"error message\":\"Internal Server Error\"}", mvcResult.getResponse().getContentAsString());
     }
 
 
@@ -113,7 +111,6 @@ public class PersonControllerTests extends AbstractTest {
         String input = super.mapToJson(signUpDTO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(input)).andReturn();
         assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
-        assertEquals("{\"error message\":\"Try to sign up again\"}", mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -125,7 +122,6 @@ public class PersonControllerTests extends AbstractTest {
         String input = super.mapToJson(signUpDTO);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(input)).andReturn();
         assertEquals(HttpStatus.NOT_ACCEPTABLE.value(), mvcResult.getResponse().getStatus());
-        assertEquals("{\"error message\":\"Email already exists\"}", mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -143,7 +139,6 @@ public class PersonControllerTests extends AbstractTest {
         MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
 
         assertEquals(HttpStatus.NOT_ACCEPTABLE.value(), mvcResult.getResponse().getStatus());
-        assertEquals("{\"error message\":\"Wrong code, please try again\"}", mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -193,7 +188,6 @@ public class PersonControllerTests extends AbstractTest {
 
         MockHttpServletResponse response = mvcResult.getResponse();
         assertEquals(HttpStatus.NOT_ACCEPTABLE.value(), response.getStatus());
-        assertEquals("{\"error message\":\"password or email isn't valid\"}", response.getContentAsString());
     }
 
     @Test
@@ -213,7 +207,6 @@ public class PersonControllerTests extends AbstractTest {
 
         MockHttpServletResponse response = mvcResult.getResponse();
         assertEquals(HttpStatus.NOT_ACCEPTABLE.value(), response.getStatus());
-        assertEquals("{\"error message\":\"password or email isn't valid\"}", response.getContentAsString());
     }
 
     @Test

@@ -1,24 +1,22 @@
 package com.example.backend.person;
 
-import com.example.backend.course.dto.AssignmentDTO;
-import com.example.backend.course.dto.SolvedAssignmentDTO;
-import com.example.backend.course.service.AssignmentService;
-import com.example.backend.person.dto.*;
+import com.example.backend.person.dto.LoginDTO;
+import com.example.backend.person.dto.PersonInfoDTO;
+import com.example.backend.person.dto.PersonMainInfoDTO;
+import com.example.backend.person.dto.SignUpDTO;
 import com.example.backend.person.service.PersonService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Generated;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
-
-@RequestMapping("/person/")
-@AllArgsConstructor
 @RestController
-//@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
+@AllArgsConstructor
+@RequestMapping("/person/")
 public class PersonController {
 
     private final PersonService personService;
@@ -49,4 +47,14 @@ public class PersonController {
         return personService.updatePerson(personInfoDTO);
     }
 
+
+    @GetMapping("getInfo")
+    public ResponseEntity<PersonInfoDTO> getInfo() {
+        return personService.getPersonInfo();
+    }
+
+    @PostMapping("logout")
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        return personService.logout(response);
+    }
 }
