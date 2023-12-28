@@ -22,12 +22,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class Filter {
     @Mock
     private JwtService jwtService;

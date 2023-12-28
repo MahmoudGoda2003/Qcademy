@@ -42,4 +42,9 @@ public class StudentController {
     public ResponseEntity<List<CourseModuleDTO>> getCourseModules(@RequestParam int courseId) {
         return this.courseService.getCourseModules(courseId);
     }
+
+    @PostMapping("rateCourse")
+    public ResponseEntity<String> rateCourse(@RequestParam int courseId, @RequestParam int rating) {
+        return this.courseService.changeRate(courseId, rating);
+    }
 }

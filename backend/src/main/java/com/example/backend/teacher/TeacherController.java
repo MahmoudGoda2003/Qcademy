@@ -43,4 +43,14 @@ public class TeacherController {
     public ResponseEntity<List<CourseModuleDTO>> getCourseModules(@RequestParam int courseId) {
         return this.courseService.getCourseModules(courseId);
     }
+
+    @DeleteMapping("removeCourse")
+    public ResponseEntity<String> removeCourse(@RequestParam int courseId) {
+        return this.courseService.removeCourse(courseId);
+    }
+
+    @DeleteMapping("removeModule")
+    public ResponseEntity<String> removeModule(@RequestParam int courseId, @RequestParam int weekNumber) {
+        return this.courseService.removeModule(courseId, weekNumber);
+    }
 }

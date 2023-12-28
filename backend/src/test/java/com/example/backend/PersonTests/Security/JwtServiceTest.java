@@ -18,6 +18,7 @@
 //
 //@SpringBootTest
 //@AutoConfigureMockMvc
+//@ActiveProfiles("test")
 //class JwtServiceTest {
 //
 //

@@ -30,10 +30,12 @@ public class CourseMainInfoDTO {
     private List<String> tags;
     private String teacherName;
     @NotBlank(message = "start date is mandatory")
-    @Pattern(regexp = "\\d{2}-\\d{2}-\\d{4}", message = "Invalid date format. Use DD-MM-YYYY")
+    @Pattern(regexp = "\\d{1,2}-\\d{1,2}-\\d{4}", message = "Invalid date format. Use DD-MM-YYYY")
     private String startDate;
 
     public static CourseMainInfoDTO convert(Course course) {
-        return modelMapper.map(course, CourseMainInfoDTO.class);
+        CourseMainInfoDTO courseMainInfoDTO= modelMapper.map(course, CourseMainInfoDTO.class);
+        courseMainInfoDTO.setRating((float) course.getTotalRate() /course.getNumberOfRates());
+        return courseMainInfoDTO;
     }
 }
