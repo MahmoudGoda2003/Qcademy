@@ -13,15 +13,11 @@ import org.modelmapper.ModelMapper;
 @Entity
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor
-@Table(name = "SolvedAssigment_data")
+@Table(name = "SolvedAssignment_data")
+@IdClass(SolvedAssignmentId.class)
 public class SolvedAssignment {
-
-    @Id
-    @Setter(AccessLevel.NONE)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "solution_id")
-    private int solutionId;
 
     @Column(name = "solution_url", nullable = false)
     private String solutionURL;
@@ -30,7 +26,7 @@ public class SolvedAssignment {
     private short grade;
 
 
-
+    @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assignment_number")
     private Assignment assignments;

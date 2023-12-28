@@ -9,20 +9,17 @@ import org.modelmapper.ModelMapper;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class SolvedAssignmentDTO {
-    @NotBlank(message = "Solution ID is mandatory")
-    private int solutionId;
-
     @NotBlank(message = "Solution URL is mandatory")
     private String solutionURL;
 
     private short grade;
 
     @NotBlank(message = "Assignment number is mandatory")
-    private int assignmentNumber;
+    private short assignmentNumber;
 
-    @NotBlank(message = "Student Email is mandatory")
-    private String studentEmail;
+    private Long studentId;
 
     private static final ModelMapper modelMapper = new ModelMapper();
     public static SolvedAssignmentDTO convert(SolvedAssignment solvedAssignment) {

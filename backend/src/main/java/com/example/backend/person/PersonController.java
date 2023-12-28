@@ -1,5 +1,8 @@
 package com.example.backend.person;
 
+import com.example.backend.course.dto.AssignmentDTO;
+import com.example.backend.course.dto.SolvedAssignmentDTO;
+import com.example.backend.course.service.AssignmentService;
 import com.example.backend.person.dto.*;
 import com.example.backend.person.service.PersonService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +12,7 @@ import lombok.Generated;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.util.List;
 
 
 @RequestMapping("/person/")
@@ -18,9 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class PersonController {
 
     private final PersonService personService;
+    private final AssignmentService assignmentService;
 
-    public PersonController(PersonService personService) {
+    public PersonController(PersonService personService, AssignmentService assignmentService) {
         this.personService = personService;
+        this.assignmentService = assignmentService;
     }
 
     @PostMapping("signup")
@@ -48,4 +53,29 @@ public class PersonController {
     public ResponseEntity<String> update(@Valid @RequestBody PersonInfoDTO personInfoDTO) {
         return personService.updatePerson(personInfoDTO);
     }
+
+    // Teacher
+    @GetMapping("getSubmissions")
+    public ResponseEntity<List<SolvedAssignmentDTO>> getSubmissions(@RequestParam int assignmentNumber){
+        return assignmentService.getSubmissions((short) assignmentNumber);
+    }
+
+    @PostMapping("setGrade")
+    public ResponseEntity<String> setGrade(@RequestBody SolvedAssignmentDTO solvedAssignmentDTO){
+        return assignmentService.setGrade(solvedAssignmentDTO);
+    }
+
+    // Student
+    @GetMapping("getGrades")
+    public ResponseEntity<List<SolvedAssignmentDTO>> getGrades(@RequestParam Long studentId){
+        return assignmentService.getGrades(studentId);
+    }
+
+    @PostMapping("submit")
+    public ResponseEntity<String> submitAssignment(@RequestBody SolvedAssignmentDTO solvedAssignmentDTO){
+        System.out.println(solvedAssignmentDTO.toString());
+        return assignmentService.submitAssignment(solvedAssignmentDTO);
+    }
+
+
 }
