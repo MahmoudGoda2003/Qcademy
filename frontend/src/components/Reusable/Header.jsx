@@ -17,14 +17,32 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useNavigate } from "react-router-dom";
 import globals from '../../utils/globals';
 import UserService from '../../service/UserService';
+import { useEffect } from 'react';
+import CourseService from '../../service/CourseService';
 
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
 
 
-export default function Header({ userInfo, searchOptions, onThemeChange, theme }) {
+export default function Header({ onThemeChange, theme }) {
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [courseNames, setCourseNames] = React.useState(null);
+
+  useEffect(() => {
+    const getCourseNames = async () => {
+      if (globals.user !== undefined) {
+        let courses = await CourseService.getRecommendedCourses();
+        let enrolled = await CourseService.getEnrolledCourses();
+        courses.concat(enrolled);
+        const names = courses.map((course) => course.name)
+        setCourseNames(names)
+      }
+    }
+
+    getCourseNames();
+
+  }, [])
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -65,7 +83,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
             freeSolo
             size='small'
             sx={{ width: '20%', marginRight: '2vh', marginLeft: 'auto' }}
-            options={searchOptions}
+            options={courseNames}
             renderInput={(params) => (
               <Stack direction="row" alignItems={"center"} spacing={1}>
                 <SearchIcon />
