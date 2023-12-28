@@ -18,4 +18,8 @@ public class CourseModuleService {
         return this.courseModuleRepository.save(courseModule);
     }
 
+    public void removeModule(CourseModule courseModule) {
+        this.courseModuleRepository.delete(courseModule);
+    }
+
 }

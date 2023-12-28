@@ -10,12 +10,14 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 
 import static org.mockito.Mockito.*;
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class EntryPointException {
 
     @InjectMocks
