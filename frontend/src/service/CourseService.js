@@ -9,6 +9,7 @@ const CourseService = {
             result = response.data;
         })
         .catch((error) => {
+            result = [];
             console.log(error);
         });
         return result;
@@ -25,6 +26,7 @@ const CourseService = {
             result = courses;
         })
         .catch((error) => {
+            result = [];
             console.log(error);
         });
 
@@ -42,6 +44,7 @@ const CourseService = {
             result = courses;
         })
         .catch((error) => {
+            result = [];
             console.log(error);
         });
 

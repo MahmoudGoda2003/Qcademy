@@ -1,27 +1,27 @@
 package com.example.backend.person;
 
+import com.example.backend.course.dto.AssignmentDTO;
+import com.example.backend.course.dto.SolvedAssignmentDTO;
+import com.example.backend.course.service.AssignmentService;
 import com.example.backend.person.dto.*;
 import com.example.backend.person.service.PersonService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.Generated;
+import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.util.List;
 
 
 @RequestMapping("/person/")
+@AllArgsConstructor
 @RestController
 //@CrossOrigin(allowCredentials = "True", origins = "http://localhost:3000")
 public class PersonController {
 
     private final PersonService personService;
-
-    public PersonController(PersonService personService) {
-        this.personService = personService;
-    }
 
     @PostMapping("signup")
     public ResponseEntity<String> signUp(HttpServletResponse response, @RequestBody String email) throws Exception {
@@ -48,4 +48,5 @@ public class PersonController {
     public ResponseEntity<String> update(@Valid @RequestBody PersonInfoDTO personInfoDTO) {
         return personService.updatePerson(personInfoDTO);
     }
+
 }

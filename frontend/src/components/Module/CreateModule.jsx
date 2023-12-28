@@ -39,7 +39,7 @@ export default function CreateModule({ open, handleClose, onCreateModule, course
         if (lectureName !== '' && lectureUrl !== '') {
             lectures = [{
                 name: lectureName,
-                videoURL: lectureUrl
+                videoURL: lectureUrl.split("v=")[1].split("&")[0]
             }];
         }
         
@@ -123,6 +123,7 @@ export default function CreateModule({ open, handleClose, onCreateModule, course
                         name="lectureUrl"
                         variant="outlined"
                         onChange={handleChange}
+                        placeholder='Please add a youtube link to the lecture'
                     />
                     <Divider sx={{margin: '1vh 0 2vh 0'}}/>
 
@@ -136,6 +137,7 @@ export default function CreateModule({ open, handleClose, onCreateModule, course
                         name="slidesUrl"
                         variant="outlined"
                         onChange={handleChange}
+                        placeholder='Please add a link to th PDF file containing the slides'
                     />
                     <Divider sx={{margin: '1vh 0 2vh 0'}}/>
 
@@ -157,6 +159,7 @@ export default function CreateModule({ open, handleClose, onCreateModule, course
                         name="assignmentUrl"
                         variant="outlined"
                         onChange={handleChange}
+                        placeholder='Please add a link to th PDF file containing the assignment'
                     />
                     <Divider sx={{margin: '1vh 0 2vh 0'}}/>
 
@@ -170,6 +173,7 @@ export default function CreateModule({ open, handleClose, onCreateModule, course
                         name="quizUrl"
                         variant="outlined"
                         onChange={handleChange}
+                        placeholder='Please add a link to th PDF file containing the Quiz'
                     />
                     <Button
                         variant='contained'

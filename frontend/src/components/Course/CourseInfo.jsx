@@ -1,6 +1,5 @@
-import Header from '../Reusable/Header';
 import Box from '@mui/material/Box';
-import { Collapse, ListItemButton, Stack, Typography, List, ListItemText, Link} from '@mui/material';
+import { Collapse, ListItemButton, Stack, Typography, List, ListItemText } from '@mui/material';
 import * as React from "react";
 import { useLocation } from 'react-router-dom';
 import {useState} from "react";
@@ -57,41 +56,26 @@ export default function CourseInfo() {
 
 
 function CourseMaterials({modules, onUpdate}) {
-    const [open, setOpen] = useState(false);
-    const [nestedOpen, setNestedOpen] = useState(false);
+    const [open, setOpen] = useState(-1);
+
     return (
         <List
-            sx={{ width: '100%', bgcolor: 'background.paper' }}
-
-            aria-labelledby="nested-list-subheader"
+            sx={{ width: '100%' }}
+            aria-labelledby="nested-list"
         >
-            <ListItemButton onClick={() => setOpen(!open)}>
+            <ListItemButton>
                 <ListItemText primary="CourseMaterials" />
-                {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                    {modules.map((module, index) => (
-                        <Module
-                            module={module}
-                            onUpdate={onUpdate}
-                        >
-                        </Module>
-                    ))}
-                    <ListItemButton onClick={() => setNestedOpen(!nestedOpen)} sx={{ pl: 4 }}>
-                        <ListItemText primary="Notes" />
-                        {nestedOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse orientation="vertical" in={nestedOpen}>
-                         <Stack margin={'1vh 0 0 2vh'} padding={'1vh'}>
-                             {/* Nested Collapse Content Goes Here */}
-                             <Typography>
-                                 This is the nested collapse content. You can add more details or components here.
-                             </Typography>
-                         </Stack>
-                     </Collapse>
-                </List>
-            </Collapse>
+            <List>
+                {modules.map((module, index) => (
+                    <Module
+                        key={index}
+                        module={module}
+                        onUpdate={onUpdate}
+                    >
+                    </Module>
+                ))}
+            </List>
         </List>
         // <Card elevation={0} sx={{overflow:'auto'}}>
         //     <CardActionArea onClick={() => setOpen(!open)} sx={{ margin: '1vh', padding: '1vh' }}>
@@ -127,7 +111,6 @@ function Module({module, onUpdate}) {
 
     const [open, setOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const index = 0;
     const handleListItemClick = (event, index, name, url, type) => {
         onUpdate({
             type: type,
@@ -138,8 +121,7 @@ function Module({module, onUpdate}) {
     };
     return (
         <List
-            sx={{ width: '100%', bgcolor: 'background.paper' }}
-            component="nav"
+            sx={{ width: '100%' }}
             aria-labelledby="nested-list-subheader"
         >
             <ListItemButton onClick={() => {setOpen(!open);}}>
@@ -195,7 +177,7 @@ function Module({module, onUpdate}) {
                             <ListItemButton
                             selected={selectedIndex === 4}
                             onClick={(event) => handleListItemClick(event, 4, "slides", slidesUrl, '')}>
-                            <ListItemText primary="Lecture Assignment" sx={{ marginLeft: '2vw'}} />
+                            <ListItemText primary="Lecture Slides" sx={{ marginLeft: '2vw'}} />
                             </ListItemButton>
                         ))}
                         </>
@@ -255,6 +237,7 @@ function Module({module, onUpdate}) {
 }
 
 function ViewElement({selectedElement}) {
+
     const options = {
         height: '585',
         width: '960',
@@ -263,6 +246,7 @@ function ViewElement({selectedElement}) {
             controls: 1,
         },
     };
+
     return (
         <>
         {selectedElement === undefined ? <></> :
@@ -270,20 +254,16 @@ function ViewElement({selectedElement}) {
             sx={{width: '70%', height: '90%', overflow:'auto'}}
         >
             <Typography variant='h5' margin={'2vh 0'}>
-                    {selectedElement.name}
+                    This week's {selectedElement.name}
             </Typography>
             {selectedElement.type === 'lecture' ?
                 <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
                     <YouTube videoId={selectedElement.url} opts={options}/>
                 </Box>
-
             :
-            <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>
-                <Typography variant='h6' margin={'2vh 0'}>Follow this link to view your {selectedElement.type} </Typography>
-                <Typography variant='h6' margin={'2vh 0'}>
-                    <a href={selectedElement.url}>{selectedElement.name}</a>
-                </Typography>
-            </Box>
+                <Box sx={{width: '100%', height: '90%', overflow:'auto'}}>
+                    <iframe src={selectedElement.url} width="100%" style={{aspectRatio: 9/16}} />
+                </Box>
             }
         </Stack>}
         </>
