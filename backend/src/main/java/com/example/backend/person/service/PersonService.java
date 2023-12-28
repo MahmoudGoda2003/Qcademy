@@ -147,7 +147,7 @@ public class PersonService {
         Long userId = Long.parseLong(SecurityContextHolder.getContext().getAuthentication().getName());
         Person person = personRepository.getReferenceById(userId);
         if (person == null) {
-            throw new DataNotFoundException("Couldn't find user");
+            throw new UserNotFoundException();
         }
         return new ResponseEntity<>(PersonInfoDTO.convert(person), HttpStatus.OK);
     }
