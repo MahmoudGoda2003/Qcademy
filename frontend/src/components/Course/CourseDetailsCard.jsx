@@ -6,6 +6,7 @@ import {Button, CardMedia, Rating} from '@mui/material';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import globals from '../../utils/globals';
+import CourseService from '../../service/CourseService';
 
 
 const DEFAULT_IMAGE = ""
@@ -32,6 +33,11 @@ export default function CourseDetailsCard({course, role}) {
         if (role === "TEACHER") navigate(`/course/${course.courseId}/manageModules`, {state: { course:course }})
     }
 
+    const removeCourse = async () => {
+        await CourseService.deleteCourse(course.courseId);
+        navigate('/home');
+    }
+
     return (
 
         <Card sx={{minWidth:'45vh', maxWidth:'45vh', margin: '2vh auto'}}>
@@ -53,7 +59,12 @@ export default function CourseDetailsCard({course, role}) {
                 </Typography>
                 {role === "STUDENT" && course.enrolled ? <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Continue Learning</Button> :
                 role === "STUDENT" ? <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Enroll Now</Button> : <></>}
-                {role === "TEACHER" && <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Manage Course</Button>}
+                {role === "TEACHER" &&
+                    <>
+                        <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Manage Course</Button>
+                        <Button variant="contained" size="large" style={{backgroundColor: 'red'}} sx={gridElement} onClick={removeCourse} >Delete this course</Button>
+                    </>
+                }
             </CardContent>
         </Card>
     );

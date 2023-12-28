@@ -67,7 +67,13 @@ const CourseService = {
         await axios.delete(`${globals.baseURL}/teacher/removeModule`,
             {params: {courseId: courseId, weekNumber: weekNumber} ,
             withCredentials: true});
-    }
+    },
+
+    deleteCourse: async function(courseId) {
+        await axios.delete(`${globals.baseURL}/teacher/removeCourse`,
+            {params: {courseId: courseId} ,
+            withCredentials: true});
+    },
 
 };
 
