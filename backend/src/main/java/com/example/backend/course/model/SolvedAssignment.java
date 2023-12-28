@@ -1,14 +1,13 @@
 package com.example.backend.course.model;
 
 
-import com.example.backend.course.model.Assignment;
+import com.example.backend.course.repository.SolvedAssignmentId;
 import com.example.backend.student.model.Student;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
@@ -19,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@IdClass(SolvedAssignmentId.class)
 public class SolvedAssignment {
 
     @Column(name = "solution_url", nullable = false)
@@ -31,7 +31,7 @@ public class SolvedAssignment {
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "assignment_number")
-    private Assignment assignments;
+    private Assignment assignment;
 
 
     @Id

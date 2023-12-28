@@ -21,6 +21,7 @@ public class SolvedAssignmentService {
         Student student = studentRepository.getByUserId(userId);
         Assignment assignment = assignmentRepository.getAssignmentByNumber(assignmentNumber);
 
-        SolvedAssignment solvedAssignment = new Solved
+        SolvedAssignment solvedAssignment = new SolvedAssignment(link, (short) -1, assignment, student);
+        solvedAssignmentRepository.save(solvedAssignment);
     }
 }

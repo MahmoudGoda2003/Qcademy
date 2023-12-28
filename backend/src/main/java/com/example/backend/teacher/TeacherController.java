@@ -2,8 +2,12 @@ package com.example.backend.teacher;
 
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.dto.CourseModuleDTO;
+import com.example.backend.course.model.Assignment;
+import com.example.backend.course.model.SolvedAssignment;
+import com.example.backend.course.repository.SolvedAssignmentRepository;
 import com.example.backend.course.service.CourseService;
 import com.example.backend.person.model.Role;
+import com.example.backend.teacher.dto.GradingDTO;
 import com.example.backend.teacher.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +22,7 @@ public class TeacherController {
 
     private final TeacherService teacherService;
     private final CourseService courseService;
+
     @Autowired
     public TeacherController(TeacherService teacherService, CourseService courseService) {
         this.teacherService = teacherService;
@@ -52,5 +57,15 @@ public class TeacherController {
     @GetMapping("courseModules")
     public ResponseEntity<List<CourseModuleDTO>> getCourseModules(@RequestParam int courseId){
         return this.courseService.getCourseModules(courseId);
+    }
+
+    @GetMapping("assignmentSolutions")
+    public ResponseEntity<List<SolvedAssignment>> getAssignmentSolutions(@RequestParam int assignmentNumber){
+        return this.courseService.getAssignmentSolutions(assignmentNumber);
+    }
+
+    @PostMapping("setSolutionGrade")
+    public ResponseEntity<String> setSolutionGrade(@RequestBody GradingDTO gradingDTO){
+        return this.courseService.setSolvedAssignmentGrade(gradingDTO);
     }
 }

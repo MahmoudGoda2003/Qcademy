@@ -2,9 +2,9 @@ package com.example.backend.student;
 
 import com.example.backend.course.dto.CourseMainInfoDTO;
 import com.example.backend.course.dto.CourseModuleDTO;
-import com.example.backend.course.model.Course;
+import com.example.backend.course.model.SolvedAssignment;
 import com.example.backend.course.service.CourseService;
-import org.springframework.http.HttpStatus;
+import com.example.backend.student.dto.AssignmentSolutionDTO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,5 +54,15 @@ public class StudentController {
     @GetMapping("courseModules")
     public ResponseEntity<List<CourseModuleDTO>> getCourseModules(@RequestParam int courseId){
         return this.courseService.getCourseModules(courseId);
+    }
+
+    @GetMapping("submitAssignmentSolution")
+    public ResponseEntity<String> submitSolution(@RequestBody AssignmentSolutionDTO assignmentSolutionDTO){
+        return this.studentService.submitAssignment(assignmentSolutionDTO);
+    }
+
+    @GetMapping("getGrades")
+    public ResponseEntity<List<SolvedAssignment>> submitSolution(@RequestBody List<Integer> assignmentsNumbers){
+        return this.studentService.getAssignmentsGrades(assignmentsNumbers);
     }
 }

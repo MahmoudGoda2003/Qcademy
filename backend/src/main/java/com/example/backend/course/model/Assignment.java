@@ -25,8 +25,8 @@ public class Assignment {
     @Column(name = "assignment_url", nullable = false)
     private String assignmentURL;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignments")
-    private List<SolvedAssignment> solvedAssignment;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "assignments")
+//    private List<SolvedAssignment> solvedAssignment;
 
     public static Assignment convert(AssignmentDTO assigmentDTO) {
         return modelMapper.map(assigmentDTO, Assignment.class);
