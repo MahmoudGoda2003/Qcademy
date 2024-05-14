@@ -7,7 +7,14 @@
 
   
 ## Overview
-DataHive is a meticulously crafted, lightweight database system tailored for the purpose of data storage in JSON files. With a strong emphasis on simplicity and reliability, it offers essential CRUD (Create, Read, Update, Delete) operations and guarantees seamless synchronization between read and write operations. This project has been thoughtfully designed to serve as an elegant and file-based data storage solution, ideally suited for small-scale applications.
+Qcademy presents a full-stack e-learning platform built with ReactJS for the interactive and user-friendly frontend and Spring Boot for the robust and scalable backend. It caters to both students and teachers, fostering a dynamic learning environment.
+
+Benefits:
+Empowers Learners: Students gain access to a diverse range of courses, fostering continuous learning and skill development.
+Facilitates Teaching: Teachers have the tools to create and deliver engaging courses, effectively reaching their students.
+Scalable and Flexible: The platform can accommodate a growing user base and future feature enhancements.
+User-Friendly Interface: Both students and teachers can navigate the platform intuitively, maximizing its learning potential.
+This e-learning platform represents a powerful tool for democratizing education and making valuable knowledge more accessible.
 
 ## Table of Contents
 1. [Documentation](#documentation)
