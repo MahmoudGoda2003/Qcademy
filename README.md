@@ -29,6 +29,7 @@ This e-learning platform represents a powerful tool for democratizing education 
 8. [Upcoming Features](#upcoming-features)
 
 ## 1. Documentation <a name="documentation"></a>
+For detailed documentation on project architecture, design, and usage, please refer to our [Confluence Space](https://maghy.atlassian.net/l/cp/dfnWGNs1).
 
 ## 2. Features <a name="features"></a>
 1) Sign up for Students and teachers
