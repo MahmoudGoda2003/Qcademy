@@ -1,8 +1,11 @@
-![image](https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/2f66bf89-b82f-4c88-81a8-41cc1e909a63)
 
 
-![image](https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/52d18f93-0707-43e3-bac5-1cc4e1e5586b)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/2f66bf89-b82f-4c88-81a8-41cc1e909a63">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/52d18f93-0707-43e3-bac5-1cc4e1e5586b">
+  <img alt="Image description (important for accessibility)" src="https://default-image.png"> </picture>
 
+  
 ## Overview
 DataHive is a meticulously crafted, lightweight database system tailored for the purpose of data storage in JSON files. With a strong emphasis on simplicity and reliability, it offers essential CRUD (Create, Read, Update, Delete) operations and guarantees seamless synchronization between read and write operations. This project has been thoughtfully designed to serve as an elegant and file-based data storage solution, ideally suited for small-scale applications.
 
