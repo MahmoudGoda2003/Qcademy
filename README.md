@@ -10,41 +10,37 @@
 DataHive is a meticulously crafted, lightweight database system tailored for the purpose of data storage in JSON files. With a strong emphasis on simplicity and reliability, it offers essential CRUD (Create, Read, Update, Delete) operations and guarantees seamless synchronization between read and write operations. This project has been thoughtfully designed to serve as an elegant and file-based data storage solution, ideally suited for small-scale applications.
 
 ## Table of Contents
-
-1. [Features](#features)
-2. [Installation](#installation)
-3. [Usage](#usage)
+1. [Documentation](#documentation)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage](#usage)
     - [Schema formate](#schema)
     - [Command-Line Interface](#commands)
-4. [Example Usage](#examples)
-5. [FAQs](#faqs)
-6. [Contributing](#contributing)
-7. [License](#license)
-8. [Upcoming Features](#upcoming-features)
+5. [Example Usage](#examples)
+6. [FAQs](#faqs)
+7. [Contributing](#contributing)
+8. [License](#license)
+9. [Upcoming Features](#upcoming-features)
 
-## 1. Features <a name="features"></a>
-- **Data Storage Excellence**
-  - **Robust Storage**: Securely store data in JSON format.
-  - **Flexibility**: JSON supports diverse data types and complex structures.
-  - **Transparency**: Human-readable format simplifies debugging.
-  - **Compatibility**: Platform-independent for use in various applications.
+## 1. Documentation <a name="documentation"></a>
 
-- **CRUD Functionality**
-  - **Create (C)**: Add new data with specified identifiers.
-  - **Read (R)**: Retrieve and query data for targeted searches.
-  - **Update (U)**: Modify existing data, ensuring accuracy.
-  - **Delete (D)**: Remove data to maintain a clean database.
+## 2. Features <a name="features"></a>
+1) Sign up for Students and teachers
+2) User Authentication and google login
+3) Student Homepage
+4) Professor / TA Homepage
+5) Creating Course
+6) Viewing Course Content
+7) Managing Course
+8) Searching Results
+9) Grading Assignments
+10) Creating Exams
+11) Students Uploading Their Assignments
+12) Online Lectures
+13) Online Attendance
+14) Keeping Track of Student’s Progress in The Course
 
-- **Synchronization Assurance**
-  - **ead-Write Consistency**: Guarantee synchronization between read and write operations for up-to-date data.
-  - **Data Integrity**: Maintain reliable and trustworthy data, preventing inconsistencies.
-
-- **Clearing Database**:
-    - **clear the data**: Wipe the database clean, starting fresh for new data.
-- **Java Integration**
-  - **Cross-Language Compatibility**: Our meticulously crafted Java driver ([SimpleDBDriver](https://github.com/YahyaAzzam/SimpleDBDriver)) seamlessly integrates with the Simple File System Database, allowing Java applications to interact with the database effortlessly. This cross-language compatibility enhances the database's versatility, extending its usability to diverse programming ecosystems.
-
-## 2. Installation <a name="installation"></a>
+## 3. Installation <a name="installation"></a>
 To use DataHive, follow these installation steps:
 1. **Install python**: Python 3.x installed on your machine.
 
@@ -53,7 +49,7 @@ To use DataHive, follow these installation steps:
 ```shell
 pip install DataHive
 ```
-## 3. Usage <a name="usage"></a>
+## 4. Usage <a name="usage"></a>
 
 ### Schema Format <a name="schema"></a>
 Below is an example of the schema format that defines the structure of the database, including the database name and tables with their respective attributes:
@@ -97,7 +93,7 @@ Below is an example of the schema format that defines the structure of the datab
 
 This Command-Line Interface (CLI) provides a set of commands for creating, updating, querying, deleting data, and resetting databases, offering comprehensive control over your data management tasks.
 
-## 4. Example Usage <a name="examples"></a>
+## 5. Example Usage <a name="examples"></a>
 - **The general format for any command in the program is as follows**:
 
    ```python
@@ -132,7 +128,7 @@ This Command-Line Interface (CLI) provides a set of commands for creating, updat
      ```python
      python DataHive -c clear -db <your_database>'
      ```
-## 5. FAQs <a name="faqs"></a>
+## 6. FAQs <a name="faqs"></a>
 
 - **Q1: What is DataHive?**
   - **A1:** DataHive is a lightweight database system designed for storing data in JSON files. It provides essential CRUD (Create, Read, Update, Delete) operations and ensures synchronization between read and write operations. DataHive is an ideal solution for small-scale applications where a simple and reliable data storage system is required.
@@ -159,18 +155,21 @@ This Command-Line Interface (CLI) provides a set of commands for creating, updat
 - **Q5: Is DataHive compatible with Java?**
   - **A5:** Yes, DataHive is cross-language compatible. We have developed a dedicated Java driver (SimpleDBDriver) that seamlessly integrates with DataHive. This Java driver allows Java applications to interact with the database, extending its usability to diverse programming ecosystems.
 
-## 6. Contributing <a name="contributing"></a>
+## 7. Contributing <a name="contributing"></a>
 
-Contributions to DataHive are welcome! Feel free to fork the repository, make improvements, and create pull requests.
+Contributions to Qcademy are welcome! Feel free to fork the repository, make improvements, and create pull requests.
 
-## 7. License <a name="license"></a>
+## 8. License <a name="license"></a>
 
-DataHive is released under the MIT License. See the [LICENSE](https://github.com/YahyaAzzam/SimpleFSDB/blob/master/LICENSE) file for details.
+Qcademy is released under the MIT License. See the [LICENSE](https://github.com/MahmoudGoda2003/Qcademy/blob/main/LICENSE) file for details.
 
-## 8. Upcoming Features <a name="upcoming-features">
-   - Stay tuned for future updates and additional features. We are constantly working on enhancing DataHive to provide an even better data storage solution for your needs.
+## 9. Upcoming Features <a name="upcoming-features">
+Stay tuned for future updates and additional features. We are constantly working on enhancing DataHive to provide an even better data storage solution for your needs, including:
+
+   - Granting Certificate of Completion
+   - Student’s Timetable
+   - Discussion Tab for Each Course
 -----
-*Note: This documentation provides an overview of DataHive's functionality and usage. For detailed code explanations, refer to the source code and comments in SimpleFSDB's repository.*
 
 
   
