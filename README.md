@@ -1,8 +1,8 @@
 
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/2f66bf89-b82f-4c88-81a8-41cc1e909a63">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/52d18f93-0707-43e3-bac5-1cc4e1e5586b">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/2f66bf89-b82f-4c88-81a8-41cc1e909a63">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/MahmoudGoda2003/Qcademy/assets/95986689/52d18f93-0707-43e3-bac5-1cc4e1e5586b">
   <img alt="Image description (important for accessibility)" src="https://default-image.png"> </picture>
 
   
