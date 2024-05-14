@@ -16,11 +16,10 @@ DataHive is a meticulously crafted, lightweight database system tailored for the
 4. [Usage](#usage)
     - [Schema formate](#schema)
     - [Command-Line Interface](#commands)
-5. [Example Usage](#examples)
-6. [FAQs](#faqs)
-7. [Contributing](#contributing)
-8. [License](#license)
-9. [Upcoming Features](#upcoming-features)
+5. [FAQs](#faqs)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Upcoming Features](#upcoming-features)
 
 ## 1. Documentation <a name="documentation"></a>
 
@@ -93,42 +92,7 @@ Below is an example of the schema format that defines the structure of the datab
 
 This Command-Line Interface (CLI) provides a set of commands for creating, updating, querying, deleting data, and resetting databases, offering comprehensive control over your data management tasks.
 
-## 5. Example Usage <a name="examples"></a>
-- **The general format for any command in the program is as follows**:
-
-   ```python
-   python DataHive -c [command] [options]
-   ```
-   Replace `[command]` with the desired database command and `[options]` with relevant command options.
-
-- **Commands Examples**:
-
-    - Creating a new database:
-         ```python
-         python DataHive -c create -sc <your_schema_path>
-         ```
-    
-    - Sets a row with the provided input data:
-         ```python
-         python DataHive -c set -db <your_database> -t <your_table> -q '{"key": "value"}'
-         ```
-
-    - Utilizes the input query to retrieve specific data from the database:
-         ```python
-         python DataHive -c get -db <your_database> -t <your_table> -q '{"key": "value"}'
-                 # if you didn't add -q it will get all data in the table
-         ```
-
-    - Uses the input query to delete specific data from the database:
-         ```python
-         python DataHive -c delete -db <your_database> -t <your_table> -q '{"key": "value"}'
-         ```
-
-   - Resets the specified database to its initial state:
-     ```python
-     python DataHive -c clear -db <your_database>'
-     ```
-## 6. FAQs <a name="faqs"></a>
+## 5. FAQs <a name="faqs"></a>
 
 - **Q1: What is DataHive?**
   - **A1:** DataHive is a lightweight database system designed for storing data in JSON files. It provides essential CRUD (Create, Read, Update, Delete) operations and ensures synchronization between read and write operations. DataHive is an ideal solution for small-scale applications where a simple and reliable data storage system is required.
@@ -155,15 +119,15 @@ This Command-Line Interface (CLI) provides a set of commands for creating, updat
 - **Q5: Is DataHive compatible with Java?**
   - **A5:** Yes, DataHive is cross-language compatible. We have developed a dedicated Java driver (SimpleDBDriver) that seamlessly integrates with DataHive. This Java driver allows Java applications to interact with the database, extending its usability to diverse programming ecosystems.
 
-## 7. Contributing <a name="contributing"></a>
+## 6. Contributing <a name="contributing"></a>
 
 Contributions to Qcademy are welcome! Feel free to fork the repository, make improvements, and create pull requests.
 
-## 8. License <a name="license"></a>
+## 7. License <a name="license"></a>
 
 Qcademy is released under the MIT License. See the [LICENSE](https://github.com/MahmoudGoda2003/Qcademy/blob/main/LICENSE) file for details.
 
-## 9. Upcoming Features <a name="upcoming-features">
+## 8. Upcoming Features <a name="upcoming-features">
 Stay tuned for future updates and additional features. We are constantly working on enhancing DataHive to provide an even better data storage solution for your needs, including:
 
    - Granting Certificate of Completion
