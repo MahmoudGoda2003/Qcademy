@@ -16,22 +16,54 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useNavigate } from "react-router-dom";
 import globals from '../../utils/globals';
+import UserService from '../../service/UserService';
+import { useEffect } from 'react';
+import CourseService from '../../service/CourseService';
+import { useState } from 'react';
 
 const settings = ['Home', 'Profile', 'Settings', 'Logout'];
 
 
 
-export default function Header({ userInfo, searchOptions, onThemeChange, theme }) {
+export default function Header({ onThemeChange, theme }) {
 
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [courseNames, setCourseNames] = useState([]);
+  const [courses, setCourses] = useState([])
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getCourseNames = async () => {
+      if (globals.user !== undefined) {
+        let results = [];
+        if (globals.user.role === "STUDENT") {
+          let recommended = await CourseService.getRecommendedCourses();
+          let enrolled = await CourseService.getEnrolledCourses();
+          results = results.concat(recommended)
+          results = results.concat(enrolled)
+        }
+        else if (globals.user.role === "TEACHER") {
+          let created = await CourseService.getCreatedCourses();
+          results = results.concat(created)
+          console.log(results)
+        }
+        else return;
+        const names = results.map((course) => course.name)
+        setCourses(results)
+        setCourseNames(names)
+      }
+    }
+
+    getCourseNames();
+
+  }, [])
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const navigate = useNavigate();
 
  
-  const handleCloseUserMenu = (setting) => {
+  const handleCloseUserMenu = async (setting) => {
     setAnchorElUser(null);
     switch(setting){
       case "Home":
@@ -43,11 +75,21 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
       case "Logout":
         globals.user = null;
         localStorage.removeItem("user")
+        await UserService.logOut();
         navigate(`/login`)
         break
       default:
     }
   };
+
+  const search = (e) => {
+    if (e.key === "Enter"){
+      const results = courses.filter((course) => {
+        return course.name.toLowerCase().includes(e.target.value.toLowerCase());
+      })
+      navigate('/search', {state: {results: results}})
+    }
+  }
 
   return (
     <AppBar position="relative" width={'100%'}>
@@ -63,11 +105,11 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
             freeSolo
             size='small'
             sx={{ width: '20%', marginRight: '2vh', marginLeft: 'auto' }}
-            options={searchOptions}
+            options={courseNames}
             renderInput={(params) => (
               <Stack direction="row" alignItems={"center"} spacing={1}>
                 <SearchIcon />
-                <TextField {...params} placeholder="Search…" variant="standard" sx={{ input: { color: 'white' } }} />
+                <TextField {...params} placeholder="Search…" variant="standard" sx={{ input: { color: 'white' } }} onKeyUp={search} />
               </Stack>
             )}
           />
@@ -79,7 +121,7 @@ export default function Header({ userInfo, searchOptions, onThemeChange, theme }
           <Box justifyContent={'flex-end'}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="userPhoto" src={globals.user.photoLink} referrerPolicy="no-referrer" />
+                {globals.user && <Avatar alt="userPhoto" src={globals.user.photoLink} referrerPolicy="no-referrer" />}
               </IconButton>
             </Tooltip>
             <Menu

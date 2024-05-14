@@ -53,4 +53,26 @@ public class CourseService {
         }
         return new ResponseEntity<>(courseModulesDTO, HttpStatus.OK);
     }
+
+    public ResponseEntity<String> removeCourse(int courseId) {
+        this.courseRepository.deleteById(courseId);
+        return new ResponseEntity<>("Course deleted successfully", HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> removeModule(int courseId,int weekNumber) {
+        Course course = this.courseRepository.getById(courseId);
+        CourseModule courseModule = course.getModules().stream().filter(module -> module.getWeekNumber() == weekNumber).findFirst().orElse(null);
+        this.courseModuleService.removeModule(courseModule);
+        course.getModules().remove(courseModule);
+        this.courseRepository.save(course);
+        return new ResponseEntity<>("Module deleted successfully", HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> changeRate(int courseId,int rating) {
+       Course course = this.courseRepository.getByCourseId(courseId);
+       course.setTotalRate(course.getTotalRate()+rating);
+       course.setNumberOfRates(course.getNumberOfRates()+1);
+       this.courseRepository.save(course);
+       return new ResponseEntity<>("Rate changed successfully", HttpStatus.OK);
+    }
 }

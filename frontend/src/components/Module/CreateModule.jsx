@@ -62,7 +62,7 @@ export default function CreateModule({ open, handleClose, onCreateModule, course
             assignments: assignments,
             slidesSets: slidesSets,
             quizzes: quizzes,
-            publishDate: currentDate.getTime().toString(),
+            name: moduleName,
         }
 
         try{

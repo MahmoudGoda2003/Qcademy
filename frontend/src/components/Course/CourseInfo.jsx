@@ -1,13 +1,11 @@
-import Box from '@mui/material/Box';
-import { Collapse, ListItemButton, Stack, Typography, List, ListItemText } from '@mui/material';
 import * as React from "react";
+import { Collapse, ListItemButton, Stack, Typography, List, ListItemText, Box } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import {useState} from "react";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import YouTube from 'react-youtube';
 import { useEffect } from 'react';
-import axios from 'axios';
-import globals from '../../utils/globals';
+import CourseService from "../../service/CourseService";
 
 export default function CourseInfo() {
 
@@ -23,17 +21,15 @@ export default function CourseInfo() {
     const course = location.state.course;
 
     useEffect(() => {
-        axios.get(`${globals.baseURL}/student/courseModules`, {params: {courseId: course.courseId} , withCredentials: true})
-        .then((response) => {
-            setModules(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        const fetchModules = async () => {
+            const res = await CourseService.getCourseModules(course.courseId, "student");
+            setModules(res);
+        }
+
+        fetchModules();
     }, []);
 
     return (
-        // overflow:'auto', maxWidth: '100%', padding: '2vh'
         <>
             <Stack direction={'row'} spacing={10}
                    sx={{width: '90%', height: '100vh', margin: '2vh 2vw', padding: '2vh 2vw'}}>
@@ -56,8 +52,6 @@ export default function CourseInfo() {
 
 
 function CourseMaterials({modules, onUpdate}) {
-    const [open, setOpen] = useState(-1);
-
     return (
         <List
             sx={{ width: '100%' }}
@@ -77,33 +71,6 @@ function CourseMaterials({modules, onUpdate}) {
                 ))}
             </List>
         </List>
-        // <Card elevation={0} sx={{overflow:'auto'}}>
-        //     <CardActionArea onClick={() => setOpen(!open)} sx={{ margin: '1vh', padding: '1vh' }}>
-        //         <Typography variant="h8" sx={{ marginLeft: '1vw' }}>
-        //             CourseMaterials
-        //         </Typography>
-        //         {open ? <ExpandLess /> : <ExpandMore />}
-        //     </CardActionArea>
-        //     <Collapse orientation="vertical" in={open}>
-        //             <Module module={module1}></Module>
-        //             <CardActionArea onClick={() => setNestedOpen(!nestedOpen)} sx={{ margin: '1vh', padding: '1vh' }}>
-        //                 <Typography variant="h8" sx={{ marginLeft: '2vw'}}>
-        //                     Notes
-        //                 </Typography>
-        //                     {open ? <ExpandLess sx={{ pl: 4 }}/> : <ExpandMore sx={{ pl: 4 }}/>}
-        //             </CardActionArea>
-        //             {/* Nested Collapse */}
-        //             <Collapse orientation="vertical" in={nestedOpen}>
-        //                 <Stack margin={'1vh 0 0 2vh'} padding={'1vh'}>
-        //                     {/* Nested Collapse Content Goes Here */}
-        //                     <Typography>
-        //                         This is the nested collapse content. You can add more details or components here.
-        //                     </Typography>
-        //                 </Stack>
-        //             </Collapse>
-        //     </Collapse>
-        //
-        // </Card>
     );
 }
 
@@ -125,15 +92,14 @@ function Module({module, onUpdate}) {
             aria-labelledby="nested-list-subheader"
         >
             <ListItemButton onClick={() => {setOpen(!open);}}>
-                <ListItemText primary={module.publishDate} sx={{ marginLeft: '1vw'}}/>
+                <ListItemText primary={module.name} sx={{ marginLeft: '1vw'}}/>
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    {(module.lectures.toString() === [].toString())?
+                    {(module.lectures.toString() === "")?
                         <></>:
                         <>
-                        {/*navigae to page contain the link of lecture*/}
                         {module.lectures.map((lecture) =>(
                             <ListItemButton
                             selected={selectedIndex === 1}
@@ -146,7 +112,6 @@ function Module({module, onUpdate}) {
                     {(module.quizzes.toString() === "")?
                         <></>:
                         <>
-                            {/*navigae to page contain the link of lecture*/}
                         {module.quizzes.map((quizUrl) =>(
                             <ListItemButton
                             selected={selectedIndex === 2}
@@ -159,7 +124,6 @@ function Module({module, onUpdate}) {
                     {(module.assignments.toString() === "")?
                         <></>:
                         <>
-                            {/*navigae to page contain the link of lecture*/}
                         {module.assignments.map((assignment) =>(
                             <ListItemButton
                             selected={selectedIndex === 3}
@@ -172,7 +136,6 @@ function Module({module, onUpdate}) {
                     {(module.slidesSets.toString() === "")?
                         <></>:
                         <>
-                            {/*navigae to page contain the link of lecture*/}
                         {module.slidesSets.map((slidesUrl) =>(
                             <ListItemButton
                             selected={selectedIndex === 4}
@@ -185,54 +148,6 @@ function Module({module, onUpdate}) {
                 </List>
             </Collapse>
         </List>
-        // <Card elevation={0}>
-        //     <CardActionArea onClick={() => setOpen(!open)} sx={{ margin: '1vh', padding: '1vh' }}>
-        //         <Typography variant="h8" sx={{ marginLeft: '2vw' }}>
-        //             {module.name}
-        //         </Typography>
-        //         {open ? <ExpandLess /> : <ExpandMore />}
-        //     </CardActionArea>
-        //     <Collapse orientation="vertical" in={open}>
-        //         {(module.lectureLink === "")?
-        //             <></>:
-        //             <>
-        //                 {/*navigae to page contain the link of lecture*/}
-        //                 <CardActionArea sx={{ margin: '1vh', padding: '1vh' }}>
-        //                     <Typography variant="h8" sx={{ marginLeft: '3vw' }}>
-        //                         Lecture Video
-        //                     </Typography>
-        //                 </CardActionArea>
-        //             </>
-        //
-        //         }
-        //
-        //         {(module.lectureQuiz === "")?
-        //             <></>:
-        //             <>
-        //                 {/*navigae to page contain the link of lecture*/}
-        //                 <CardActionArea sx={{ margin: '1vh', padding: '1vh' }}>
-        //                     <Typography variant="h8" sx={{ marginLeft: '3vw' }}>
-        //                         Quiz
-        //                     </Typography>
-        //                 </CardActionArea>
-        //             </>
-        //
-        //         }
-        //
-        //         {(module.lectureAssignment === "")?
-        //             <></>:
-        //             <>
-        //                 {/*navigae to page contain the link of Assignment*/}
-        //                 <CardActionArea sx={{ margin: '1vh', padding: '1vh' }} >
-        //                     <Typography variant="h8" sx={{ marginLeft: '3vw' }}>
-        //                         Assignment
-        //                     </Typography>
-        //                 </CardActionArea>
-        //             </>
-        //
-        //         }
-        //     </Collapse>
-        // </Card>
     );
 }
 
@@ -254,7 +169,7 @@ function ViewElement({selectedElement}) {
             sx={{width: '70%', height: '90%', overflow:'auto'}}
         >
             <Typography variant='h5' margin={'2vh 0'}>
-                    This week's {selectedElement.name}
+                {selectedElement.name}
             </Typography>
             {selectedElement.type === 'lecture' ?
                 <Box sx={{width: '100%', aspectRatio:'16/9', overflow:'auto'}}>

@@ -153,7 +153,7 @@ public class PersonService {
     }
 
     public ResponseEntity<String> logout(HttpServletResponse response) {
-        Cookie cookie = this.cookiesService.createCookie("qcademy", "", 0);
+        Cookie cookie = this.cookiesService.createCookie("qcademy", null, 0);
         response.addCookie(cookie);
         return new ResponseEntity<>("Logged out", HttpStatus.ACCEPTED);
     }

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Objects;
 
 @ControllerAdvice
 public class OtherExceptionsHandler {

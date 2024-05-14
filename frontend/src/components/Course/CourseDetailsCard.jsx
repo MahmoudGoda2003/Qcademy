@@ -6,6 +6,8 @@ import {Button, CardMedia, Rating} from '@mui/material';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import globals from '../../utils/globals';
+import CourseService from '../../service/CourseService';
+import { useState } from 'react';
 
 
 const DEFAULT_IMAGE = ""
@@ -19,6 +21,10 @@ const gridElement = {
 
 export default function CourseDetailsCard({course, role}) {
 
+    const [courseRating, setCourseRating] = useState();
+
+    console.log(course)
+
     const navigate = useNavigate();
 
     const enrollCourse = async () => {
@@ -29,6 +35,17 @@ export default function CourseDetailsCard({course, role}) {
 
     const handleNavigate = () => {
         if (role === "STUDENT") navigate(`/course/learn/${course.courseId}/`, {state: { course:course }})
+        if (role === "TEACHER") navigate(`/course/${course.courseId}/manageModules`, {state: { course:course }})
+    }
+
+    const removeCourse = async () => {
+        await CourseService.deleteCourse(course.courseId);
+        navigate('/home');
+    }
+
+    const rateCourse = async (newValue) => {
+        console.log(newValue);
+        await CourseService.rateCourse(course.courseId, newValue);
     }
 
     return (
@@ -44,7 +61,17 @@ export default function CourseDetailsCard({course, role}) {
                 <Typography gutterBottom variant="h3" component="div">
                     {course.name}
                 </Typography>
-                <Rating name="half-rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
+                {role === "TEACHER" ?
+                    <Rating name="rating" defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating} precision={RATING_PRECISION} readOnly/>
+                :
+                    <Rating
+                        name="rating"
+                        defaultValue={(course.rating===undefined)? DEFAULT_RATING: course.rating}
+                        precision={RATING_PRECISION}
+                        value={courseRating}
+                        onChange={(event, newValue) => {rateCourse(newValue)}}
+                    />
+                }
                 <Typography 
                     sx={gridElement}
                     color="text.secondary">
@@ -52,7 +79,12 @@ export default function CourseDetailsCard({course, role}) {
                 </Typography>
                 {role === "STUDENT" && course.enrolled ? <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Continue Learning</Button> :
                 role === "STUDENT" ? <Button variant="contained" size="large" sx={gridElement} onClick={enrollCourse} >Enroll Now</Button> : <></>}
-                {role === "TEACHER" && <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Manage Course</Button>}
+                {role === "TEACHER" &&
+                    <>
+                        <Button variant="contained" size="large" sx={gridElement} onClick={handleNavigate} >Manage Course</Button>
+                        <Button variant="contained" size="large" style={{backgroundColor: 'red'}} sx={gridElement} onClick={removeCourse} >Delete this course</Button>
+                    </>
+                }
             </CardContent>
         </Card>
     );
